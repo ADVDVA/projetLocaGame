@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig" migrateIndexesAndConstraints="true">
+    <option name="defaultUnitInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="0bb9b078-0a14-4614-964e-21a9b0105c18" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/adrien/faouzi/entities" />
+    <reUseDbSnapshotConnections>
+      <dbConnection id="0bb9b078-0a14-4614-964e-21a9b0105c18" />
+    </reUseDbSnapshotConnections>
+    <option name="newEntityIdStrategy" />
+    <option name="reIgnoreSlowDbConnections">
+      <ignoreDs id="0bb9b078-0a14-4614-964e-21a9b0105c18" />
+    </option>
+  </component>
+</project>
