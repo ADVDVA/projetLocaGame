@@ -6,13 +6,19 @@
       xmlns:f="http://java.sun.com/jsf/core">
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        #{I18N['application.welcomepage.title']}
+        #{I18N_EN['application.welcomepage.title']}
     </ui:define>
     <ui:define name="content">
-        #{I18N['application.welcome']}, #{userBean.name}! <br/>
-        #{I18N['application.password']}, #{userBean.password}!<br/>
-        <h:link value="#{I18N['application.welcomepage.return']}"
-                outcome="index"></h:link> <br/><br/>
+        #{I18N_EN['application.welcome']}, #{userBean.name}! <br/>
+        #{I18N_EN['application.password']}, #{userBean.password}!<br/>
+
+    <ul>
+        <ui:repeat value="#{userBean.favoriteSports}" var="sport">
+            <li>#{sport}</li>
+        </ui:repeat>
+    </ul>
+
+        <h:link value="#{I18N_EN['application.welcomepage.return']}" outcome="index"></h:link> <br/><br/>
     </ui:define>
 </ui:composition>
 </html>

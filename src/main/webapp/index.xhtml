@@ -5,27 +5,30 @@
       xmlns:h="http://java.sun.com/jsf/html">
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        #{I18N['application.loginpage.title']}
+        #{I18N_EN['application.loginpage.title']}
     </ui:define>
     <ui:define name="content">
+        <!--
+        <h:link value="#{(false ? I18N_EN['application.welcomepage.return'] : I18N_FR['application.welcomepage.return'])}" outcome="index"></h:link>
+       -->
         <h:form>
             <h:panelGrid columns="3">
-                <h:outputText value="#{I18N['user.name']}"></h:outputText>
+                <h:outputText value="#{I18N_EN['user.name']}"></h:outputText>
                 <h:inputText id="userName"
                              value="#{userBean.name}"
                              required="true"
-                             requiredMessage="#{I18N['user.name.validation']}">
+                             requiredMessage="#{I18N_EN['user.name.validation']}">
                 </h:inputText>
                 <h:message for="userName" styleClass="errorMessage"/>
-                <h:outputText value="#{I18N['user.password']}"></h:outputText>
+                <h:outputText value="#{I18N_EN['user.password']}"></h:outputText>
                 <h:inputSecret id="password"
                                value="#{userBean.password}"
                                required="true"
-                               requiredMessage="#{I18N['user.password.validation']}">
+                               requiredMessage="#{I18N_EN['user.password.validation']}">
                 </h:inputSecret>
                 <h:message for="password" styleClass="errorMessage"/>
             </h:panelGrid>
-            <h:commandButton value="#{I18N['application.login']}" action="#{userBean.testreturn}">
+            <h:commandButton value="#{I18N_EN['application.login']}" action="#{userBean.testreturn}">
             </h:commandButton> <br/><br/>
         </h:form>
     </ui:define>

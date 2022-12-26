@@ -5,8 +5,12 @@
                 http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
     <application>
         <resource-bundle>
-            <base-name>language.messages</base-name>
-            <var>I18N</var>
+            <base-name>language.EN </base-name>
+            <var>I18N_EN</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>language.FR </base-name>
+            <var>I18N_FR</var>
         </resource-bundle>
     </application>
 </faces-config>

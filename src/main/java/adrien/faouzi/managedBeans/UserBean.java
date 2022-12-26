@@ -1,13 +1,21 @@
 package adrien.faouzi.managedBeans;
-import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import adrien.faouzi.enumération.MultiPlayer;
 
-@ManagedBean
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+@Named
 @SessionScoped
 public class UserBean implements Serializable {
     private String name;
     private String password;
+    private List<String> favoriteSports;
+
+
 
     public String testreturn ()
     {
@@ -16,7 +24,22 @@ public class UserBean implements Serializable {
 
     public String testName ()
     {
-        return !this.name.equals("toto") ? "welcome": "index";
+        return this.name.equals("toto") ? "index": "welcome";
+    }
+
+    public List<String> getFavoriteSports() {
+        if(favoriteSports == null)
+        {
+            favoriteSports = new ArrayList<String>();
+            favoriteSports.add("football");
+            favoriteSports.add("tennis");
+            favoriteSports.add("basket");
+        }
+        return favoriteSports;
+    }
+
+    public void setFavoriteSports(List<String> favoriteSports) {
+        this.favoriteSports = favoriteSports;
     }
 
     public String getName() {
