@@ -4,15 +4,19 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Priceplatform {
+@Table(name = "Priceplatform", indexes = {
+        @Index(name = "idProduct", columnList = "idProduct"),
+        @Index(name = "idPlatform", columnList = "idPlatform")
+})
+public class PricePlatform {
     private int idPricePlatform;
     private int idProduct;
     private int idPlatform;
-    private double rentalPrice;
+    private float rentalPrice;
     private int availableStock;
-    private double latePrice;
+    private float latePrice;
     private String picture;
-    private byte enable;
+    private boolean enable;
     private Platform platformByIdPlatform;
     private Product productByIdProduct;
 
@@ -48,11 +52,11 @@ public class Priceplatform {
 
     @Basic
     @Column(name = "rentalPrice")
-    public double getRentalPrice() {
+    public float getRentalPrice() {
         return rentalPrice;
     }
 
-    public void setRentalPrice(double rentalPrice) {
+    public void setRentalPrice(float rentalPrice) {
         this.rentalPrice = rentalPrice;
     }
 
@@ -68,11 +72,11 @@ public class Priceplatform {
 
     @Basic
     @Column(name = "latePrice")
-    public double getLatePrice() {
+    public float getLatePrice() {
         return latePrice;
     }
 
-    public void setLatePrice(double latePrice) {
+    public void setLatePrice(float latePrice) {
         this.latePrice = latePrice;
     }
 
@@ -88,11 +92,11 @@ public class Priceplatform {
 
     @Basic
     @Column(name = "enable")
-    public byte getEnable() {
+    public boolean getEnable() {
         return enable;
     }
 
-    public void setEnable(byte enable) {
+    public void setEnable(boolean enable) {
         this.enable = enable;
     }
 
@@ -100,8 +104,8 @@ public class Priceplatform {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Priceplatform that = (Priceplatform) o;
-        return idPricePlatform == that.idPricePlatform && idProduct == that.idProduct && idPlatform == that.idPlatform && Double.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Double.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
+        PricePlatform that = (PricePlatform) o;
+        return idPricePlatform == that.idPricePlatform && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
     }
 
     @Override

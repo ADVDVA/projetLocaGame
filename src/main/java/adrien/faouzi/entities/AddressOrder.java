@@ -4,7 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Addressorder {
+@Table(name = "Addressorder", indexes = {
+        @Index(name = "idAddress", columnList = "idAddress"),
+        @Index(name = "idOrder", columnList = "idOrder")
+})
+public class AddressOrder {
     private int idAddress;
     private int idOrder;
     private Address addressByIdAddress;
@@ -34,7 +38,7 @@ public class Addressorder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Addressorder that = (Addressorder) o;
+        AddressOrder that = (AddressOrder) o;
         return idAddress == that.idAddress && idOrder == that.idOrder;
     }
 

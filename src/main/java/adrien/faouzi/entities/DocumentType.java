@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Documenttype {
+@Table(name = "Documenttype")
+public class DocumentType {
     private int idDocumentType;
     private String documentType;
     private List<Document> documentsByIdDocumentType;
@@ -34,7 +35,7 @@ public class Documenttype {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Documenttype that = (Documenttype) o;
+        DocumentType that = (DocumentType) o;
         return idDocumentType == that.idDocumentType && Objects.equals(documentType, that.documentType);
     }
 

@@ -1,23 +1,29 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.enumération.MultiPlayer;
+import adrien.faouzi.enumération.Pegi;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Product", indexes = {
+        @Index(name = "idEditor", columnList = "idEditor")
+})
 public class Product {
     private int idProduct;
     private int idEditor;
     private String productName;
-    private Object pegi;
-    private Object multiPlayer;
-    private Timestamp releaseDate;
+    private Pegi pegi;
+    private MultiPlayer multiPlayer;
+    private LocalDateTime releaseDate;
     private String description;
-    private byte enable;
-    private List<Categoryproduct> categoryproductsByIdProduct;
-    private List<Languageproduct> languageproductsByIdProduct;
-    private List<Priceplatform> priceplatformsByIdProduct;
+    private boolean enable;
+    private List<CategoryProduct> categoryproductsByIdProduct;
+    private List<LanguageProduct> languageproductsByIdProduct;
+    private List<PricePlatform> priceplatformsByIdProduct;
     private Editor editorByIdEditor;
 
     @Id
@@ -52,31 +58,31 @@ public class Product {
 
     @Basic
     @Column(name = "pegi")
-    public Object getPegi() {
-        return pegi;
+    public String getPegi() {
+        return pegi.getPegi();
     }
 
-    public void setPegi(Object pegi) {
+    public void setPegi(Pegi pegi) {
         this.pegi = pegi;
     }
 
     @Basic
     @Column(name = "multiPlayer")
-    public Object getMultiPlayer() {
-        return multiPlayer;
+    public String getMultiPlayer() {
+        return multiPlayer.getMultiPlayer();
     }
 
-    public void setMultiPlayer(Object multiPlayer) {
+    public void setMultiPlayer(MultiPlayer multiPlayer) {
         this.multiPlayer = multiPlayer;
     }
 
     @Basic
     @Column(name = "releaseDate")
-    public Timestamp getReleaseDate() {
+    public LocalDateTime getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Timestamp releaseDate) {
+    public void setReleaseDate(LocalDateTime releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -92,11 +98,11 @@ public class Product {
 
     @Basic
     @Column(name = "enable")
-    public byte getEnable() {
+    public boolean getEnable() {
         return enable;
     }
 
-    public void setEnable(byte enable) {
+    public void setEnable(boolean enable) {
         this.enable = enable;
     }
 
@@ -114,29 +120,29 @@ public class Product {
     }
 
     @OneToMany(mappedBy = "productByIdProduct")
-    public List<Categoryproduct> getCategoryproductsByIdProduct() {
+    public List<CategoryProduct> getCategoryproductsByIdProduct() {
         return categoryproductsByIdProduct;
     }
 
-    public void setCategoryproductsByIdProduct(List<Categoryproduct> categoryproductsByIdProduct) {
+    public void setCategoryproductsByIdProduct(List<CategoryProduct> categoryproductsByIdProduct) {
         this.categoryproductsByIdProduct = categoryproductsByIdProduct;
     }
 
     @OneToMany(mappedBy = "productByIdProduct")
-    public List<Languageproduct> getLanguageproductsByIdProduct() {
+    public List<LanguageProduct> getLanguageproductsByIdProduct() {
         return languageproductsByIdProduct;
     }
 
-    public void setLanguageproductsByIdProduct(List<Languageproduct> languageproductsByIdProduct) {
+    public void setLanguageproductsByIdProduct(List<LanguageProduct> languageproductsByIdProduct) {
         this.languageproductsByIdProduct = languageproductsByIdProduct;
     }
 
     @OneToMany(mappedBy = "productByIdProduct")
-    public List<Priceplatform> getPriceplatformsByIdProduct() {
+    public List<PricePlatform> getPriceplatformsByIdProduct() {
         return priceplatformsByIdProduct;
     }
 
-    public void setPriceplatformsByIdProduct(List<Priceplatform> priceplatformsByIdProduct) {
+    public void setPriceplatformsByIdProduct(List<PricePlatform> priceplatformsByIdProduct) {
         this.priceplatformsByIdProduct = priceplatformsByIdProduct;
     }
 

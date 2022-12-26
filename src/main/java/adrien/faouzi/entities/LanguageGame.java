@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Languagegame {
+@Table(name = "Languagegame")
+public class LanguageGame {
     private int idLanguage;
     private String languageName;
-    private List<Languageproduct> languageproductsByIdLanguage;
+    private List<LanguageProduct> languageproductsByIdLanguage;
 
     @Id
     @Column(name = "idLanguage")
@@ -34,7 +35,7 @@ public class Languagegame {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Languagegame that = (Languagegame) o;
+        LanguageGame that = (LanguageGame) o;
         return idLanguage == that.idLanguage && Objects.equals(languageName, that.languageName);
     }
 
@@ -44,11 +45,11 @@ public class Languagegame {
     }
 
     @OneToMany(mappedBy = "languagegameByIdLanguage")
-    public List<Languageproduct> getLanguageproductsByIdLanguage() {
+    public List<LanguageProduct> getLanguageproductsByIdLanguage() {
         return languageproductsByIdLanguage;
     }
 
-    public void setLanguageproductsByIdLanguage(List<Languageproduct> languageproductsByIdLanguage) {
+    public void setLanguageproductsByIdLanguage(List<LanguageProduct> languageproductsByIdLanguage) {
         this.languageproductsByIdLanguage = languageproductsByIdLanguage;
     }
 }

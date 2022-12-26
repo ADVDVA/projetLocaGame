@@ -4,7 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Permissionrole {
+@Table(name = "Permissionrole", indexes = {
+        @Index(name = "idPermission", columnList = "idPermission"),
+        @Index(name = "idRole", columnList = "idRole")
+})
+public class PermissionRole {
     private int idPermission;
     private int idRole;
     private Permission permissionByIdPermission;
@@ -34,7 +38,7 @@ public class Permissionrole {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Permissionrole that = (Permissionrole) o;
+        PermissionRole that = (PermissionRole) o;
         return idPermission == that.idPermission && idRole == that.idRole;
     }
 

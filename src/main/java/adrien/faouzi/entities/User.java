@@ -1,22 +1,25 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "User", indexes = {
+        @Index(name = "idRole", columnList = "idRole")
+})
 public class User {
     private int idUser;
     private int idRole;
     private String lastName;
     private String firstName;
-    private Timestamp dateOfBirth;
+    private LocalDateTime dateOfBirth;
     private String phone;
     private String mail;
     private String password;
-    private Timestamp registrationDate;
-    private byte enable;
+    private LocalDateTime registrationDate;
+    private boolean enable;
     private List<Address> addressesByIdUser;
     private List<Order> ordersByIdUser;
     private Role roleByIdRole;
@@ -63,11 +66,11 @@ public class User {
 
     @Basic
     @Column(name = "dateOfBirth")
-    public Timestamp getDateOfBirth() {
+    public LocalDateTime getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp dateOfBirth) {
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -103,21 +106,21 @@ public class User {
 
     @Basic
     @Column(name = "registrationDate")
-    public Timestamp getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(Timestamp registrationDate) {
+    public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
 
     @Basic
     @Column(name = "enable")
-    public byte getEnable() {
+    public boolean getEnable() {
         return enable;
     }
 
-    public void setEnable(byte enable) {
+    public void setEnable(boolean enable) {
         this.enable = enable;
     }
 

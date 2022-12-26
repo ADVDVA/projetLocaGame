@@ -1,23 +1,29 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.enumération.RentalModOfPayment;
+import adrien.faouzi.enumération.ReturnModOfPayment;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Order", indexes = {
+        @Index(name = "idUser", columnList = "idUser")
+})
 public class Order {
     private int idOrder;
     private int idUser;
-    private Timestamp startDate;
-    private Timestamp receptionDate;
-    private Object rentalModOfPayment;
-    private Timestamp endDate;
-    private Timestamp returnDate;
-    private Object returnModOfPayment;
-    private byte customerNotCame;
-    private List<Addressorder> addressordersByIdOrder;
-    private List<Copyorder> copyordersByIdOrder;
+    private LocalDateTime startDate;
+    private LocalDateTime receptionDate;
+    private RentalModOfPayment rentalModOfPayment;
+    private LocalDateTime endDate;
+    private LocalDateTime returnDate;
+    private ReturnModOfPayment returnModOfPayment;
+    private boolean customerNotCame;
+    private List<AddressOrder> addressordersByIdOrder;
+    private List<CopyOrder> copyordersByIdOrder;
     private List<Document> documentsByIdOrder;
     private User userByIdUser;
 
@@ -43,71 +49,71 @@ public class Order {
 
     @Basic
     @Column(name = "startDate")
-    public Timestamp getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Timestamp startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "receptionDate")
-    public Timestamp getReceptionDate() {
+    public LocalDateTime getReceptionDate() {
         return receptionDate;
     }
 
-    public void setReceptionDate(Timestamp receptionDate) {
+    public void setReceptionDate(LocalDateTime receptionDate) {
         this.receptionDate = receptionDate;
     }
 
     @Basic
     @Column(name = "rentalModOfPayment")
-    public Object getRentalModOfPayment() {
-        return rentalModOfPayment;
+    public String getRentalModOfPayment() {
+        return rentalModOfPayment.getRentalModOfPayement();
     }
 
-    public void setRentalModOfPayment(Object rentalModOfPayment) {
+    public void setRentalModOfPayment(RentalModOfPayment rentalModOfPayment) {
         this.rentalModOfPayment = rentalModOfPayment;
     }
 
     @Basic
     @Column(name = "endDate")
-    public Timestamp getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
     @Basic
     @Column(name = "returnDate")
-    public Timestamp getReturnDate() {
+    public LocalDateTime getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Timestamp returnDate) {
+    public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
     }
 
     @Basic
     @Column(name = "returnModOfPayment")
-    public Object getReturnModOfPayment() {
-        return returnModOfPayment;
+    public String getReturnModOfPayment() {
+        return returnModOfPayment.getReturnModOfPayment();
     }
 
-    public void setReturnModOfPayment(Object returnModOfPayment) {
+    public void setReturnModOfPayment(ReturnModOfPayment returnModOfPayment) {
         this.returnModOfPayment = returnModOfPayment;
     }
 
     @Basic
     @Column(name = "customerNotCame")
-    public byte getCustomerNotCame() {
+    public boolean getCustomerNotCame() {
         return customerNotCame;
     }
 
-    public void setCustomerNotCame(byte customerNotCame) {
+    public void setCustomerNotCame(boolean customerNotCame) {
         this.customerNotCame = customerNotCame;
     }
 
@@ -125,20 +131,20 @@ public class Order {
     }
 
     @OneToMany(mappedBy = "orderByIdOrder")
-    public List<Addressorder> getAddressordersByIdOrder() {
+    public List<AddressOrder> getAddressordersByIdOrder() {
         return addressordersByIdOrder;
     }
 
-    public void setAddressordersByIdOrder(List<Addressorder> addressordersByIdOrder) {
+    public void setAddressordersByIdOrder(List<AddressOrder> addressordersByIdOrder) {
         this.addressordersByIdOrder = addressordersByIdOrder;
     }
 
     @OneToMany(mappedBy = "orderByIdOrder")
-    public List<Copyorder> getCopyordersByIdOrder() {
+    public List<CopyOrder> getCopyordersByIdOrder() {
         return copyordersByIdOrder;
     }
 
-    public void setCopyordersByIdOrder(List<Copyorder> copyordersByIdOrder) {
+    public void setCopyordersByIdOrder(List<CopyOrder> copyordersByIdOrder) {
         this.copyordersByIdOrder = copyordersByIdOrder;
     }
 

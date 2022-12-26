@@ -4,10 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Languageproduct {
+@Table(name = "Languageproduct", indexes = {
+        @Index(name = "idLanguage", columnList = "idLanguage"),
+        @Index(name = "idProduct", columnList = "idProduct")
+})
+public class LanguageProduct {
     private int idLanguage;
     private int idProduct;
-    private Languagegame languagegameByIdLanguage;
+    private LanguageGame languagegameByIdLanguage;
     private Product productByIdProduct;
 
     @Basic
@@ -34,7 +38,7 @@ public class Languageproduct {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Languageproduct that = (Languageproduct) o;
+        LanguageProduct that = (LanguageProduct) o;
         return idLanguage == that.idLanguage && idProduct == that.idProduct;
     }
 
@@ -45,11 +49,11 @@ public class Languageproduct {
 
     @ManyToOne
     @JoinColumn(name = "idLanguage", referencedColumnName = "idLanguage", nullable = false)
-    public Languagegame getLanguagegameByIdLanguage() {
+    public LanguageGame getLanguagegameByIdLanguage() {
         return languagegameByIdLanguage;
     }
 
-    public void setLanguagegameByIdLanguage(Languagegame languagegameByIdLanguage) {
+    public void setLanguagegameByIdLanguage(LanguageGame languagegameByIdLanguage) {
         this.languagegameByIdLanguage = languagegameByIdLanguage;
     }
 

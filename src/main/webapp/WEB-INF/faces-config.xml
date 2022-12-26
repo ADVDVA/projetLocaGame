@@ -5,7 +5,7 @@
                 http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
     <application>
         <resource-bundle>
-            <base-name>com.jsfprohtml5.firstapplication.messages</base-name>
+            <base-name>language.messages</base-name>
             <var>I18N</var>
         </resource-bundle>
     </application>

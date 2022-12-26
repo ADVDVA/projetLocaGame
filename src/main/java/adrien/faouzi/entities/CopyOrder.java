@@ -4,12 +4,16 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Copyorder {
+@Table(name = "Copyorder", indexes = {
+        @Index(name = "idCopy", columnList = "idCopy"),
+        @Index(name = "idOrder", columnList = "idOrder")
+})
+public class CopyOrder {
     private int idCopy;
     private int idOrder;
-    private Double copyPrice;
-    private byte returnDestroy;
-    private Double penalityPrice;
+    private float copyPrice;
+    private boolean returnDestroy;
+    private float penalityPrice;
     private Copy copyByIdCopy;
     private Order orderByIdOrder;
 
@@ -35,31 +39,31 @@ public class Copyorder {
 
     @Basic
     @Column(name = "copyPrice")
-    public Double getCopyPrice() {
+    public float getCopyPrice() {
         return copyPrice;
     }
 
-    public void setCopyPrice(Double copyPrice) {
+    public void setCopyPrice(float copyPrice) {
         this.copyPrice = copyPrice;
     }
 
     @Basic
     @Column(name = "returnDestroy")
-    public byte getReturnDestroy() {
+    public boolean getReturnDestroy() {
         return returnDestroy;
     }
 
-    public void setReturnDestroy(byte returnDestroy) {
+    public void setReturnDestroy(boolean returnDestroy) {
         this.returnDestroy = returnDestroy;
     }
 
     @Basic
     @Column(name = "penalityPrice")
-    public Double getPenalityPrice() {
+    public float getPenalityPrice() {
         return penalityPrice;
     }
 
-    public void setPenalityPrice(Double penalityPrice) {
+    public void setPenalityPrice(float penalityPrice) {
         this.penalityPrice = penalityPrice;
     }
 
@@ -67,7 +71,7 @@ public class Copyorder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Copyorder copyorder = (Copyorder) o;
+        CopyOrder copyorder = (CopyOrder) o;
         return idCopy == copyorder.idCopy && idOrder == copyorder.idOrder && returnDestroy == copyorder.returnDestroy && Objects.equals(copyPrice, copyorder.copyPrice) && Objects.equals(penalityPrice, copyorder.penalityPrice);
     }
 

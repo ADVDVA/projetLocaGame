@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Editor")
 public class Editor {
     private int idEditor;
     private String editorName;

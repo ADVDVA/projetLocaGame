@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "City", indexes = {
+        @Index(name = "idCountry", columnList = "idCountry")
+})
 public class City {
     private int idCity;
     private int idCountry;

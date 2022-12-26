@@ -3,12 +3,12 @@ package adrien.faouzi.entities;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-
+@Table(name = "Permission")
 @Entity
 public class Permission {
     private int idPermission;
     private String permissionName;
-    private List<Permissionrole> permissionrolesByIdPermission;
+    private List<PermissionRole> permissionrolesByIdPermission;
 
     @Id
     @Column(name = "idPermission")
@@ -44,11 +44,11 @@ public class Permission {
     }
 
     @OneToMany(mappedBy = "permissionByIdPermission")
-    public List<Permissionrole> getPermissionrolesByIdPermission() {
+    public List<PermissionRole> getPermissionrolesByIdPermission() {
         return permissionrolesByIdPermission;
     }
 
-    public void setPermissionrolesByIdPermission(List<Permissionrole> permissionrolesByIdPermission) {
+    public void setPermissionrolesByIdPermission(List<PermissionRole> permissionrolesByIdPermission) {
         this.permissionrolesByIdPermission = permissionrolesByIdPermission;
     }
 }

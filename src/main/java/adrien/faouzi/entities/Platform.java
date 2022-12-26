@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Platform")
 public class Platform {
     private int idPlatform;
     private String platformName;
     private List<Copy> copiesByIdPlatform;
-    private List<Priceplatform> priceplatformsByIdPlatform;
+    private List<PricePlatform> priceplatformsByIdPlatform;
 
     @Id
     @Column(name = "idPlatform")
@@ -54,11 +55,11 @@ public class Platform {
     }
 
     @OneToMany(mappedBy = "platformByIdPlatform")
-    public List<Priceplatform> getPriceplatformsByIdPlatform() {
+    public List<PricePlatform> getPriceplatformsByIdPlatform() {
         return priceplatformsByIdPlatform;
     }
 
-    public void setPriceplatformsByIdPlatform(List<Priceplatform> priceplatformsByIdPlatform) {
+    public void setPriceplatformsByIdPlatform(List<PricePlatform> priceplatformsByIdPlatform) {
         this.priceplatformsByIdPlatform = priceplatformsByIdPlatform;
     }
 }

@@ -4,7 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Categoryproduct {
+@Table(name = "Categoryproduct", indexes = {
+        @Index(name = "idCategory", columnList = "idCategory"),
+        @Index(name = "idProduct", columnList = "idProduct")
+})
+public class CategoryProduct {
     private int idCategory;
     private int idProduct;
     private Category categoryByIdCategory;
@@ -34,7 +38,7 @@ public class Categoryproduct {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categoryproduct that = (Categoryproduct) o;
+        CategoryProduct that = (CategoryProduct) o;
         return idCategory == that.idCategory && idProduct == that.idProduct;
     }
 

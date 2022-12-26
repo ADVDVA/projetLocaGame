@@ -1,20 +1,26 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.enumération.StatusCopy;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "City", indexes = {
+        @Index(name = "idStore", columnList = "idStore"),
+        @Index(name = "idPricePlatform", columnList = "idPricePlatform")
+})
 public class Copy {
     private int idCopy;
     private int idStore;
     private int idPricePlatform;
     private String copyName;
-    private double buyPrice;
-    private Object status;
+    private float buyPrice;
+    private StatusCopy status;
     private Platform platformByIdPricePlatform;
     private Store storeByIdStore;
-    private List<Copyorder> copyordersByIdCopy;
+    private List<CopyOrder> copyordersByIdCopy;
 
     @Id
     @Column(name = "idCopy")
@@ -58,21 +64,21 @@ public class Copy {
 
     @Basic
     @Column(name = "buyPrice")
-    public double getBuyPrice() {
+    public float getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(double buyPrice) {
+    public void setBuyPrice(float buyPrice) {
         this.buyPrice = buyPrice;
     }
 
     @Basic
     @Column(name = "status")
-    public Object getStatus() {
-        return status;
+    public String getStatus() {
+        return status.getStatusCopy();
     }
 
-    public void setStatus(Object status) {
+    public void setStatus(StatusCopy status) {
         this.status = status;
     }
 
@@ -81,7 +87,7 @@ public class Copy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Copy copy = (Copy) o;
-        return idCopy == copy.idCopy && idStore == copy.idStore && idPricePlatform == copy.idPricePlatform && Double.compare(copy.buyPrice, buyPrice) == 0 && Objects.equals(copyName, copy.copyName) && Objects.equals(status, copy.status);
+        return idCopy == copy.idCopy && idStore == copy.idStore && idPricePlatform == copy.idPricePlatform && Float.compare(copy.buyPrice, buyPrice) == 0 && Objects.equals(copyName, copy.copyName) && Objects.equals(status, copy.status);
     }
 
     @Override
@@ -110,11 +116,11 @@ public class Copy {
     }
 
     @OneToMany(mappedBy = "copyByIdCopy")
-    public List<Copyorder> getCopyordersByIdCopy() {
+    public List<CopyOrder> getCopyordersByIdCopy() {
         return copyordersByIdCopy;
     }
 
-    public void setCopyordersByIdCopy(List<Copyorder> copyordersByIdCopy) {
+    public void setCopyordersByIdCopy(List<CopyOrder> copyordersByIdCopy) {
         this.copyordersByIdCopy = copyordersByIdCopy;
     }
 }

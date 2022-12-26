@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Category")
 public class Category {
     private int idCategory;
     private String categoryName;
-    private List<Categoryproduct> categoryproductsByIdCategory;
+    private List<CategoryProduct> categoryproductsByIdCategory;
 
     @Id
     @Column(name = "idCategory")
@@ -44,11 +45,11 @@ public class Category {
     }
 
     @OneToMany(mappedBy = "categoryByIdCategory")
-    public List<Categoryproduct> getCategoryproductsByIdCategory() {
+    public List<CategoryProduct> getCategoryproductsByIdCategory() {
         return categoryproductsByIdCategory;
     }
 
-    public void setCategoryproductsByIdCategory(List<Categoryproduct> categoryproductsByIdCategory) {
+    public void setCategoryproductsByIdCategory(List<CategoryProduct> categoryproductsByIdCategory) {
         this.categoryproductsByIdCategory = categoryproductsByIdCategory;
     }
 }

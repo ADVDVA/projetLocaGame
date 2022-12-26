@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Role")
 public class Role {
     private int idRole;
     private String roleName;
-    private List<Permissionrole> permissionrolesByIdRole;
+    private List<PermissionRole> permissionrolesByIdRole;
     private List<User> usersByIdRole;
 
     @Id
@@ -45,11 +46,11 @@ public class Role {
     }
 
     @OneToMany(mappedBy = "roleByIdRole")
-    public List<Permissionrole> getPermissionrolesByIdRole() {
+    public List<PermissionRole> getPermissionrolesByIdRole() {
         return permissionrolesByIdRole;
     }
 
-    public void setPermissionrolesByIdRole(List<Permissionrole> permissionrolesByIdRole) {
+    public void setPermissionrolesByIdRole(List<PermissionRole> permissionrolesByIdRole) {
         this.permissionrolesByIdRole = permissionrolesByIdRole;
     }
 

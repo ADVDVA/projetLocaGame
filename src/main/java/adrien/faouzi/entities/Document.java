@@ -1,17 +1,21 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Document", indexes = {
+        @Index(name = "idDocumentType", columnList = "idDocumentType"),
+        @Index(name = "idOrder", columnList = "idOrder")
+})
 public class Document {
     private int idDocument;
     private int idDocumentType;
     private int idOrder;
     private int numberDocument;
-    private Timestamp documentDate;
-    private Documenttype documenttypeByIdDocumentType;
+    private LocalDateTime documentDate;
+    private DocumentType documenttypeByIdDocumentType;
     private Order orderByIdOrder;
 
     @Id
@@ -56,11 +60,11 @@ public class Document {
 
     @Basic
     @Column(name = "documentDate")
-    public Timestamp getDocumentDate() {
+    public LocalDateTime getDocumentDate() {
         return documentDate;
     }
 
-    public void setDocumentDate(Timestamp documentDate) {
+    public void setDocumentDate(LocalDateTime documentDate) {
         this.documentDate = documentDate;
     }
 
@@ -79,11 +83,11 @@ public class Document {
 
     @ManyToOne
     @JoinColumn(name = "idDocumentType", referencedColumnName = "idDocumentType", nullable = false)
-    public Documenttype getDocumenttypeByIdDocumentType() {
+    public DocumentType getDocumenttypeByIdDocumentType() {
         return documenttypeByIdDocumentType;
     }
 
-    public void setDocumenttypeByIdDocumentType(Documenttype documenttypeByIdDocumentType) {
+    public void setDocumenttypeByIdDocumentType(DocumentType documenttypeByIdDocumentType) {
         this.documenttypeByIdDocumentType = documenttypeByIdDocumentType;
     }
 

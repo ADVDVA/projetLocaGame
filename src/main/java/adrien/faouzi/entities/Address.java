@@ -1,10 +1,16 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.enumération.TypeAddress;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "address", indexes = {
+        @Index(name = "idUser", columnList = "idUser"),
+        @Index(name = "idCity", columnList = "idCity")
+})
 public class Address {
     private int idAddress;
     private int idUser;
@@ -12,11 +18,11 @@ public class Address {
     private String street;
     private int number;
     private String box;
-    private Object typeAddress;
+    private TypeAddress typeAddress;
     private boolean enable;
     private City cityByIdCity;
     private User userByIdUser;
-    private List<Addressorder> addressordersByIdAddress;
+    private List<AddressOrder> addressordersByIdAddress;
 
     @Id
     @Column(name = "idAddress")
@@ -80,11 +86,11 @@ public class Address {
 
     @Basic
     @Column(name = "typeAddress")
-    public Object getTypeAddress() {
-        return typeAddress;
+    public String getTypeAddress() {
+        return typeAddress.getTypeAddress();
     }
 
-    public void setTypeAddress(Object typeAddress) {
+    public void setTypeAddress(TypeAddress typeAddress) {
         this.typeAddress = typeAddress;
     }
 
@@ -132,11 +138,11 @@ public class Address {
     }
 
     @OneToMany(mappedBy = "addressByIdAddress")
-    public List<Addressorder> getAddressordersByIdAddress() {
+    public List<AddressOrder> getAddressordersByIdAddress() {
         return addressordersByIdAddress;
     }
 
-    public void setAddressordersByIdAddress(List<Addressorder> addressordersByIdAddress) {
+    public void setAddressordersByIdAddress(List<AddressOrder> addressordersByIdAddress) {
         this.addressordersByIdAddress = addressordersByIdAddress;
     }
 }
