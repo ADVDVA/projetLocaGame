@@ -4,6 +4,7 @@ import adrien.faouzi.enumération.MultiPlayer;
 import adrien.faouzi.enumération.Pegi;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Table(name = "Product", indexes = {
         @Index(name = "idEditor", columnList = "idEditor")
 })
-public class Product {
+public class Product implements Serializable {
     private int idProduct;
     private int idEditor;
     private String productName;

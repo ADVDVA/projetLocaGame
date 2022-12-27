@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
 @Table(name = "City", indexes = {
         @Index(name = "idCountry", columnList = "idCountry")
 })
-public class City {
+public class City implements Serializable {
     private int idCity;
     private int idCountry;
     private int postalCode;

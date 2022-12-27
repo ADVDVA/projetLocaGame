@@ -1,12 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Languagegame")
-public class LanguageGame {
+public class LanguageGame implements Serializable {
     private int idLanguage;
     private String languageName;
     private List<LanguageProduct> languageproductsByIdLanguage;

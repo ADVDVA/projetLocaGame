@@ -1,12 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Editor")
-public class Editor {
+public class Editor implements Serializable {
     private int idEditor;
     private String editorName;
     private List<Product> productsByIdEditor;

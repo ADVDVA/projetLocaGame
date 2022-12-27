@@ -4,13 +4,17 @@
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
                 http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
     <application>
+        <locale-config>
+            <default-locale>fr</default-locale>
+            <supported-locale>fr</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
         <resource-bundle>
-            <base-name>language.EN </base-name>
-            <var>I18N_EN</var>
+            <base-name>language.messages</base-name>
+            <var>I18N</var>
         </resource-bundle>
-        <resource-bundle>
-            <base-name>language.FR </base-name>
-            <var>I18N_FR</var>
-        </resource-bundle>
+
+        <!-- navigation si besoin voir page 51 du cours -->
+
     </application>
 </faces-config>

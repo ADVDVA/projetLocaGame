@@ -1,12 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Platform")
-public class Platform {
+public class Platform implements Serializable {
     private int idPlatform;
     private String platformName;
     private List<Copy> copiesByIdPlatform;

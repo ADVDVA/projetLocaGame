@@ -1,12 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Role")
-public class Role {
+public class Role implements Serializable {
     private int idRole;
     private String roleName;
     private List<PermissionRole> permissionrolesByIdRole;

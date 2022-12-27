@@ -3,6 +3,7 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumération.StatusCopy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
         @Index(name = "idStore", columnList = "idStore"),
         @Index(name = "idPricePlatform", columnList = "idPricePlatform")
 })
-public class Copy {
+public class Copy implements Serializable {
     private int idCopy;
     private int idStore;
     private int idPricePlatform;

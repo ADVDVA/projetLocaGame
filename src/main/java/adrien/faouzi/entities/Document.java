@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
         @Index(name = "idDocumentType", columnList = "idDocumentType"),
         @Index(name = "idOrder", columnList = "idOrder")
 })
-public class Document {
+public class Document implements Serializable {
     private int idDocument;
     private int idDocumentType;
     private int idOrder;

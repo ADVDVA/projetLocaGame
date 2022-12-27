@@ -3,6 +3,7 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumération.TypeAddress;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
         @Index(name = "idUser", columnList = "idUser"),
         @Index(name = "idCity", columnList = "idCity")
 })
-public class Address {
+public class Address implements Serializable {
     private int idAddress;
     private int idUser;
     private int idCity;
@@ -25,7 +26,8 @@ public class Address {
     private List<AddressOrder> addressordersByIdAddress;
 
     @Id
-    @Column(name = "idAddress")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idAddress", nullable = false)
     public int getIdAddress() {
         return idAddress;
     }
@@ -35,7 +37,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "idUser")
+    @Column(name = "idUser", nullable = false)
     public int getIdUser() {
         return idUser;
     }
@@ -45,7 +47,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "idCity")
+    @Column(name = "idCity", nullable = false)
     public int getIdCity() {
         return idCity;
     }
@@ -55,7 +57,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "street")
+    @Column(name = "street", nullable = false)
     public String getStreet() {
         return street;
     }
@@ -65,7 +67,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "number")
+    @Column(name = "number", nullable = false)
     public int getNumber() {
         return number;
     }
@@ -75,7 +77,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "box")
+    @Column(name = "box", length = 20, nullable = true)
     public String getBox() {
         return box;
     }
@@ -85,7 +87,7 @@ public class Address {
     }
 
     @Basic
-    @Column(name = "typeAddress")
+    @Column(name = "typeAddress", nullable = false)
     public String getTypeAddress() {
         return typeAddress.getTypeAddress();
     }

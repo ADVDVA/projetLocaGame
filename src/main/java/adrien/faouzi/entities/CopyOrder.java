@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -8,7 +9,7 @@ import java.util.Objects;
         @Index(name = "idCopy", columnList = "idCopy"),
         @Index(name = "idOrder", columnList = "idOrder")
 })
-public class CopyOrder {
+public class CopyOrder implements Serializable {
     private int idCopy;
     private int idOrder;
     private float copyPrice;
@@ -38,7 +39,7 @@ public class CopyOrder {
     }
 
     @Basic
-    @Column(name = "copyPrice")
+    @Column(name = "copyPrice", nullable = true)
     public float getCopyPrice() {
         return copyPrice;
     }
@@ -58,7 +59,7 @@ public class CopyOrder {
     }
 
     @Basic
-    @Column(name = "penalityPrice")
+    @Column(name = "penalityPrice", nullable = true)
     public float getPenalityPrice() {
         return penalityPrice;
     }

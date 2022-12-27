@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -8,7 +9,7 @@ import java.util.Objects;
         @Index(name = "idLanguage", columnList = "idLanguage"),
         @Index(name = "idProduct", columnList = "idProduct")
 })
-public class LanguageProduct {
+public class LanguageProduct implements Serializable {
     private int idLanguage;
     private int idProduct;
     private LanguageGame languagegameByIdLanguage;

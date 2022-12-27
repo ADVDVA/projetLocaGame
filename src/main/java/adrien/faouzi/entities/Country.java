@@ -1,12 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Country")
-public class Country {
+public class Country implements Serializable {
     private int idCountry;
     private String countryName;
     private List<City> citiesByIdCountry;

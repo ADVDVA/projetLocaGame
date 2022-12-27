@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.Objects;
 @Table(name = "User", indexes = {
         @Index(name = "idRole", columnList = "idRole")
 })
-public class User {
+public class User implements Serializable {
     private int idUser;
     private int idRole;
     private String lastName;

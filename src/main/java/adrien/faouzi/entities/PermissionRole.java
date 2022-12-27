@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -8,7 +9,7 @@ import java.util.Objects;
         @Index(name = "idPermission", columnList = "idPermission"),
         @Index(name = "idRole", columnList = "idRole")
 })
-public class PermissionRole {
+public class PermissionRole implements Serializable {
     private int idPermission;
     private int idRole;
     private Permission permissionByIdPermission;

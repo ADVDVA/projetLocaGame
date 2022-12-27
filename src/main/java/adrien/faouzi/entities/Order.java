@@ -4,6 +4,7 @@ import adrien.faouzi.enumération.RentalModOfPayment;
 import adrien.faouzi.enumération.ReturnModOfPayment;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Table(name = "Order", indexes = {
         @Index(name = "idUser", columnList = "idUser")
 })
-public class Order {
+public class Order implements Serializable {
     private int idOrder;
     private int idUser;
     private LocalDateTime startDate;

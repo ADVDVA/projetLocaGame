@@ -1,12 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Documenttype")
-public class DocumentType {
+public class DocumentType implements Serializable {
     private int idDocumentType;
     private String documentType;
     private List<Document> documentsByIdDocumentType;
