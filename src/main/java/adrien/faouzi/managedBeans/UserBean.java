@@ -24,7 +24,7 @@ public class UserBean implements Serializable {
 
     public String testName ()
     {
-        return !this.name.equals("toto") ? "index": "view/welcome";
+        return !this.name.equals("toto") ? "accueil": "view/welcome";
     }
 
     public List<String> getFavoriteSports() {

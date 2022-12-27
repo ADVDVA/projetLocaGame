@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title><ui:insert name="title">#{I18N['application.defaultpage.title']}</ui:insert></title>
+    <link href="#{request.contextPath}/css/connexionCSS.css" rel="stylesheet" type="text/css"/>
+</h:head>
+<h:body>
+    <div id="container">
+        <div id="content">
+            <ui:insert name="content">
+                #{I18N['application.defaultpage.body.content']}
+            </ui:insert>
+        </div>
+    </div>
+</h:body>
+</html>
+
+
+
+

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/WEB-INF/templates/connexionTemplate.xhtml">
+    <ui:define name="title">
+        #{I18N['application.connexionpage.title']}
+    </ui:define>
+    <ui:define name="content">
+
+        <div class ="containers">
+            <h1>
+                <h:outputText value="#{I18N['application.connexionpage.title']}"/>
+            </h1>
+            <h:form>
+
+                <h5>#{I18N['application.connexionpage.mailtitle']}</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="float-input" value="#{inputTextView.text}"/>
+                    <p:outputLabel for="@previous" value="#{I18N['application.connexionpage.mailplaceholder']}" class="inputTextCenter"/>
+                </span>
+
+                <h5>#{I18N['application.connexionpage.passwordtitle']}</h5>
+                <p:password id="toggle" value="#{passwordView.password1}" toggleMask="true" redisplay="true"/>
+
+                <div class="spaceformeConnexion">
+                    <p:button value="#{I18N['application.connexionpage.buttonsubmit']}"/>
+                </div>
+
+            </h:form>
+             <p class ="spaceBottomConnexion">#{I18N['application.connexionpage.messageinscription']}<h:link value="#{I18N['application.connexionpage.linkinscription']}" outcome="/accueil"/></p>
+        </div>
+
+
+    </ui:define>
+</ui:composition>
+</html>
