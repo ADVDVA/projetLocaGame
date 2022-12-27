@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+>
+
+<!-- ______ ______ -->
+
+<div class="containerFlex">
+    <div id="footerLeftBlock" class="flexGrowOne blockFooter">
+        <p>
+            <span>test addresse</span>
+            <!-- adresse store (rue + num). -->
+        </p>
+        <p>
+            <span>test addresse</span>
+            <!-- adresse store (postal code + city + contry). -->
+        </p>
+        <p>&nbsp;</p>
+    </div>
+    <div id="footerCenterBlock" class="flexGrowOne blockFooter">
+        <p>
+            <h:outputText value="#{I18N['application.footer.phoneStore']}"/>&nbsp;
+            <!-- phone store. -->
+        </p>
+        <p>&nbsp;</p>
+        <p>
+            <h:outputText value="#{I18N['application.footer.copyright']}"/>
+        </p>
+    </div>
+    <div id="footerRightBlock" class="flexGrowOne blockFooter">
+        <p>
+            <h:outputText value="#{I18N['application.footer.storeHoursLineOne']}"/>
+        </p>
+        <p>
+            <h:outputText value="#{I18N['application.footer.storeHoursLineTwo']}"/>
+        </p>
+        <p>&nbsp;</p>
+    </div>
+</div>
+
+<!-- ______ ______ -->
+
+</html>

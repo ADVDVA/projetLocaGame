@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
     <title><ui:insert name="title">#{I18N['application.defaultpage.title']}</ui:insert></title>
     <link href="#{request.contextPath}/css/styleCSS.css" rel="stylesheet" type="text/css"/>
@@ -13,21 +13,18 @@
     <div id="container">
         <div id="header">
             <ui:insert name="header">
-                <!--<ui:include src=""></ui:include> --><!-- créer une pages header qui me permettra de l'appeler dans les templates-->
-                <h1>#{I18N['application.defaultpage.header.content']}</h1>
+                <ui:include src="../../view/header.xhtml">.</ui:include>
             </ui:insert>
         </div>
+
         <div id="content">
             <ui:insert name="content">
-                 #{I18N['application.defaultpage.body.content']}
+                #{I18N['application.defaultpage.body.content']}
             </ui:insert>
         </div>
+
         <div id="footer">
-            <ui:insert name="footer">
-                <!-- <ui:include src=""></ui:include> -->
-                <!-- créer une page footer (comme le header)-->
-                #{I18N['application.defaultpage.footer.content']}
-           </ui:insert>
+            <ui:include src="../../view/footer.xhtml">.</ui:include>
        </div>
    </div>
 </h:body>
