@@ -1,23 +1,101 @@
+
+/*______ global css ______*/
+
 *{
     font-family: sans-serif;
     margin: 0;
     padding: 0;
 }
+
 #header{
     background-color: #000000;
     color: #ffffff;
     font-size: 18px;
+    padding: 10px;
+}
+#menu{
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 14px;
+    width: 20%;
+    min-width: 120px;
+    max-width: 300px;
 }
 #body{
     background-color: #fff2cc;
     color: #000000;
     font-size: 14px;
 }
+#content{
+    padding: 10px;
+}
 #footer{
     background-color: #000000;
     color: #ffffff;
     font-size: 14px;
+    padding: 10px;
 }
+
+.inlineBlock{
+    display: inline-block;
+}
+
+.containerFlex{
+    display: flex;
+}
+.flexGrowOne{
+    flex-grow: 1;
+}
+
+/*______ header css ______*/
+
+#header #headerLogoBlock{
+    width: fit-content;
+    text-align: center;
+}
+#header #headerLogo{
+    height: 80px;
+}
+
+#header #headerMainContainer{}
+
+#header #headerLoginBlock{}
+#header #headerLoginButton{}
+#header #headerMenuButtonContainer{
+    text-align: right;
+}
+#header .headerMenuButton{
+    margin-top: 10px;
+}
+#header #headerLanguageButtonContainer{
+    text-align: right;
+}
+#header .headerLanguageButton{
+    margin-top: 10px;
+}
+
+/*______ menu css ______*/
+
+#menu a{
+    text-decoration: none;
+    color: #ffffff;
+}
+#menu a:hover{
+    margin-left: 3px;
+}
+
+/*______ footer css ______*/
+
+#footer > p{
+    text-align: center;
+    font-style: italic;
+}
+
+#footer .blockFooter:nth-child(1n+2){
+    border-left: solid white 3px;
+}
+
+/*______ other css ______*/
 
 #container {
 width:100%;
