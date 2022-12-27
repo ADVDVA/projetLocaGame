@@ -22,6 +22,7 @@ public class AddressOrder {
         return idAddress == that.idAddress && idOrder == that.idOrder;
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(idAddress, idOrder);
