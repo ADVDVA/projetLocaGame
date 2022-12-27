@@ -1,98 +1,52 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Priceplatform", indexes = {
-        @Index(name = "idProduct", columnList = "idProduct"),
-        @Index(name = "idPlatform", columnList = "idPlatform")
-})
-public class PricePlatform implements Serializable {
-    private int idPricePlatform;
-    private int idProduct;
-    private int idPlatform;
-    private float rentalPrice;
-    private int availableStock;
-    private float latePrice;
-    private String picture;
-    private boolean enable;
-    private Platform platformByIdPlatform;
-    private Product productByIdProduct;
-
+@Table(name = "priceplatform")
+public class PricePlatform {
     @Id
-    @Column(name = "idPricePlatform")
-    public int getIdPricePlatform() {
-        return idPricePlatform;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idPricePlatform", nullable = false)
+    private int id;
 
-    public void setIdPricePlatform(int idPricePlatform) {
-        this.idPricePlatform = idPricePlatform;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idProduct", nullable = false)
+    private Product idProduct;
 
-    @Basic
-    @Column(name = "idProduct")
-    public int getIdProduct() {
-        return idProduct;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idPlatform", nullable = false)
+    private Platform idPlatform;
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
+    @Column(name = "rentalPrice", nullable = false)
+    private float rentalPrice;
 
-    @Basic
-    @Column(name = "idPlatform")
-    public int getIdPlatform() {
-        return idPlatform;
-    }
+    @Column(name = "availableStock", nullable = false)
+    private int availableStock;
 
-    public void setIdPlatform(int idPlatform) {
-        this.idPlatform = idPlatform;
-    }
+    @Column(name = "latePrice", nullable = false)
+    private float latePrice;
 
-    @Basic
-    @Column(name = "rentalPrice")
-    public float getRentalPrice() {
-        return rentalPrice;
-    }
-
-    public void setRentalPrice(float rentalPrice) {
-        this.rentalPrice = rentalPrice;
-    }
-
-    @Basic
-    @Column(name = "availableStock")
-    public int getAvailableStock() {
-        return availableStock;
-    }
-
-    public void setAvailableStock(int availableStock) {
-        this.availableStock = availableStock;
-    }
-
-    @Basic
-    @Column(name = "latePrice")
-    public float getLatePrice() {
-        return latePrice;
-    }
-
-    public void setLatePrice(float latePrice) {
-        this.latePrice = latePrice;
-    }
-
-    @Basic
     @Column(name = "picture")
-    public String getPicture() {
-        return picture;
+    private String picture;
+
+    @Column(name = "enable", nullable = false)
+    private boolean enable = false;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PricePlatform that = (PricePlatform) o;
+        return id == that.id && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idProduct, idPlatform, rentalPrice, availableStock, latePrice, picture, enable);
     }
 
-    @Basic
-    @Column(name = "enable")
     public boolean getEnable() {
         return enable;
     }
@@ -101,36 +55,59 @@ public class PricePlatform implements Serializable {
         this.enable = enable;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PricePlatform that = (PricePlatform) o;
-        return idPricePlatform == that.idPricePlatform && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
+    public String getPicture() {
+        return picture;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idPricePlatform, idProduct, idPlatform, rentalPrice, availableStock, latePrice, picture, enable);
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idPlatform", referencedColumnName = "idPlatform", nullable = false)
-    public Platform getPlatformByIdPlatform() {
-        return platformByIdPlatform;
+    public float getLatePrice() {
+        return latePrice;
     }
 
-    public void setPlatformByIdPlatform(Platform platformByIdPlatform) {
-        this.platformByIdPlatform = platformByIdPlatform;
+    public void setLatePrice(float latePrice) {
+        this.latePrice = latePrice;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idProduct", referencedColumnName = "idProduct", nullable = false)
-    public Product getProductByIdProduct() {
-        return productByIdProduct;
+    public int getAvailableStock() {
+        return availableStock;
     }
 
-    public void setProductByIdProduct(Product productByIdProduct) {
-        this.productByIdProduct = productByIdProduct;
+    public void setAvailableStock(int availableStock) {
+        this.availableStock = availableStock;
+    }
+
+    public float getRentalPrice() {
+        return rentalPrice;
+    }
+
+    public void setRentalPrice(float rentalPrice) {
+        this.rentalPrice = rentalPrice;
+    }
+
+    public Platform getIdPlatform() {
+        return idPlatform;
+    }
+
+    public void setIdPlatform(Platform idPlatform) {
+        this.idPlatform = idPlatform;
+    }
+
+    public Product getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(Product idProduct) {
+        this.idProduct = idProduct;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

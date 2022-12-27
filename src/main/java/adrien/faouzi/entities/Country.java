@@ -1,29 +1,43 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Country")
-public class Country implements Serializable {
-    private int idCountry;
-    private String countryName;
-    private List<City> citiesByIdCountry;
-
+@Table(name = "country")
+public class Country {
     @Id
-    @Column(name = "idCountry")
-    public int getIdCountry() {
-        return idCountry;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCountry", nullable = false)
+    private int id;
+
+    @Column(name = "countryName", nullable = false, length = 60)
+    private String countryName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return id == country.id && Objects.equals(countryName, country.countryName);
     }
 
-    public void setIdCountry(int idCountry) {
-        this.idCountry = idCountry;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, countryName);
     }
 
-    @Basic
-    @Column(name = "countryName")
+    @OneToMany(mappedBy = "idCountry")
+    private List<City> cities = new ArrayList<>();
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
+
     public String getCountryName() {
         return countryName;
     }
@@ -32,25 +46,11 @@ public class Country implements Serializable {
         this.countryName = countryName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Country country = (Country) o;
-        return idCountry == country.idCountry && Objects.equals(countryName, country.countryName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idCountry, countryName);
-    }
-
-    @OneToMany(mappedBy = "countryByIdCountry")
-    public List<City> getCitiesByIdCountry() {
-        return citiesByIdCountry;
-    }
-
-    public void setCitiesByIdCountry(List<City> citiesByIdCountry) {
-        this.citiesByIdCountry = citiesByIdCountry;
+    public void setId(int id) {
+        this.id = id;
     }
 }

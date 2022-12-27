@@ -3,81 +3,82 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumération.TypeAddress;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "address", indexes = {
-        @Index(name = "idUser", columnList = "idUser"),
-        @Index(name = "idCity", columnList = "idCity")
-})
-public class Address implements Serializable {
-    private int idAddress;
-    private int idUser;
-    private int idCity;
-    private String street;
-    private int number;
-    private String box;
-    private TypeAddress typeAddress;
-    private boolean enable;
-    private City cityByIdCity;
-    private User userByIdUser;
-    private List<AddressOrder> addressordersByIdAddress;
-
+@Table(name = "address")
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idAddress", nullable = false)
-    public int getIdAddress() {
-        return idAddress;
-    }
+    private int id;
 
-    public void setIdAddress(int idAddress) {
-        this.idAddress = idAddress;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idUser", nullable = false)
+    private User idUser;
 
-    @Basic
-    @Column(name = "idUser", nullable = false)
-    public int getIdUser() {
-        return idUser;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idCity", nullable = false)
+    private City idCity;
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-
-    @Basic
-    @Column(name = "idCity", nullable = false)
-    public int getIdCity() {
-        return idCity;
-    }
-
-    public void setIdCity(int idCity) {
-        this.idCity = idCity;
-    }
-
-    @Basic
     @Column(name = "street", nullable = false)
-    public String getStreet() {
-        return street;
-    }
+    private String street;
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    @Basic
     @Column(name = "number", nullable = false)
-    public int getNumber() {
-        return number;
+    private int number;
+
+    @Column(name = "box", length = 20)
+    private String box;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typeAddress", nullable = false)
+    private TypeAddress typeAddress;
+
+    @Column(name = "enable", nullable = false)
+    private boolean enable = false;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return id == address.id && idUser == address.idUser && idCity == address.idCity && number == address.number && enable == address.enable && Objects.equals(street, address.street) && Objects.equals(box, address.box) && Objects.equals(typeAddress, address.typeAddress);
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idUser, idCity, street, number, box, typeAddress, enable);
     }
 
-    @Basic
-    @Column(name = "box", length = 20, nullable = true)
+    @ManyToMany
+    @JoinTable(name = "addressorder",
+            joinColumns = @JoinColumn(name = "idAddress"),
+            inverseJoinColumns = @JoinColumn(name = "idOrder"))
+    private List<Order> orders = new ArrayList<>();
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public String getTypeAddress() {
+        return typeAddress.getTypeAddress();
+    }
+    public void setTypeAddress(TypeAddress typeAddress) {
+        this.typeAddress = typeAddress;
+    }
+
     public String getBox() {
         return box;
     }
@@ -86,65 +87,43 @@ public class Address implements Serializable {
         this.box = box;
     }
 
-    @Basic
-    @Column(name = "typeAddress", nullable = false)
-    public String getTypeAddress() {
-        return typeAddress.getTypeAddress();
+    public int getNumber() {
+        return number;
     }
 
-    public void setTypeAddress(TypeAddress typeAddress) {
-        this.typeAddress = typeAddress;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    @Basic
-    @Column(name = "enable")
-    public boolean isEnable() {
-        return enable;
+    public String getStreet() {
+        return street;
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
-        return idAddress == address.idAddress && idUser == address.idUser && idCity == address.idCity && number == address.number && enable == address.enable && Objects.equals(street, address.street) && Objects.equals(box, address.box) && Objects.equals(typeAddress, address.typeAddress);
+    public City getIdCity() {
+        return idCity;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idAddress, idUser, idCity, street, number, box, typeAddress, enable);
+    public void setIdCity(City idCity) {
+        this.idCity = idCity;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idCity", referencedColumnName = "idCity", nullable = false)
-    public City getCityByIdCity() {
-        return cityByIdCity;
+    public User getIdUser() {
+        return idUser;
     }
 
-    public void setCityByIdCity(City cityByIdCity) {
-        this.cityByIdCity = cityByIdCity;
+    public void setIdUser(User idUser) {
+        this.idUser = idUser;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "idUser", nullable = false)
-    public User getUserByIdUser() {
-        return userByIdUser;
+    public int getId() {
+        return id;
     }
 
-    public void setUserByIdUser(User userByIdUser) {
-        this.userByIdUser = userByIdUser;
-    }
-
-    @OneToMany(mappedBy = "addressByIdAddress")
-    public List<AddressOrder> getAddressordersByIdAddress() {
-        return addressordersByIdAddress;
-    }
-
-    public void setAddressordersByIdAddress(List<AddressOrder> addressordersByIdAddress) {
-        this.addressordersByIdAddress = addressordersByIdAddress;
+    public void setId(int id) {
+        this.id = id;
     }
 }

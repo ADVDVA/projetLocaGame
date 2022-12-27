@@ -1,29 +1,44 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Documenttype")
-public class DocumentType implements Serializable {
-    private int idDocumentType;
-    private String documentType;
-    private List<Document> documentsByIdDocumentType;
-
+@Table(name = "documenttype")
+public class DocumentType {
     @Id
-    @Column(name = "idDocumentType")
-    public int getIdDocumentType() {
-        return idDocumentType;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idDocumentType", nullable = false)
+    private int id;
+
+    @Column(name = "documentType", nullable = false, length = 60)
+    private String documentType;
+
+    @OneToMany(mappedBy = "idDocumentType")
+    private List<Document> documents = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DocumentType that = (DocumentType) o;
+        return id == that.id && Objects.equals(documentType, that.documentType);
     }
 
-    public void setIdDocumentType(int idDocumentType) {
-        this.idDocumentType = idDocumentType;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, documentType);
     }
 
-    @Basic
-    @Column(name = "documentType")
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
     public String getDocumentType() {
         return documentType;
     }
@@ -32,25 +47,11 @@ public class DocumentType implements Serializable {
         this.documentType = documentType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DocumentType that = (DocumentType) o;
-        return idDocumentType == that.idDocumentType && Objects.equals(documentType, that.documentType);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idDocumentType, documentType);
-    }
-
-    @OneToMany(mappedBy = "documenttypeByIdDocumentType")
-    public List<Document> getDocumentsByIdDocumentType() {
-        return documentsByIdDocumentType;
-    }
-
-    public void setDocumentsByIdDocumentType(List<Document> documentsByIdDocumentType) {
-        this.documentsByIdDocumentType = documentsByIdDocumentType;
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -4,112 +4,95 @@ import adrien.faouzi.enumération.RentalModOfPayment;
 import adrien.faouzi.enumération.ReturnModOfPayment;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime ;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Order", indexes = {
-        @Index(name = "idUser", columnList = "idUser")
-})
-public class Order implements Serializable {
-    private int idOrder;
-    private int idUser;
-    private LocalDateTime startDate;
-    private LocalDateTime receptionDate;
-    private RentalModOfPayment rentalModOfPayment;
-    private LocalDateTime endDate;
-    private LocalDateTime returnDate;
-    private ReturnModOfPayment returnModOfPayment;
-    private boolean customerNotCame;
-    private List<AddressOrder> addressordersByIdOrder;
-    private List<CopyOrder> copyordersByIdOrder;
-    private List<Document> documentsByIdOrder;
-    private User userByIdUser;
-
+@Table(name = "`order`")
+public class Order {
     @Id
-    @Column(name = "idOrder")
-    public int getIdOrder() {
-        return idOrder;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idOrder", nullable = false)
+    private int id;
 
-    public void setIdOrder(int idOrder) {
-        this.idOrder = idOrder;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idUser", nullable = false)
+    private User idUser;
 
-    @Basic
-    @Column(name = "idUser")
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-
-    @Basic
     @Column(name = "startDate")
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
+    private LocalDateTime  startDate;
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    @Basic
     @Column(name = "receptionDate")
-    public LocalDateTime getReceptionDate() {
-        return receptionDate;
-    }
+    private LocalDateTime  receptionDate;
 
-    public void setReceptionDate(LocalDateTime receptionDate) {
-        this.receptionDate = receptionDate;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rentalModOfPayment", nullable = false)
+    private RentalModOfPayment rentalModOfPayment;
 
-    @Basic
-    @Column(name = "rentalModOfPayment")
-    public String getRentalModOfPayment() {
-        return rentalModOfPayment.getRentalModOfPayement();
-    }
-
-    public void setRentalModOfPayment(RentalModOfPayment rentalModOfPayment) {
-        this.rentalModOfPayment = rentalModOfPayment;
-    }
-
-    @Basic
     @Column(name = "endDate")
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
+    private LocalDateTime  endDate;
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    @Basic
     @Column(name = "returnDate")
-    public LocalDateTime getReturnDate() {
-        return returnDate;
+    private LocalDateTime  returnDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "returnModOfPayment", nullable = false)
+    private ReturnModOfPayment returnModOfPayment;
+
+    @Column(name = "customerNotCame", nullable = false)
+    private boolean customerNotCame = false;
+
+    @OneToMany(mappedBy = "idOrder")
+    private List<CopyOrder> copyOrders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "idOrder")
+    private List<Document> documents = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return id == order.id && idUser == order.idUser && customerNotCame == order.customerNotCame && Objects.equals(startDate, order.startDate) && Objects.equals(receptionDate, order.receptionDate) && Objects.equals(rentalModOfPayment, order.rentalModOfPayment) && Objects.equals(endDate, order.endDate) && Objects.equals(returnDate, order.returnDate) && Objects.equals(returnModOfPayment, order.returnModOfPayment);
     }
 
-    public void setReturnDate(LocalDateTime returnDate) {
-        this.returnDate = returnDate;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idUser, startDate, receptionDate, rentalModOfPayment, endDate, returnDate, returnModOfPayment, customerNotCame);
     }
 
-    @Basic
-    @Column(name = "returnModOfPayment")
-    public String getReturnModOfPayment() {
-        return returnModOfPayment.getReturnModOfPayment();
+    @ManyToMany
+    @JoinTable(name = "addressorder",
+            joinColumns = @JoinColumn(name = "idOrder"),
+            inverseJoinColumns = @JoinColumn(name = "idAddress"))
+    private List<Address> addresses = new ArrayList<>();
+
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setReturnModOfPayment(ReturnModOfPayment returnModOfPayment) {
-        this.returnModOfPayment = returnModOfPayment;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
-    @Basic
-    @Column(name = "customerNotCame")
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
+    public List<CopyOrder> getCopyOrders() {
+        return copyOrders;
+    }
+
+    public void setCopyOrders(List<CopyOrder> copyOrders) {
+        this.copyOrders = copyOrders;
+    }
+
     public boolean getCustomerNotCame() {
         return customerNotCame;
     }
@@ -118,53 +101,67 @@ public class Order implements Serializable {
         this.customerNotCame = customerNotCame;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return idOrder == order.idOrder && idUser == order.idUser && customerNotCame == order.customerNotCame && Objects.equals(startDate, order.startDate) && Objects.equals(receptionDate, order.receptionDate) && Objects.equals(rentalModOfPayment, order.rentalModOfPayment) && Objects.equals(endDate, order.endDate) && Objects.equals(returnDate, order.returnDate) && Objects.equals(returnModOfPayment, order.returnModOfPayment);
+    public String getReturnModOfPayment() {
+        return returnModOfPayment.getReturnModOfPayment();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idOrder, idUser, startDate, receptionDate, rentalModOfPayment, endDate, returnDate, returnModOfPayment, customerNotCame);
+    public void setReturnModOfPayment(ReturnModOfPayment returnModOfPayment) {
+        this.returnModOfPayment = returnModOfPayment;
     }
 
-    @OneToMany(mappedBy = "orderByIdOrder")
-    public List<AddressOrder> getAddressordersByIdOrder() {
-        return addressordersByIdOrder;
+    public LocalDateTime  getReturnDate() {
+        return returnDate;
     }
 
-    public void setAddressordersByIdOrder(List<AddressOrder> addressordersByIdOrder) {
-        this.addressordersByIdOrder = addressordersByIdOrder;
+    public void setReturnDate(LocalDateTime  returnDate) {
+        this.returnDate = returnDate;
     }
 
-    @OneToMany(mappedBy = "orderByIdOrder")
-    public List<CopyOrder> getCopyordersByIdOrder() {
-        return copyordersByIdOrder;
+    public LocalDateTime  getEndDate() {
+        return endDate;
     }
 
-    public void setCopyordersByIdOrder(List<CopyOrder> copyordersByIdOrder) {
-        this.copyordersByIdOrder = copyordersByIdOrder;
+    public void setEndDate(LocalDateTime  endDate) {
+        this.endDate = endDate;
     }
 
-    @OneToMany(mappedBy = "orderByIdOrder")
-    public List<Document> getDocumentsByIdOrder() {
-        return documentsByIdOrder;
+    public String getRentalModOfPayment() {
+        return rentalModOfPayment.getRentalModOfPayement();
     }
 
-    public void setDocumentsByIdOrder(List<Document> documentsByIdOrder) {
-        this.documentsByIdOrder = documentsByIdOrder;
+    public void setRentalModOfPayment(RentalModOfPayment rentalModOfPayment) {
+        this.rentalModOfPayment = rentalModOfPayment;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "idUser", nullable = false)
-    public User getUserByIdUser() {
-        return userByIdUser;
+    public LocalDateTime  getReceptionDate() {
+        return receptionDate;
     }
 
-    public void setUserByIdUser(User userByIdUser) {
-        this.userByIdUser = userByIdUser;
+    public void setReceptionDate(LocalDateTime  receptionDate) {
+        this.receptionDate = receptionDate;
+    }
+
+    public LocalDateTime  getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime  startDate) {
+        this.startDate = startDate;
+    }
+
+    public User getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(User idUser) {
+        this.idUser = idUser;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

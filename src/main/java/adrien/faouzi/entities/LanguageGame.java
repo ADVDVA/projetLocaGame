@@ -1,29 +1,46 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Languagegame")
-public class LanguageGame implements Serializable {
-    private int idLanguage;
-    private String languageName;
-    private List<LanguageProduct> languageproductsByIdLanguage;
-
+@Table(name = "languagegame")
+public class LanguageGame {
     @Id
-    @Column(name = "idLanguage")
-    public int getIdLanguage() {
-        return idLanguage;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idLanguage", nullable = false)
+    private int id;
+
+    @Column(name = "languageName", nullable = false, length = 60)
+    private String languageName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LanguageGame that = (LanguageGame) o;
+        return id == that.id && Objects.equals(languageName, that.languageName);
     }
 
-    public void setIdLanguage(int idLanguage) {
-        this.idLanguage = idLanguage;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, languageName);
     }
 
-    @Basic
-    @Column(name = "languageName")
+    @ManyToMany
+    @JoinTable(name = "languageproduct",
+            joinColumns = @JoinColumn(name = "idLanguage"),
+            inverseJoinColumns = @JoinColumn(name = "idProduct"))
+    private List<Product> products = new ArrayList<>();
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     public String getLanguageName() {
         return languageName;
     }
@@ -32,25 +49,11 @@ public class LanguageGame implements Serializable {
         this.languageName = languageName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LanguageGame that = (LanguageGame) o;
-        return idLanguage == that.idLanguage && Objects.equals(languageName, that.languageName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idLanguage, languageName);
-    }
-
-    @OneToMany(mappedBy = "languagegameByIdLanguage")
-    public List<LanguageProduct> getLanguageproductsByIdLanguage() {
-        return languageproductsByIdLanguage;
-    }
-
-    public void setLanguageproductsByIdLanguage(List<LanguageProduct> languageproductsByIdLanguage) {
-        this.languageproductsByIdLanguage = languageproductsByIdLanguage;
+    public void setId(int id) {
+        this.id = id;
     }
 }

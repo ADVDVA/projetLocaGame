@@ -1,39 +1,18 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Categoryproduct", indexes = {
-        @Index(name = "idCategory", columnList = "idCategory"),
-        @Index(name = "idProduct", columnList = "idProduct")
-})
-public class CategoryProduct implements Serializable {
-    private int idCategory;
-    private int idProduct;
-    private Category categoryByIdCategory;
-    private Product productByIdProduct;
+@Table(name = "categoryproduct")
+public class CategoryProduct {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idCategory", nullable = false)
+    private Category idCategory;
 
-    @Basic
-    @Column(name = "idCategory")
-    public int getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(int idCategory) {
-        this.idCategory = idCategory;
-    }
-
-    @Basic
-    @Column(name = "idProduct")
-    public int getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idProduct", nullable = false)
+    private Product idProduct;
 
     @Override
     public boolean equals(Object o) {
@@ -48,23 +27,19 @@ public class CategoryProduct implements Serializable {
         return Objects.hash(idCategory, idProduct);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idCategory", referencedColumnName = "idCategory", nullable = false)
-    public Category getCategoryByIdCategory() {
-        return categoryByIdCategory;
+    public Product getIdProduct() {
+        return idProduct;
     }
 
-    public void setCategoryByIdCategory(Category categoryByIdCategory) {
-        this.categoryByIdCategory = categoryByIdCategory;
+    public void setIdProduct(Product idProduct) {
+        this.idProduct = idProduct;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idProduct", referencedColumnName = "idProduct", nullable = false)
-    public Product getProductByIdProduct() {
-        return productByIdProduct;
+    public Category getIdCategory() {
+        return idCategory;
     }
 
-    public void setProductByIdProduct(Product productByIdProduct) {
-        this.productByIdProduct = productByIdProduct;
+    public void setIdCategory(Category idCategory) {
+        this.idCategory = idCategory;
     }
 }

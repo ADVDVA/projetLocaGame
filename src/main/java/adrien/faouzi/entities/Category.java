@@ -1,29 +1,46 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Category")
-public class Category implements Serializable {
-    private int idCategory;
-    private String categoryName;
-    private List<CategoryProduct> categoryproductsByIdCategory;
-
+@Table(name = "category")
+public class Category {
     @Id
-    @Column(name = "idCategory")
-    public int getIdCategory() {
-        return idCategory;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCategory", nullable = false)
+    private int id;
+
+    @Column(name = "categoryName", nullable = false, length = 60)
+    private String categoryName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return id == category.id && Objects.equals(categoryName, category.categoryName);
     }
 
-    public void setIdCategory(int idCategory) {
-        this.idCategory = idCategory;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, categoryName);
     }
 
-    @Basic
-    @Column(name = "categoryName")
+    @ManyToMany
+    @JoinTable(name = "categoryproduct",
+            joinColumns = @JoinColumn(name = "idCategory"),
+            inverseJoinColumns = @JoinColumn(name = "idProduct"))
+    private List<Product> products = new ArrayList<>();
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -32,25 +49,11 @@ public class Category implements Serializable {
         this.categoryName = categoryName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return idCategory == category.idCategory && Objects.equals(categoryName, category.categoryName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idCategory, categoryName);
-    }
-
-    @OneToMany(mappedBy = "categoryByIdCategory")
-    public List<CategoryProduct> getCategoryproductsByIdCategory() {
-        return categoryproductsByIdCategory;
-    }
-
-    public void setCategoryproductsByIdCategory(List<CategoryProduct> categoryproductsByIdCategory) {
-        this.categoryproductsByIdCategory = categoryproductsByIdCategory;
+    public void setId(int id) {
+        this.id = id;
     }
 }

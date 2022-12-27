@@ -1,38 +1,21 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Permissionrole", indexes = {
-        @Index(name = "idPermission", columnList = "idPermission"),
-        @Index(name = "idRole", columnList = "idRole")
-})
-public class PermissionRole implements Serializable {
-    private int idPermission;
-    private int idRole;
-    private Permission permissionByIdPermission;
-    private Role roleByIdRole;
+@Table(name = "permissionrole")
+public class PermissionRole {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idPermission", nullable = false)
+    private Permission idPermission;
 
-    @Basic
-    @Column(name = "idPermission")
-    public int getIdPermission() {
-        return idPermission;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idRole", nullable = false)
+    private Role idRole;
 
-    public void setIdPermission(int idPermission) {
-        this.idPermission = idPermission;
-    }
-
-    @Basic
-    @Column(name = "idRole")
-    public int getIdRole() {
+    public Role getIdRole() {
         return idRole;
-    }
-
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
     }
 
     @Override
@@ -48,23 +31,15 @@ public class PermissionRole implements Serializable {
         return Objects.hash(idPermission, idRole);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idPermission", referencedColumnName = "idPermission", nullable = false)
-    public Permission getPermissionByIdPermission() {
-        return permissionByIdPermission;
+    public void setIdRole(Role idRole) {
+        this.idRole = idRole;
     }
 
-    public void setPermissionByIdPermission(Permission permissionByIdPermission) {
-        this.permissionByIdPermission = permissionByIdPermission;
+    public Permission getIdPermission() {
+        return idPermission;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idRole", referencedColumnName = "idRole", nullable = false)
-    public Role getRoleByIdRole() {
-        return roleByIdRole;
-    }
-
-    public void setRoleByIdRole(Role roleByIdRole) {
-        this.roleByIdRole = roleByIdRole;
+    public void setIdPermission(Permission idPermission) {
+        this.idPermission = idPermission;
     }
 }

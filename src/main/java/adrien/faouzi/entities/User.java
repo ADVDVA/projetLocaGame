@@ -1,122 +1,82 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime ;
+import java.util.*;
 
 @Entity
-@Table(name = "User", indexes = {
-        @Index(name = "idRole", columnList = "idRole")
+@Table(name = "user", indexes = {
+        @Index(name = "mail", columnList = "mail", unique = true)
 })
-public class User implements Serializable {
-    private int idUser;
-    private int idRole;
-    private String lastName;
-    private String firstName;
-    private LocalDateTime dateOfBirth;
-    private String phone;
-    private String mail;
-    private String password;
-    private LocalDateTime registrationDate;
-    private boolean enable;
-    private List<Address> addressesByIdUser;
-    private List<Order> ordersByIdUser;
-    private Role roleByIdRole;
-
+public class User {
     @Id
-    @Column(name = "idUser")
-    public int getIdUser() {
-        return idUser;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idUser", nullable = false)
+    private int id;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idRole", nullable = false)
+    private Role idRole;
+
+    @Column(name = "lastName", nullable = false, length = 60)
+    private String lastName;
+
+    @Column(name = "firstName", nullable = false, length = 60)
+    private String firstName;
+
+    @Column(name = "dateOfBirth", nullable = false)
+    private LocalDateTime  dateOfBirth;
+
+    @Column(name = "phone", length = 45)
+    private String phone;
+
+    @Column(name = "mail", nullable = false)
+    private String mail;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "registrationDate", nullable = false)
+    private LocalDateTime  registrationDate;
+
+    @Column(name = "enable", nullable = false)
+    private boolean enable = false;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && idRole == user.idRole && enable == user.enable && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(phone, user.phone) && Objects.equals(mail, user.mail) && Objects.equals(password, user.password) && Objects.equals(registrationDate, user.registrationDate);
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idRole, lastName, firstName, dateOfBirth, phone, mail, password, registrationDate, enable);
     }
 
-    @Basic
-    @Column(name = "idRole")
-    public int getIdRole() {
-        return idRole;
+    @OneToMany(mappedBy = "idUser")
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "idUser")
+    private List<Address> addresses = new ArrayList<>();
+
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
-    @Basic
-    @Column(name = "lastName")
-    public String getLastName() {
-        return lastName;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    @Basic
-    @Column(name = "firstName")
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    @Basic
-    @Column(name = "dateOfBirth")
-    public LocalDateTime getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDateTime dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    @Basic
-    @Column(name = "phone")
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Basic
-    @Column(name = "mail")
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    @Basic
-    @Column(name = "password")
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Basic
-    @Column(name = "registrationDate")
-    public LocalDateTime getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDateTime registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    @Basic
-    @Column(name = "enable")
     public boolean getEnable() {
         return enable;
     }
@@ -125,44 +85,75 @@ public class User implements Serializable {
         this.enable = enable;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return idUser == user.idUser && idRole == user.idRole && enable == user.enable && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(dateOfBirth, user.dateOfBirth) && Objects.equals(phone, user.phone) && Objects.equals(mail, user.mail) && Objects.equals(password, user.password) && Objects.equals(registrationDate, user.registrationDate);
+    public LocalDateTime  getRegistrationDate() {
+        return registrationDate;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idUser, idRole, lastName, firstName, dateOfBirth, phone, mail, password, registrationDate, enable);
+    public void setRegistrationDate(LocalDateTime  registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
-    @OneToMany(mappedBy = "userByIdUser")
-    public List<Address> getAddressesByIdUser() {
-        return addressesByIdUser;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAddressesByIdUser(List<Address> addressesByIdUser) {
-        this.addressesByIdUser = addressesByIdUser;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @OneToMany(mappedBy = "userByIdUser")
-    public List<Order> getOrdersByIdUser() {
-        return ordersByIdUser;
+    public String getMail() {
+        return mail;
     }
 
-    public void setOrdersByIdUser(List<Order> ordersByIdUser) {
-        this.ordersByIdUser = ordersByIdUser;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idRole", referencedColumnName = "idRole", nullable = false)
-    public Role getRoleByIdRole() {
-        return roleByIdRole;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setRoleByIdRole(Role roleByIdRole) {
-        this.roleByIdRole = roleByIdRole;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDateTime  getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDateTime  dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Role getIdRole() {
+        return idRole;
+    }
+
+    public void setIdRole(Role idRole) {
+        this.idRole = idRole;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

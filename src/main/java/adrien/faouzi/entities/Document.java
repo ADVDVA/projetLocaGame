@@ -1,56 +1,53 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime ;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Document", indexes = {
-        @Index(name = "idDocumentType", columnList = "idDocumentType"),
-        @Index(name = "idOrder", columnList = "idOrder")
-})
-public class Document implements Serializable {
-    private int idDocument;
-    private int idDocumentType;
-    private int idOrder;
-    private int numberDocument;
-    private LocalDateTime documentDate;
-    private DocumentType documenttypeByIdDocumentType;
-    private Order orderByIdOrder;
-
+@Table(name = "document")
+public class Document {
     @Id
-    @Column(name = "idDocument")
-    public int getIdDocument() {
-        return idDocument;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idDocument", nullable = false)
+    private int id;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idDocumentType", nullable = false)
+    private DocumentType idDocumentType;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idOrder", nullable = false)
+    private Order idOrder;
+
+    @Column(name = "numberDocument", nullable = false)
+    private int numberDocument;
+
+    @Column(name = "documentDate", nullable = false)
+    private LocalDateTime  documentDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Document document = (Document) o;
+        return id == document.id && idDocumentType == document.idDocumentType && idOrder == document.idOrder && numberDocument == document.numberDocument && Objects.equals(documentDate, document.documentDate);
     }
 
-    public void setIdDocument(int idDocument) {
-        this.idDocument = idDocument;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idDocumentType, idOrder, numberDocument, documentDate);
     }
 
-    @Basic
-    @Column(name = "idDocumentType")
-    public int getIdDocumentType() {
-        return idDocumentType;
+
+    public LocalDateTime  getDocumentDate() {
+        return documentDate;
     }
 
-    public void setIdDocumentType(int idDocumentType) {
-        this.idDocumentType = idDocumentType;
+    public void setDocumentDate(LocalDateTime  documentDate) {
+        this.documentDate = documentDate;
     }
 
-    @Basic
-    @Column(name = "idOrder")
-    public int getIdOrder() {
-        return idOrder;
-    }
-
-    public void setIdOrder(int idOrder) {
-        this.idOrder = idOrder;
-    }
-
-    @Basic
-    @Column(name = "numberDocument")
     public int getNumberDocument() {
         return numberDocument;
     }
@@ -59,46 +56,27 @@ public class Document implements Serializable {
         this.numberDocument = numberDocument;
     }
 
-    @Basic
-    @Column(name = "documentDate")
-    public LocalDateTime getDocumentDate() {
-        return documentDate;
+    public Order getIdOrder() {
+        return idOrder;
     }
 
-    public void setDocumentDate(LocalDateTime documentDate) {
-        this.documentDate = documentDate;
+    public void setIdOrder(Order idOrder) {
+        this.idOrder = idOrder;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Document document = (Document) o;
-        return idDocument == document.idDocument && idDocumentType == document.idDocumentType && idOrder == document.idOrder && numberDocument == document.numberDocument && Objects.equals(documentDate, document.documentDate);
+    public DocumentType getIdDocumentType() {
+        return idDocumentType;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idDocument, idDocumentType, idOrder, numberDocument, documentDate);
+    public void setIdDocumentType(DocumentType idDocumentType) {
+        this.idDocumentType = idDocumentType;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idDocumentType", referencedColumnName = "idDocumentType", nullable = false)
-    public DocumentType getDocumenttypeByIdDocumentType() {
-        return documenttypeByIdDocumentType;
+    public int getId() {
+        return id;
     }
 
-    public void setDocumenttypeByIdDocumentType(DocumentType documenttypeByIdDocumentType) {
-        this.documenttypeByIdDocumentType = documenttypeByIdDocumentType;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "idOrder", referencedColumnName = "idOrder", nullable = false)
-    public Order getOrderByIdOrder() {
-        return orderByIdOrder;
-    }
-
-    public void setOrderByIdOrder(Order orderByIdOrder) {
-        this.orderByIdOrder = orderByIdOrder;
+    public void setId(int id) {
+        this.id = id;
     }
 }

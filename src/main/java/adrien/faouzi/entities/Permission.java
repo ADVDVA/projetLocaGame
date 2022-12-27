@@ -1,28 +1,48 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
-@Table(name = "Permission")
+import java.util.*;
+
 @Entity
-public class Permission implements Serializable {
-    private int idPermission;
-    private String permissionName;
-    private List<PermissionRole> permissionrolesByIdPermission;
-
+@Table(name = "permission", indexes = {
+        @Index(name = "permissionName", columnList = "permissionName", unique = true)
+})
+public class Permission {
     @Id
-    @Column(name = "idPermission")
-    public int getIdPermission() {
-        return idPermission;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idPermission", nullable = false)
+    private int id;
+
+    @Column(name = "permissionName", nullable = false, length = 60)
+    private String permissionName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Permission that = (Permission) o;
+        return id == that.id && Objects.equals(permissionName, that.permissionName);
     }
 
-    public void setIdPermission(int idPermission) {
-        this.idPermission = idPermission;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, permissionName);
     }
 
-    @Basic
-    @Column(name = "permissionName")
+    @ManyToMany
+    @JoinTable(name = "permissionrole",
+            joinColumns = @JoinColumn(name = "idPermission"),
+            inverseJoinColumns = @JoinColumn(name = "idRole"))
+    private List<Role> roles = new ArrayList<>();
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     public String getPermissionName() {
         return permissionName;
     }
@@ -31,25 +51,11 @@ public class Permission implements Serializable {
         this.permissionName = permissionName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Permission that = (Permission) o;
-        return idPermission == that.idPermission && Objects.equals(permissionName, that.permissionName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idPermission, permissionName);
-    }
-
-    @OneToMany(mappedBy = "permissionByIdPermission")
-    public List<PermissionRole> getPermissionrolesByIdPermission() {
-        return permissionrolesByIdPermission;
-    }
-
-    public void setPermissionrolesByIdPermission(List<PermissionRole> permissionrolesByIdPermission) {
-        this.permissionrolesByIdPermission = permissionrolesByIdPermission;
+    public void setId(int id) {
+        this.id = id;
     }
 }

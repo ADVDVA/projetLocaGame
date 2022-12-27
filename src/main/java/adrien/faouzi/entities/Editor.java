@@ -1,29 +1,43 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Editor")
-public class Editor implements Serializable {
-    private int idEditor;
-    private String editorName;
-    private List<Product> productsByIdEditor;
-
+@Table(name = "editor")
+public class Editor {
     @Id
-    @Column(name = "idEditor")
-    public int getIdEditor() {
-        return idEditor;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEditor", nullable = false)
+    private int id;
+
+    @Column(name = "editorName", nullable = false, length = 60)
+    private String editorName;
+
+    @OneToMany(mappedBy = "idEditor")
+    private List<Product> products = new ArrayList<>();
+
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setIdEditor(int idEditor) {
-        this.idEditor = idEditor;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Editor editor = (Editor) o;
+        return id == editor.id && Objects.equals(editorName, editor.editorName);
     }
 
-    @Basic
-    @Column(name = "editorName")
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, editorName);
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
     public String getEditorName() {
         return editorName;
     }
@@ -32,25 +46,11 @@ public class Editor implements Serializable {
         this.editorName = editorName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Editor editor = (Editor) o;
-        return idEditor == editor.idEditor && Objects.equals(editorName, editor.editorName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idEditor, editorName);
-    }
-
-    @OneToMany(mappedBy = "editorByIdEditor")
-    public List<Product> getProductsByIdEditor() {
-        return productsByIdEditor;
-    }
-
-    public void setProductsByIdEditor(List<Product> productsByIdEditor) {
-        this.productsByIdEditor = productsByIdEditor;
+    public void setId(int id) {
+        this.id = id;
     }
 }

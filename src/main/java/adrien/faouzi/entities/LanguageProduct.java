@@ -1,39 +1,18 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Languageproduct", indexes = {
-        @Index(name = "idLanguage", columnList = "idLanguage"),
-        @Index(name = "idProduct", columnList = "idProduct")
-})
-public class LanguageProduct implements Serializable {
-    private int idLanguage;
-    private int idProduct;
-    private LanguageGame languagegameByIdLanguage;
-    private Product productByIdProduct;
+@Table(name = "languageproduct")
+public class LanguageProduct {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idLanguage", nullable = false)
+    private LanguageGame idLanguage;
 
-    @Basic
-    @Column(name = "idLanguage")
-    public int getIdLanguage() {
-        return idLanguage;
-    }
-
-    public void setIdLanguage(int idLanguage) {
-        this.idLanguage = idLanguage;
-    }
-
-    @Basic
-    @Column(name = "idProduct")
-    public int getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idProduct", nullable = false)
+    private Product idProduct;
 
     @Override
     public boolean equals(Object o) {
@@ -47,24 +26,19 @@ public class LanguageProduct implements Serializable {
     public int hashCode() {
         return Objects.hash(idLanguage, idProduct);
     }
-
-    @ManyToOne
-    @JoinColumn(name = "idLanguage", referencedColumnName = "idLanguage", nullable = false)
-    public LanguageGame getLanguagegameByIdLanguage() {
-        return languagegameByIdLanguage;
+    public Product getIdProduct() {
+        return idProduct;
     }
 
-    public void setLanguagegameByIdLanguage(LanguageGame languagegameByIdLanguage) {
-        this.languagegameByIdLanguage = languagegameByIdLanguage;
+    public void setIdProduct(Product idProduct) {
+        this.idProduct = idProduct;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idProduct", referencedColumnName = "idProduct", nullable = false)
-    public Product getProductByIdProduct() {
-        return productByIdProduct;
+    public LanguageGame getIdLanguage() {
+        return idLanguage;
     }
 
-    public void setProductByIdProduct(Product productByIdProduct) {
-        this.productByIdProduct = productByIdProduct;
+    public void setIdLanguage(LanguageGame idLanguage) {
+        this.idLanguage = idLanguage;
     }
 }

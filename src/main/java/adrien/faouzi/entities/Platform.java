@@ -1,30 +1,54 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Platform")
-public class Platform implements Serializable {
-    private int idPlatform;
-    private String platformName;
-    private List<Copy> copiesByIdPlatform;
-    private List<PricePlatform> priceplatformsByIdPlatform;
-
+@Table(name = "platform")
+public class Platform {
     @Id
-    @Column(name = "idPlatform")
-    public int getIdPlatform() {
-        return idPlatform;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idPlatform", nullable = false)
+    private int id;
+
+    @Column(name = "platformName", nullable = false, length = 60)
+    private String platformName;
+
+    @OneToMany(mappedBy = "idPlatform")
+    private List<PricePlatform> pricePlatforms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "idPricePlatform")
+    private List<Copy> copies = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Platform platform = (Platform) o;
+        return id == platform.id && Objects.equals(platformName, platform.platformName);
     }
 
-    public void setIdPlatform(int idPlatform) {
-        this.idPlatform = idPlatform;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, platformName);
     }
 
-    @Basic
-    @Column(name = "platformName")
+    public List<Copy> getCopies() {
+        return copies;
+    }
+
+    public void setCopies(List<Copy> copies) {
+        this.copies = copies;
+    }
+
+    public List<PricePlatform> getPricePlatforms() {
+        return pricePlatforms;
+    }
+
+    public void setPricePlatforms(List<PricePlatform> pricePlatforms) {
+        this.pricePlatforms = pricePlatforms;
+    }
+
     public String getPlatformName() {
         return platformName;
     }
@@ -33,34 +57,11 @@ public class Platform implements Serializable {
         this.platformName = platformName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Platform platform = (Platform) o;
-        return idPlatform == platform.idPlatform && Objects.equals(platformName, platform.platformName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idPlatform, platformName);
-    }
-
-    @OneToMany(mappedBy = "platformByIdPricePlatform")
-    public List<Copy> getCopiesByIdPlatform() {
-        return copiesByIdPlatform;
-    }
-
-    public void setCopiesByIdPlatform(List<Copy> copiesByIdPlatform) {
-        this.copiesByIdPlatform = copiesByIdPlatform;
-    }
-
-    @OneToMany(mappedBy = "platformByIdPlatform")
-    public List<PricePlatform> getPriceplatformsByIdPlatform() {
-        return priceplatformsByIdPlatform;
-    }
-
-    public void setPriceplatformsByIdPlatform(List<PricePlatform> priceplatformsByIdPlatform) {
-        this.priceplatformsByIdPlatform = priceplatformsByIdPlatform;
+    public void setId(int id) {
+        this.id = id;
     }
 }

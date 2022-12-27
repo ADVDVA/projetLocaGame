@@ -1,30 +1,59 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "Role")
-public class Role implements Serializable {
-    private int idRole;
-    private String roleName;
-    private List<PermissionRole> permissionrolesByIdRole;
-    private List<User> usersByIdRole;
-
+@Table(name = "role", indexes = {
+        @Index(name = "roleName", columnList = "roleName", unique = true)
+})
+public class Role {
     @Id
-    @Column(name = "idRole")
-    public int getIdRole() {
-        return idRole;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idRole", nullable = false)
+    private int id;
+
+    @Column(name = "roleName", nullable = false, length = 60)
+    private String roleName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return id == role.id && Objects.equals(roleName, role.roleName);
     }
 
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, roleName);
     }
 
-    @Basic
-    @Column(name = "roleName")
+    @OneToMany(mappedBy = "idRole")
+    private List<User> users = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "permissionrole",
+            joinColumns = @JoinColumn(name = "idRole"),
+            inverseJoinColumns = @JoinColumn(name = "idPermission"))
+    private List<Permission> permissions = new ArrayList<>();
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     public String getRoleName() {
         return roleName;
     }
@@ -33,34 +62,11 @@ public class Role implements Serializable {
         this.roleName = roleName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
-        return idRole == role.idRole && Objects.equals(roleName, role.roleName);
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idRole, roleName);
-    }
-
-    @OneToMany(mappedBy = "roleByIdRole")
-    public List<PermissionRole> getPermissionrolesByIdRole() {
-        return permissionrolesByIdRole;
-    }
-
-    public void setPermissionrolesByIdRole(List<PermissionRole> permissionrolesByIdRole) {
-        this.permissionrolesByIdRole = permissionrolesByIdRole;
-    }
-
-    @OneToMany(mappedBy = "roleByIdRole")
-    public List<User> getUsersByIdRole() {
-        return usersByIdRole;
-    }
-
-    public void setUsersByIdRole(List<User> usersByIdRole) {
-        this.usersByIdRole = usersByIdRole;
+    public void setId(int id) {
+        this.id = id;
     }
 }

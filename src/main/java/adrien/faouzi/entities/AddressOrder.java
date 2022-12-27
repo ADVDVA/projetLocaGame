@@ -1,39 +1,18 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Addressorder", indexes = {
-        @Index(name = "idAddress", columnList = "idAddress"),
-        @Index(name = "idOrder", columnList = "idOrder")
-})
-public class AddressOrder implements Serializable {
-    private int idAddress;
-    private int idOrder;
-    private Address addressByIdAddress;
-    private Order orderByIdOrder;
+@Table(name = "addressorder")
+public class AddressOrder {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idAddress", nullable = false)
+    private Address idAddress;
 
-    @Basic
-    @Column(name = "idAddress")
-    public int getIdAddress() {
-        return idAddress;
-    }
-
-    public void setIdAddress(int idAddress) {
-        this.idAddress = idAddress;
-    }
-
-    @Basic
-    @Column(name = "idOrder")
-    public int getIdOrder() {
-        return idOrder;
-    }
-
-    public void setIdOrder(int idOrder) {
-        this.idOrder = idOrder;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idOrder", nullable = false)
+    private Order idOrder;
 
     @Override
     public boolean equals(Object o) {
@@ -48,23 +27,19 @@ public class AddressOrder implements Serializable {
         return Objects.hash(idAddress, idOrder);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idAddress", referencedColumnName = "idAddress", nullable = false)
-    public Address getAddressByIdAddress() {
-        return addressByIdAddress;
+    public Order getIdOrder() {
+        return idOrder;
     }
 
-    public void setAddressByIdAddress(Address addressByIdAddress) {
-        this.addressByIdAddress = addressByIdAddress;
+    public void setIdOrder(Order idOrder) {
+        this.idOrder = idOrder;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idOrder", referencedColumnName = "idOrder", nullable = false)
-    public Order getOrderByIdOrder() {
-        return orderByIdOrder;
+    public Address getIdAddress() {
+        return idAddress;
     }
 
-    public void setOrderByIdOrder(Order orderByIdOrder) {
-        this.orderByIdOrder = orderByIdOrder;
+    public void setIdAddress(Address idAddress) {
+        this.idAddress = idAddress;
     }
 }

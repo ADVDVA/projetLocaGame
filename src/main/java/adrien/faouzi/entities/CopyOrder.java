@@ -1,72 +1,27 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Copyorder", indexes = {
-        @Index(name = "idCopy", columnList = "idCopy"),
-        @Index(name = "idOrder", columnList = "idOrder")
-})
-public class CopyOrder implements Serializable {
-    private int idCopy;
-    private int idOrder;
+@Table(name = "copyorder")
+public class CopyOrder {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idCopy", nullable = false)
+    private Copy idCopy;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idOrder", nullable = false)
+    private Order idOrder;
+
+    @Column(name = "copyPrice")
     private float copyPrice;
-    private boolean returnDestroy;
+
+    @Column(name = "returnDestroy", nullable = false)
+    private boolean returnDestroy = false;
+
+    @Column(name = "penalityPrice")
     private float penalityPrice;
-    private Copy copyByIdCopy;
-    private Order orderByIdOrder;
-
-    @Basic
-    @Column(name = "idCopy")
-    public int getIdCopy() {
-        return idCopy;
-    }
-
-    public void setIdCopy(int idCopy) {
-        this.idCopy = idCopy;
-    }
-
-    @Basic
-    @Column(name = "idOrder")
-    public int getIdOrder() {
-        return idOrder;
-    }
-
-    public void setIdOrder(int idOrder) {
-        this.idOrder = idOrder;
-    }
-
-    @Basic
-    @Column(name = "copyPrice", nullable = true)
-    public float getCopyPrice() {
-        return copyPrice;
-    }
-
-    public void setCopyPrice(float copyPrice) {
-        this.copyPrice = copyPrice;
-    }
-
-    @Basic
-    @Column(name = "returnDestroy")
-    public boolean getReturnDestroy() {
-        return returnDestroy;
-    }
-
-    public void setReturnDestroy(boolean returnDestroy) {
-        this.returnDestroy = returnDestroy;
-    }
-
-    @Basic
-    @Column(name = "penalityPrice", nullable = true)
-    public float getPenalityPrice() {
-        return penalityPrice;
-    }
-
-    public void setPenalityPrice(float penalityPrice) {
-        this.penalityPrice = penalityPrice;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -80,24 +35,43 @@ public class CopyOrder implements Serializable {
     public int hashCode() {
         return Objects.hash(idCopy, idOrder, copyPrice, returnDestroy, penalityPrice);
     }
-
-    @ManyToOne
-    @JoinColumn(name = "idCopy", referencedColumnName = "idCopy", nullable = false)
-    public Copy getCopyByIdCopy() {
-        return copyByIdCopy;
+    public float getPenalityPrice() {
+        return penalityPrice;
     }
 
-    public void setCopyByIdCopy(Copy copyByIdCopy) {
-        this.copyByIdCopy = copyByIdCopy;
+    public void setPenalityPrice(float penalityPrice) {
+        this.penalityPrice = penalityPrice;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idOrder", referencedColumnName = "idOrder", nullable = false)
-    public Order getOrderByIdOrder() {
-        return orderByIdOrder;
+    public boolean getReturnDestroy() {
+        return returnDestroy;
     }
 
-    public void setOrderByIdOrder(Order orderByIdOrder) {
-        this.orderByIdOrder = orderByIdOrder;
+    public void setReturnDestroy(boolean returnDestroy) {
+        this.returnDestroy = returnDestroy;
+    }
+
+    public float getCopyPrice() {
+        return copyPrice;
+    }
+
+    public void setCopyPrice(float copyPrice) {
+        this.copyPrice = copyPrice;
+    }
+
+    public Order getIdOrder() {
+        return idOrder;
+    }
+
+    public void setIdOrder(Order idOrder) {
+        this.idOrder = idOrder;
+    }
+
+    public Copy getIdCopy() {
+        return idCopy;
+    }
+
+    public void setIdCopy(Copy idCopy) {
+        this.idCopy = idCopy;
     }
 }

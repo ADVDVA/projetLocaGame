@@ -1,55 +1,66 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 @Entity
-@Table(name = "City", indexes = {
+@Table(name = "city", indexes = {
         @Index(name = "idCountry", columnList = "idCountry")
 })
-public class City implements Serializable {
-    private int idCity;
-    private int idCountry;
-    private int postalCode;
-    private String cityName;
-    private List<Address> addressesByIdCity;
-    private Country countryByIdCountry;
-    private List<Store> storesByIdCity;
-
+public class City {
     @Id
-    @Column(name = "idCity")
-    public int getIdCity() {
-        return idCity;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCity", nullable = false)
+    private int id;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idCountry", nullable = false)
+    private Country idCountry;
+
+    @Column(name = "postalCode", nullable = false)
+    private int postalCode;
+
+    @Column(name = "cityName", nullable = false, length = 60)
+    private String cityName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        City city = (City) o;
+        return id == city.id && idCountry == city.idCountry && postalCode == city.postalCode && Objects.equals(cityName, city.cityName);
     }
 
-    public void setIdCity(int idCity) {
-        this.idCity = idCity;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idCountry, postalCode, cityName);
     }
 
-    @Basic
-    @Column(name = "idCountry")
-    public int getIdCountry() {
-        return idCountry;
+    @OneToMany(mappedBy = "idCity")
+    private List<Address> addresses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "idCity")
+    private List<Store> stores = new ArrayList<>();
+
+    public List<Store> getStores() {
+        return stores;
     }
 
-    public void setIdCountry(int idCountry) {
-        this.idCountry = idCountry;
+    public void setStores(List<Store> stores) {
+        this.stores = stores;
     }
 
-    @Basic
-    @Column(name = "postalCode")
-    public int getPostalCode() {
-        return postalCode;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setPostalCode(int postalCode) {
-        this.postalCode = postalCode;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
-    @Basic
-    @Column(name = "cityName")
     public String getCityName() {
         return cityName;
     }
@@ -58,44 +69,27 @@ public class City implements Serializable {
         this.cityName = cityName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        City city = (City) o;
-        return idCity == city.idCity && idCountry == city.idCountry && postalCode == city.postalCode && Objects.equals(cityName, city.cityName);
+    public int getPostalCode() {
+        return postalCode;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idCity, idCountry, postalCode, cityName);
+    public void setPostalCode(int postalCode) {
+        this.postalCode = postalCode;
     }
 
-    @OneToMany(mappedBy = "cityByIdCity")
-    public List<Address> getAddressesByIdCity() {
-        return addressesByIdCity;
+    public Country getIdCountry() {
+        return idCountry;
     }
 
-    public void setAddressesByIdCity(List<Address> addressesByIdCity) {
-        this.addressesByIdCity = addressesByIdCity;
+    public void setIdCountry(Country idCountry) {
+        this.idCountry = idCountry;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idCountry", referencedColumnName = "idCountry", nullable = false)
-    public Country getCountryByIdCountry() {
-        return countryByIdCountry;
+    public int getId() {
+        return id;
     }
 
-    public void setCountryByIdCountry(Country countryByIdCountry) {
-        this.countryByIdCountry = countryByIdCountry;
-    }
-
-    @OneToMany(mappedBy = "cityByIdCity")
-    public List<Store> getStoresByIdCity() {
-        return storesByIdCity;
-    }
-
-    public void setStoresByIdCity(List<Store> storesByIdCity) {
-        this.storesByIdCity = storesByIdCity;
+    public void setId(int id) {
+        this.id = id;
     }
 }

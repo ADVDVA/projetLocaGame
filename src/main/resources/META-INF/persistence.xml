@@ -6,27 +6,27 @@
     <persistence-unit name="locagame" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>java:comp/env/jdbc/locagame</jta-data-source>
-        <class>adrien.faouzi.entities.Address</class>
-        <class>adrien.faouzi.entities.AddressOrder</class>
-        <class>adrien.faouzi.entities.Category</class>
-        <class>adrien.faouzi.entities.CategoryProduct</class>
-        <class>adrien.faouzi.entities.City</class>
-        <class>adrien.faouzi.entities.Copy</class>
-        <class>adrien.faouzi.entities.CopyOrder</class>
         <class>adrien.faouzi.entities.Country</class>
-        <class>adrien.faouzi.entities.Document</class>
-        <class>adrien.faouzi.entities.DocumentType</class>
+        <class>adrien.faouzi.entities.City</class>
+        <class>adrien.faouzi.entities.Permission</class>
+        <class>adrien.faouzi.entities.Role</class>
+        <class>adrien.faouzi.entities.PermissionRole</class>
+        <class>adrien.faouzi.entities.User</class>
+        <class>adrien.faouzi.entities.Address</class>
+        <class>adrien.faouzi.entities.Platform</class>
         <class>adrien.faouzi.entities.Editor</class>
         <class>adrien.faouzi.entities.LanguageGame</class>
-        <class>adrien.faouzi.entities.LanguageProduct</class>
-        <class>adrien.faouzi.entities.Order</class>
-        <class>adrien.faouzi.entities.Permission</class>
-        <class>adrien.faouzi.entities.PermissionRole</class>
-        <class>adrien.faouzi.entities.Platform</class>
-        <class>adrien.faouzi.entities.PricePlatform</class>
+        <class>adrien.faouzi.entities.Category</class>
         <class>adrien.faouzi.entities.Product</class>
-        <class>adrien.faouzi.entities.Role</class>
+        <class>adrien.faouzi.entities.LanguageProduct</class>
+        <class>adrien.faouzi.entities.CategoryProduct</class>
+        <class>adrien.faouzi.entities.PricePlatform</class>
         <class>adrien.faouzi.entities.Store</class>
-        <class>adrien.faouzi.entities.User</class>
+        <class>adrien.faouzi.entities.Copy</class>
+        <class>adrien.faouzi.entities.Order</class>
+        <class>adrien.faouzi.entities.AddressOrder</class>
+        <class>adrien.faouzi.entities.CopyOrder</class>
+        <class>adrien.faouzi.entities.DocumentType</class>
+        <class>adrien.faouzi.entities.Document</class>
     </persistence-unit>
 </persistence>

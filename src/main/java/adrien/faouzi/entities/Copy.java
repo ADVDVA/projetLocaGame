@@ -3,78 +3,60 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumération.StatusCopy;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "City", indexes = {
-        @Index(name = "idStore", columnList = "idStore"),
-        @Index(name = "idPricePlatform", columnList = "idPricePlatform")
+@Table(name = "copy", indexes = {
+        @Index(name = "copyName", columnList = "copyName", unique = true)
 })
-public class Copy implements Serializable {
-    private int idCopy;
-    private int idStore;
-    private int idPricePlatform;
-    private String copyName;
-    private float buyPrice;
-    private StatusCopy status;
-    private Platform platformByIdPricePlatform;
-    private Store storeByIdStore;
-    private List<CopyOrder> copyordersByIdCopy;
-
+public class Copy {
     @Id
-    @Column(name = "idCopy")
-    public int getIdCopy() {
-        return idCopy;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCopy", nullable = false)
+    private int id;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idStore", nullable = false)
+    private Store idStore;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idPricePlatform", nullable = false)
+    private Platform idPricePlatform;
+
+    @Column(name = "copyName", nullable = false, length = 60)
+    private String copyName;
+
+    @Column(name = "buyPrice", nullable = false)
+    private float buyPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusCopy status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Copy copy = (Copy) o;
+        return id == copy.id && idStore == copy.idStore && idPricePlatform == copy.idPricePlatform && Float.compare(copy.buyPrice, buyPrice) == 0 && Objects.equals(copyName, copy.copyName) && Objects.equals(status, copy.status);
     }
 
-    public void setIdCopy(int idCopy) {
-        this.idCopy = idCopy;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idStore, idPricePlatform, copyName, buyPrice, status);
     }
 
-    @Basic
-    @Column(name = "idStore")
-    public int getIdStore() {
-        return idStore;
+    @OneToMany(mappedBy = "idCopy")
+    private List<CopyOrder> copyOrders = new ArrayList<>();
+
+    public List<CopyOrder> getCopyOrders() {
+        return copyOrders;
     }
 
-    public void setIdStore(int idStore) {
-        this.idStore = idStore;
+    public void setCopyOrders(List<CopyOrder> copyOrders) {
+        this.copyOrders = copyOrders;
     }
 
-    @Basic
-    @Column(name = "idPricePlatform")
-    public int getIdPricePlatform() {
-        return idPricePlatform;
-    }
-
-    public void setIdPricePlatform(int idPricePlatform) {
-        this.idPricePlatform = idPricePlatform;
-    }
-
-    @Basic
-    @Column(name = "copyName")
-    public String getCopyName() {
-        return copyName;
-    }
-
-    public void setCopyName(String copyName) {
-        this.copyName = copyName;
-    }
-
-    @Basic
-    @Column(name = "buyPrice")
-    public float getBuyPrice() {
-        return buyPrice;
-    }
-
-    public void setBuyPrice(float buyPrice) {
-        this.buyPrice = buyPrice;
-    }
-
-    @Basic
-    @Column(name = "status")
     public String getStatus() {
         return status.getStatusCopy();
     }
@@ -83,45 +65,43 @@ public class Copy implements Serializable {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Copy copy = (Copy) o;
-        return idCopy == copy.idCopy && idStore == copy.idStore && idPricePlatform == copy.idPricePlatform && Float.compare(copy.buyPrice, buyPrice) == 0 && Objects.equals(copyName, copy.copyName) && Objects.equals(status, copy.status);
+    public float getBuyPrice() {
+        return buyPrice;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idCopy, idStore, idPricePlatform, copyName, buyPrice, status);
+    public void setBuyPrice(float buyPrice) {
+        this.buyPrice = buyPrice;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idPricePlatform", referencedColumnName = "idPlatform", nullable = false)
-    public Platform getPlatformByIdPricePlatform() {
-        return platformByIdPricePlatform;
+    public String getCopyName() {
+        return copyName;
     }
 
-    public void setPlatformByIdPricePlatform(Platform platformByIdPricePlatform) {
-        this.platformByIdPricePlatform = platformByIdPricePlatform;
+    public void setCopyName(String copyName) {
+        this.copyName = copyName;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "idStore", referencedColumnName = "idStore", nullable = false)
-    public Store getStoreByIdStore() {
-        return storeByIdStore;
+    public Platform getIdPricePlatform() {
+        return idPricePlatform;
     }
 
-    public void setStoreByIdStore(Store storeByIdStore) {
-        this.storeByIdStore = storeByIdStore;
+    public void setIdPricePlatform(Platform idPricePlatform) {
+        this.idPricePlatform = idPricePlatform;
     }
 
-    @OneToMany(mappedBy = "copyByIdCopy")
-    public List<CopyOrder> getCopyordersByIdCopy() {
-        return copyordersByIdCopy;
+    public Store getIdStore() {
+        return idStore;
     }
 
-    public void setCopyordersByIdCopy(List<CopyOrder> copyordersByIdCopy) {
-        this.copyordersByIdCopy = copyordersByIdCopy;
+    public void setIdStore(Store idStore) {
+        this.idStore = idStore;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
