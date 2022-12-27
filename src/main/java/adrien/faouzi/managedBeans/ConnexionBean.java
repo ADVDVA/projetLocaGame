@@ -20,3 +20,4 @@ public class ConnexionBean implements Serializable {
         return "accueil";
     }
 }
+
