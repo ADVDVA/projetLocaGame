@@ -1,18 +1,26 @@
-h1, p, body, html {
-margin:0;
-padding:0;
+*{
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
 }
-body {
-background-color:#EEEEEE;
+#header{
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 18px;
 }
+#body{
+    background-color: #fff2cc;
+    color: #000000;
+    font-size: 14px;
+}
+#footer{
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 14px;
+}
+
 #container {
 width:100%;
-}
-#header {
-background-color:#FFA500;
-}
-#header h1 {
-margin-bottom: 0px;
 }
 #content {
 float:left;
@@ -20,7 +28,6 @@ width:100%;
 }
 #footer {
 clear:both; /*No floating elements are allowed on left or right*/
-background-color:#FFA500;
 text-align:center;
 font-weight: bold;
 }
