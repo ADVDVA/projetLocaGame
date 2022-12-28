@@ -4,7 +4,7 @@
 <html lang="fr"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 
 <!-- ______ ______ -->
 
@@ -27,11 +27,31 @@
         <h:form id="headerLanguageButtonContainer">
             <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
 
-                <p:menuitem value="#{I18N['application.header.languageFr']}" action="#{i18nBean.changeLanguage('fr')}"/>
-                <p:menuitem value="#{I18N['application.header.languageEn']}" action="#{i18nBean.changeLanguage('en')}"/>
+                <p:menuitem value="#{I18N['application.header.languageFr']}" action="#{i18nBean.setLanguage('fr')}"/>
+                <p:menuitem value="#{I18N['application.header.languageEn']}" action="#{i18nBean.setLanguage('en')}"/>
 
             </p:menuButton>
         </h:form>
+
+        <!--
+        <h:form id="headerLanguageButtonContainer">
+            <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
+
+                <p:menuitem value="#{I18N['application.header.languageFr']}" action="#{i18nBean.setLanguage('fr')}" onclick="getElementById('headerLanguageButtonContainer:submitLanguage').click();"/>
+                <p:menuitem value="#{I18N['application.header.languageEn']}" action="#{i18nBean.setLanguage('en')}" onclick="getElementById('headerLanguageButtonContainer:submitLanguage').click();"/>
+
+            </p:menuButton>
+
+            <h:commandButton value="#{I18N['application.header.language']}" action="#{i18nBean.selectLanguage()}" id="submitLanguage" style="visibility: hidden; width: 0px;">
+            </h:commandButton>
+
+        </h:form>
+        -->
+
+        <!--
+        <p><p:button value="#{I18N['application.header.languageFr']}" action="#{i18nBean.changeLanguage('fr')}"/></p>
+        <p><p:button value="#{I18N['application.header.languageEn']}" action="#{i18nBean.changeLanguage('en')}"/></p>
+        -->
 
         <div class="card" id="headerMenuButtonContainer">
             <p:commandButton id="dynaButton" value="#{I18N['application.header.menuTitle']}" type="button" icon="pi pi-bars" class="ui-button-warning headerMenuButton"/>

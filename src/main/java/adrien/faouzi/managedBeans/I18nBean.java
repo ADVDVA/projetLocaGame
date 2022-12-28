@@ -16,8 +16,8 @@ import javax.inject.Named;
 import org.apache.log4j.Logger;
 
 @Named
-//@SessionScoped
-@ApplicationScoped
+@SessionScoped
+//@ApplicationScoped
 public class I18nBean implements Serializable {
 
 	//private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class I18nBean implements Serializable {
 	private TimeZone timeZone = TimeZone.getTimeZone("Europe/Brussels");
 
 	public void selectLanguage() {
-		log.debug("Selected language: " + language);
+		//log.debug("Selected language: " + language);
 		// Update language
 		//int index = this.language.indexOf("_");
 		//if (index > 0) {
@@ -48,14 +48,14 @@ public class I18nBean implements Serializable {
 		FacesContext.getCurrentInstance().getApplication().setDefaultLocale(locale);
 
 		// Navigation - back to the outcome
-		FacesContext context = FacesContext.getCurrentInstance();
-		String viewId = context.getViewRoot().getViewId();
-		ViewHandler handler = context.getApplication().getViewHandler();
-		UIViewRoot root = handler.createView(context, viewId);
-		root.setViewId(viewId);
-		context.setViewRoot(root);
+		//FacesContext context = FacesContext.getCurrentInstance();
+		//String viewId = context.getViewRoot().getViewId();
+		//ViewHandler handler = context.getApplication().getViewHandler();
+		//UIViewRoot root = handler.createView(context, viewId);
+		//root.setViewId(viewId);
+		//context.setViewRoot(root);
 
-		//return "";
+		//return null;
 	}
 
 	// Getters and Setters
@@ -86,8 +86,9 @@ public class I18nBean implements Serializable {
 	}
 
 
-	public String changeLanguage(String newLanguage){
-		this.setLanguage(newLanguage);
-		return null;
+	public String changeLanguage(String language){
+		this.setLanguage(language);
+        this.selectLanguage();
+		return "accueil";
 	}
 }
