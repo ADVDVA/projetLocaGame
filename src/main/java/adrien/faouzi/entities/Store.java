@@ -9,6 +9,9 @@ import java.util.*;
 })
 @Entity
 @Table(name = "store")
+@NamedQueries(value = {
+        @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore")
+})
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

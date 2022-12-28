@@ -5,8 +5,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 
 import adrien.faouzi.entities.Store;
-import adrien.faouzi.projetlocagame.connexion.EMF;
+import adrien.faouzi.projetlocagame.connexion.MyEMF;
 import javax.persistence.EntityManager;
+
 import adrien.faouzi.services.StoreService;
 import org.apache.log4j.Logger;
 
@@ -21,16 +22,17 @@ public class StoreBean implements Serializable {
      */
     public void loadDataStore()
     {
-        //initialize
-        Logger log = Logger.getLogger(StoreBean.class);
-
-        EntityManager em = EMF.getEM();
-
-        StoreService storeService = new StoreService();
-
         //DB data recovery
         if(this.store == null)
         {
+
+            //initialize
+            Logger log = Logger.getLogger(StoreBean.class);
+            log.info("---------------- A");
+            EntityManager em = MyEMF.getEM();
+            StoreService storeService = new StoreService();
+            log.info("---------------- B");
+
             try
             {
                 //Call of the service that will use the NamedQuery of the "Store" entity
@@ -53,7 +55,7 @@ public class StoreBean implements Serializable {
 
     public Store getStore()
     {
-        loadDataStore();
+        this.loadDataStore();
         return store;
     }
 

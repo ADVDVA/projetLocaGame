@@ -8,9 +8,6 @@ public class StoreService
 {
     /**
      * Store recovery method
-     * @param id
-     * @param em
-     * @return
      */
     public Store findStoreByIdStore(int id, EntityManager em)
     {
