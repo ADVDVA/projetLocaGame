@@ -3,6 +3,10 @@ package adrien.faouzi.entities;
 import javax.persistence.*;
 import java.util.*;
 
+
+@NamedQueries(value = {
+        @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore")
+})
 @Entity
 @Table(name = "store")
 public class Store {
