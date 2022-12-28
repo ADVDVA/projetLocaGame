@@ -1,5 +1,4 @@
-
-/*______global css for connexion page______*/
+/*__global css for connexion page__*/
 
 html{
     background-image: url('../images/imageConnexion.png');
@@ -21,7 +20,21 @@ html{
 }
 
 
-/*______In the body______*/
+/*__In the body__*/
+
+.spaceBottomConnexion{
+    padding-bottom : 40px;
+}
+
+.spaceformeConnexion{
+    margin-top : 20px;
+}
+.inputTextCenter{
+    padding-left : 10%;
+}
+
+
+/*__In the body__*/
 
 .spaceBottomConnexion{
     padding-bottom : 40px;
