@@ -86,8 +86,5 @@ public class I18nBean implements Serializable {
 	public void changeLanguage(String language){
 		this.setLanguage(language);
 		this.selectLanguage();
-
-		Logger log = Logger.getLogger(StoreBean.class);
-        log.info("---------------- "+language);
 	}
 }

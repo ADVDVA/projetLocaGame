@@ -7,7 +7,7 @@ window.addEventListener('load', function(){
             allLanguageOption[i].addEventListener('click', function(){
                 setTimeout(function(){
                     document.getElementById('headerLanguageButtonContainer').submit();
-                }, 5);
+                }, 200);
             });
 
     }, 5);
