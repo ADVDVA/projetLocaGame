@@ -17,17 +17,33 @@
             </h1>
             <h:form>
 
+
                 <h5>#{I18N['application.connexionpage.mailtitle']}</h5>
                 <span class="ui-float-label">
-                    <p:inputText id="float-input" value="#{inputTextView.text}"/>
-                    <p:outputLabel for="@previous" value="#{I18N['application.connexionpage.mailplaceholder']}" class="inputTextCenter"/>
+                    <p:inputText id="float-input" value="#{connexionBean.mail}"
+                                 placeholder="#{I18N['application.connexionpage.mailplaceholder']}"
+                                 label="pattern">
+                        <f:validateRegex pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}+$"/>
+                    </p:inputText>
                 </span>
+                <p:message for="@previous"/>
+                <h:outputText value="#{connexionBean.mail}"/>
+
 
                 <h5>#{I18N['application.connexionpage.passwordtitle']}</h5>
-                <p:password id="toggle" value="#{passwordView.password1}" toggleMask="true" redisplay="true"/>
+                <p:password id="toggle" value="#{connexionBean.password}" toggleMask="true"
+                            redisplay="true"
+                            placeholder="#{I18N['application.connexionpage.passwordplaceholder']}"
+                            required="true"
+                            requiredMessage="#{I18N['application.connexionpage.messageerror']}"
+                            validatorMessage=" test test">
+                    <f:validateRegex pattern="^[a-zA-Z0-9._-]{2,15}+$"/>
+                </p:password>
+                <p:message for="toggle" styleClass="errorMessage"/>
+
 
                 <div class="spaceformeConnexion">
-                    <p:button value="#{I18N['application.connexionpage.buttonsubmit']}"/>
+                    <p:commandButton value="#{I18N['application.connexionpage.buttonsubmit']}" ajax="false" validateClient="true" action="accueil"/>
                 </div>
 
             </h:form>

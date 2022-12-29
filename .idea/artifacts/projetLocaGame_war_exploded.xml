@@ -6,6 +6,7 @@
         <exploded>true</exploded>
         <module>projetLocaGame</module>
         <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
       </options>
     </properties>
     <root id="root">
@@ -24,6 +25,7 @@
           <element id="library" level="project" name="Maven: org.eclipse.persistence:eclipselink:2.7.9" />
           <element id="library" level="project" name="Maven: org.eclipse.persistence:jakarta.persistence:2.2.3" />
           <element id="library" level="project" name="Maven: org.eclipse.persistence:commonj.sdo:2.1.1" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:2.0.1.Final" />
           <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.2.0.Final" />
           <element id="library" level="project" name="Maven: jakarta.validation:jakarta.validation-api:2.0.2" />
           <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.4.1.Final" />

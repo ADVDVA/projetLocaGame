@@ -33,9 +33,6 @@ html{
     padding-left : 10%;
 }
 
-
-/*__In the body__*/
-
 .spaceBottomConnexion{
     padding-bottom : 40px;
 }
@@ -45,4 +42,10 @@ html{
 }
 .inputTextCenter{
     padding-left : 10%;
+}
+
+/*__Error message style__*/
+
+.errorMessage{
+    color: #FF7659;
 }
