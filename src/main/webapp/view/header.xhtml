@@ -26,32 +26,14 @@
     <div id="headerLoginBlock">
         <p:commandButton value="#{I18N['application.header.loginButton']}" action="#{connexionBean.goToPageConnexion}" class="ui-button-warning" id="headerLoginButton"/>
 
-        <!--
         <h:form id="headerLanguageButtonContainer">
             <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
 
-                <p:menuitem value="#{I18N['application.header.languageFr']}"/>
-                <p:menuitem value="#{I18N['application.header.languageEn']}"/>
+                <p:menuitem value="#{I18N['application.header.languageFr']}" class="languageOption" action="#{i18nBean.changeLanguage('fr','headerLanguageButtonContainer')}"/>
+                <p:menuitem value="#{I18N['application.header.languageEn']}" class="languageOption" action="#{i18nBean.changeLanguage('en','headerLanguageButtonContainer')}"/>
 
             </p:menuButton>
         </h:form>
-        -->
-
-
-        <h:form id="headerLanguageButtonContainer">
-            <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
-
-                <p:menuitem value="#{I18N['application.header.languageFr']}" class="languageOption" action="#{i18nBean.changeLanguage('fr')}"/>
-                <p:menuitem value="#{I18N['application.header.languageEn']}" class="languageOption" action="#{i18nBean.changeLanguage('en')}"/>
-
-            </p:menuButton>
-        </h:form>
-
-
-        <!--
-        <p><p:button value="#{I18N['application.header.languageFr']}" /></p>
-        <p><p:button value="#{I18N['application.header.languageEn']}" /></p>
-        -->
 
         <div class="card" id="headerMenuButtonContainer">
             <p:commandButton id="dynaButton" value="#{I18N['application.header.menuTitle']}" type="button" icon="pi pi-bars" class="ui-button-warning headerMenuButton"/>

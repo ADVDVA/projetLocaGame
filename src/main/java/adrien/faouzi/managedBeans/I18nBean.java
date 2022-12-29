@@ -14,21 +14,21 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.log4j.Logger;
+import org.primefaces.PrimeFaces;
 
 @Named
 @SessionScoped
-//@ApplicationScoped
 public class I18nBean implements Serializable {
 
 	//private static final long serialVersionUID = 1L;
 
 	// Log4j
 	//@Inject
-	private transient Logger log;
+	//private transient Logger log;
 
 	private Locale locale = FacesContext.getCurrentInstance().getApplication().getDefaultLocale();
 	private String language;
-	private TimeZone timeZone = TimeZone.getTimeZone("Europe/Brussels");
+	//private TimeZone timeZone = TimeZone.getTimeZone("Europe/Brussels");
 
 	public void selectLanguage() {
 		//log.debug("Selected language: " + language);
@@ -70,21 +70,25 @@ public class I18nBean implements Serializable {
 
 	public Locale getLocale() { return locale; }
 
-	public TimeZone getTimeZone() {
-		return timeZone;
-	}
+	//public TimeZone getTimeZone() {
+	//	return timeZone;
+	//}
 
-	public void setTimeZone(TimeZone timeZone) {
-		this.timeZone = timeZone;
-	}
+	//public void setTimeZone(TimeZone timeZone) {
+	//	this.timeZone = timeZone;
+	//}
 
-	public Date getDate() {
-		return new Date();
-	}
+	//public Date getDate() {
+	//	return new Date();
+	//}
 
 
-	public void changeLanguage(String language){
+	public void changeLanguage(String language, String idForm){
+		//apply and load new language.
 		this.setLanguage(language);
 		this.selectLanguage();
+
+		//call js function to submit form after execution.
+		PrimeFaces.current().executeScript("submitLanguageForm(\""+idForm+"\")");
 	}
 }
