@@ -25,6 +25,7 @@
     <div id="headerLoginBlock">
         <p:commandButton value="#{I18N['application.header.loginButton']}" action="#{connexionBean.goToPageConnexion}" class="ui-button-warning" id="headerLoginButton"/>
 
+        <!--
         <h:form id="headerLanguageButtonContainer">
             <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
 
@@ -33,20 +34,18 @@
 
             </p:menuButton>
         </h:form>
-        <!--
+        -->
+
+
         <h:form id="headerLanguageButtonContainer">
             <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
 
-                <p:menuitem value="#{I18N['application.header.languageFr']}"  onclick="getElementById('headerLanguageButtonContainer:submitLanguage').click();"/>
-                <p:menuitem value="#{I18N['application.header.languageEn']}"  onclick="getElementById('headerLanguageButtonContainer:submitLanguage').click();"/>
+                <p:menuitem value="#{I18N['application.header.languageFr']}" class="languageOption" action="#{I18nBean.changeLanguage('fr')}"/>
+                <p:menuitem value="#{I18N['application.header.languageEn']}" class="languageOption" action="#{I18nBean.changeLanguage('en')}"/>
 
             </p:menuButton>
-
-            <h:commandButton value="#{I18N['application.header.language']}" id="submitLanguage" style="visibility: hidden; width: 0px;">
-            </h:commandButton>
-
         </h:form>
-        -->
+
 
         <!--
         <p><p:button value="#{I18N['application.header.languageFr']}" /></p>
@@ -60,7 +59,7 @@
                 <p:menuitem value="#{I18N['application.header.menuListHome']}" url="#{request.contextPath}/view/welcome.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menuListAccount']}" url="#{request.contextPath}/view/welcome.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menuListUsers']}" url="#{request.contextPath}/view/welcome.xhtml"/>
-                <p:menuitem value="#{I18N['application.header.menuListCatalog']}" url="#{request.contextPath}/view/welcome.xhtml"/>
+                <p:menuitem value="#{I18N['application.header.menuListCatalog']}" url="#{request.contextPath}/view/catalog.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menuListCart']}" url="#{request.contextPath}/view/welcome.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menuListOrders']}" url="#{request.contextPath}/view/welcome.xhtml"/>
 
