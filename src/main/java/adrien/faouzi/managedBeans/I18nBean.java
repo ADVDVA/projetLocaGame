@@ -48,12 +48,12 @@ public class I18nBean implements Serializable {
 		FacesContext.getCurrentInstance().getApplication().setDefaultLocale(locale);
 
 		// Navigation - back to the outcome
-		FacesContext context = FacesContext.getCurrentInstance();
-		String viewId = context.getViewRoot().getViewId();
-		ViewHandler handler = context.getApplication().getViewHandler();
-		UIViewRoot root = handler.createView(context, viewId);
-		root.setViewId(viewId);
-		context.setViewRoot(root);
+		//FacesContext context = FacesContext.getCurrentInstance();
+		//String viewId = context.getViewRoot().getViewId();
+		//ViewHandler handler = context.getApplication().getViewHandler();
+		//UIViewRoot root = handler.createView(context, viewId);
+		//root.setViewId(viewId);
+		//context.setViewRoot(root);
 
 		//return null;
 	}
@@ -68,10 +68,7 @@ public class I18nBean implements Serializable {
 		this.language = language;
 	}
 
-	public Locale getLocale() {
-
-		return locale;
-	}
+	public Locale getLocale() { return locale; }
 
 	public TimeZone getTimeZone() {
 		return timeZone;
@@ -83,5 +80,11 @@ public class I18nBean implements Serializable {
 
 	public Date getDate() {
 		return new Date();
+	}
+
+
+	public void changeLanguage(String language){
+		this.setLanguage(language);
+		this.selectLanguage();
 	}
 }
