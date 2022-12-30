@@ -1,4 +1,4 @@
-package adrien.faouzi.enumération;
+package adrien.faouzi.enumeration;
 
 public enum Pegi
 {
@@ -26,5 +26,9 @@ public enum Pegi
      */
     public String getPegi() {
         return type;
+    }
+
+    public int getPegiInt(){
+        return Integer.parseInt(type);
     }
 }

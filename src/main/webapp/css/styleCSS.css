@@ -110,3 +110,15 @@ font-weight: bold;
 .errorMessage {
 color: red;
 }
+
+/*______ catalogue css ______*/
+
+#catalogue #formTableProduct th:hover{
+    color: #000;
+    background-color: #eee;
+}
+
+.tableFilter td{
+    border: none !important;
+    padding: 0 !important;
+}

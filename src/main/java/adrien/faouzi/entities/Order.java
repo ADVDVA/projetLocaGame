@@ -1,7 +1,7 @@
 package adrien.faouzi.entities;
 
-import adrien.faouzi.enumération.RentalModOfPayment;
-import adrien.faouzi.enumération.ReturnModOfPayment;
+import adrien.faouzi.enumeration.RentalModOfPayment;
+import adrien.faouzi.enumeration.ReturnModOfPayment;
 
 import javax.persistence.*;
 import java.time.LocalDateTime ;

@@ -1,4 +1,4 @@
-package adrien.faouzi.enumération;
+package adrien.faouzi.enumeration;
 
 public enum RentalModOfPayment
 {

@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html">
 
 <!-- ______ ______ -->
@@ -12,26 +13,54 @@
         #{I18N['application.header.menuListCatalog']}
     </ui:define>
     <ui:define name="content">
+        <div id="catalogue">
 
-        <!-- a finir !!! -->
+            <!-- http://www.primefaces.org:8080/showcase/ui/data/datatable/columns.xhtml?jfwid=74bbf example one -->
+            <!-- https://www.logicbig.com/tutorials/misc/primefaces/data-table.html example two-->
 
-        <h:form>
-            <p:dataTable id="customers" var="customer" value="#{dtColumnsView.customers}" widgetVar="customersTable"
-                         filteredValue="#{dtColumnsView.filteredCustomers}">
-
-                <p:columns value="#{dtColumnsView.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
-                    <f:facet name="filter">
-                        <p:datePicker selectionMode="range" onchange="PF('customersTable').filter()" rendered="#{column.type eq 'date'}"/>
-                        <p:selectOneMenu onchange="PF('customersTable').filter()" rendered="#{column.type eq 'enum'}">
-                            <f:selectItem itemValue="#{null}" itemLabel=""/>
-                            <f:selectItems value="#{column.klazz.enumConstants}" />
-                        </p:selectOneMenu>
+            <h:form id="formTableProduct">
+                <p:dataTable var="product" value="#{productSessionBean.productsFiltered}">
+                    <f:facet name="header">
+                        <table class="tableFilter">
+                            <tr>
+                                <td>
+                                    <!-- !!! a finir filtre input !!! -->
+                                    <p:inputText/>
+                                </td>
+                                <td>ProductName</td>
+                                <td>Pegi</td>
+                                <td>ReleaseDate</td>
+                                <td>Enable</td>
+                            </tr>
+                        </table>
                     </f:facet>
-                </p:columns>
 
-            </p:dataTable>
-        </h:form>
+                    <p:column headerText="Id #{productSessionBean.orderFilteredLogoOrder('Id')}">
+                        <h:outputText value="#{product.id}"/>
+                    </p:column>
 
+                    <p:column headerText="ProductName #{productSessionBean.orderFilteredLogoOrder('ProductName')}">
+                        <h:outputText value="#{product.productName}"/>
+                    </p:column>
+
+                    <p:column headerText="Pegi #{productSessionBean.orderFilteredLogoOrder('Pegi')}">
+                        <span>pegi </span>
+                        <h:outputText value="#{product.pegiFormatInt}"/>
+                    </p:column>
+
+                    <p:column headerText="ReleaseDate #{productSessionBean.orderFilteredLogoOrder('ReleaseDate')}">
+                        <h:outputText value="#{product.releaseDateFormatDate}">
+                            <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Enable #{productSessionBean.orderFilteredLogoOrder('Enable')}">
+                        <h:outputText value="#{product.enableFormatStr}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+        </div>
     </ui:define>
 </ui:composition>
 

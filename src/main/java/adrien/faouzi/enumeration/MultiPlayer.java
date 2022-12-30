@@ -1,9 +1,10 @@
-package adrien.faouzi.enumération;
+package adrien.faouzi.enumeration;
 
-public enum TypeAddress
+public enum MultiPlayer
 {
-    LIVRAISON ("livraison"),
-    FACTURATION ("facturation");
+    SOLO ("solo"),
+    MULTI ("multi"),
+    SOLOMULTI ("solo multi");
 
     /**
      * field
@@ -13,7 +14,7 @@ public enum TypeAddress
     /**
      * one argument constructor
      */
-    TypeAddress(String type) {
+    MultiPlayer(String type) {
 
         this.type =type;
     }
@@ -21,7 +22,7 @@ public enum TypeAddress
     /**
      * getter method
      */
-    public String getTypeAddress() {
+    public String getMultiPlayer() {
         return type;
     }
 }
