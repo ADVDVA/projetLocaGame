@@ -1,11 +1,9 @@
 package adrien.faouzi.managedBeans;
-import adrien.faouzi.enumération.MultiPlayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 @Named

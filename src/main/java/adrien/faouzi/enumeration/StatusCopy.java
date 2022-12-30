@@ -1,10 +1,10 @@
-package adrien.faouzi.enumération;
+package adrien.faouzi.enumeration;
 
-public enum MultiPlayer
+public enum StatusCopy
 {
-    SOLO ("solo"),
-    MULTI ("multi"),
-    SOLOMULTI ("solo multi");
+    DISPONIBLE ("disponible"),
+    LOUER ("louer"),
+    CASSER ("casser");
 
     /**
      * field
@@ -14,7 +14,7 @@ public enum MultiPlayer
     /**
      * one argument constructor
      */
-    MultiPlayer(String type) {
+    StatusCopy(String type) {
 
         this.type =type;
     }
@@ -22,7 +22,7 @@ public enum MultiPlayer
     /**
      * getter method
      */
-    public String getMultiPlayer() {
+    public String getStatusCopy() {
         return type;
     }
 }

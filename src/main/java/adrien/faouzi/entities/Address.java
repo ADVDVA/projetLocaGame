@@ -1,6 +1,6 @@
 package adrien.faouzi.entities;
 
-import adrien.faouzi.enumération.TypeAddress;
+import adrien.faouzi.enumeration.TypeAddress;
 
 import javax.persistence.*;
 import java.util.*;

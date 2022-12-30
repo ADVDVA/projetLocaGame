@@ -1,6 +1,6 @@
 package adrien.faouzi.entities;
 
-import adrien.faouzi.enumération.StatusCopy;
+import adrien.faouzi.enumeration.StatusCopy;
 
 import javax.persistence.*;
 import java.util.*;

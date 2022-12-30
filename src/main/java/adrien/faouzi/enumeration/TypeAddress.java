@@ -1,10 +1,9 @@
-package adrien.faouzi.enumération;
+package adrien.faouzi.enumeration;
 
-public enum StatusCopy
+public enum TypeAddress
 {
-    DISPONIBLE ("disponible"),
-    LOUER ("louer"),
-    CASSER ("casser");
+    LIVRAISON ("livraison"),
+    FACTURATION ("facturation");
 
     /**
      * field
@@ -14,7 +13,7 @@ public enum StatusCopy
     /**
      * one argument constructor
      */
-    StatusCopy(String type) {
+    TypeAddress(String type) {
 
         this.type =type;
     }
@@ -22,7 +21,7 @@ public enum StatusCopy
     /**
      * getter method
      */
-    public String getStatusCopy() {
+    public String getTypeAddress() {
         return type;
     }
 }
