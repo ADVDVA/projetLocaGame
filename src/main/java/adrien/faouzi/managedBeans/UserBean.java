@@ -1,6 +1,6 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.enumération.TypeAddress;
+import adrien.faouzi.enumeration.TypeAddress;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;

@@ -1,5 +1,5 @@
 package adrien.faouzi.managedBeans;
-import adrien.faouzi.enumération.MultiPlayer;
+import adrien.faouzi.enumeration.MultiPlayer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
