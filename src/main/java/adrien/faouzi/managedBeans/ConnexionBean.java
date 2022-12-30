@@ -2,8 +2,6 @@ package adrien.faouzi.managedBeans;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Named
@@ -11,8 +9,9 @@ import java.io.Serializable;
 public class ConnexionBean implements Serializable {
 
     /**
-     * field
+     * fields
      */
+
     private String mail;
 
     private String password;
