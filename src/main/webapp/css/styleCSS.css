@@ -157,12 +157,37 @@ color: red;
 
 /*______ catalogue css ______*/
 
-#catalogue #formTableProduct th:hover{
-    color: #000;
-    background-color: #eee;
+.tableHeaderNoPadding > div.ui-datatable-header{
+    margin: 0;
+    padding: 0 !important;
+}
+.containerTableHeaderFilter > *{
+    padding: 16px;
+}
+.containerTableHeaderFilter > * > input{
+    width: 100%;
+}
+.containerTableHeaderFilter > * > i{
+    display: block;
+    width: 16px;
+    font-size: 16px;
+
+    text-align: center;
+    margin: 8px auto 0 auto;
+}
+.containerTableHeaderFilter > * > i:hover{
+    color: #c0c0c0;
 }
 
-.tableFilter td{
-    border: none !important;
-    padding: 0 !important;
+button[type="hidden"]{
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 0;
+}
+button[type="hidden"] > *{
+    display: none;
 }

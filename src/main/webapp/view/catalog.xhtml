@@ -15,46 +15,60 @@
     <ui:define name="content">
         <div id="catalogue">
 
-            <!-- http://www.primefaces.org:8080/showcase/ui/data/datatable/columns.xhtml?jfwid=74bbf example one -->
-            <!-- https://www.logicbig.com/tutorials/misc/primefaces/data-table.html example two-->
-
-            <h:form id="formTableProduct">
-                <p:dataTable var="product" value="#{productSessionBean.productsFiltered}">
+            <h:form>
+                <p:dataTable var="product" value="#{productSessionBean.productsFiltered}" class="tableHeaderNoPadding tableHeaderTitleCenter">
                     <f:facet name="header">
-                        <table class="tableFilter">
-                            <tr>
-                                <td>
-                                    <!-- !!! a finir filtre input !!! -->
-                                    <p:inputText/>
-                                </td>
-                                <td>ProductName</td>
-                                <td>Pegi</td>
-                                <td>ReleaseDate</td>
-                                <td>Enable</td>
-                            </tr>
-                        </table>
+
+                        <div class="containerFlex containerTableHeaderFilter">
+                            <div class="flexGrowOne">
+                                <p:inputText/>
+                                <i class="#{productSessionBean.getOrderIcon('Id')}" onclick="clickId('editOrderTableProductId')"/>
+                                <p:commandButton type="hidden" id="editOrderTableProductId" action="#{productSessionBean.editOrderTableProduct('Id')}" update="@form"/>
+                            </div>
+                            <div class="flexGrowOne">
+                                <p:inputText/>
+                                <i class="#{productSessionBean.getOrderIcon('ProductName')}" onclick="clickId('editOrderTableProductName')"/>
+                                <p:commandButton type="hidden" id="editOrderTableProductName" action="#{productSessionBean.editOrderTableProduct('ProductName')}" update="@form"/>
+                            </div>
+                            <div class="flexGrowOne">
+                                <p:inputText/>
+                                <i class="#{productSessionBean.getOrderIcon('Pegi')}" onclick="clickId('editOrderTableProductPegi')"/>
+                                <p:commandButton type="hidden" id="editOrderTableProductPegi" action="#{productSessionBean.editOrderTableProduct('Pegi')}" update="@form"/>
+                            </div>
+                            <div class="flexGrowOne">
+                                <p:inputText/>
+                                <i class="#{productSessionBean.getOrderIcon('ReleaseDate')}" onclick="clickId('editOrderTableProductReleaseDate')"/>
+                                <p:commandButton type="hidden" id="editOrderTableProductReleaseDate" action="#{productSessionBean.editOrderTableProduct('ReleaseDate')}" update="@form"/>
+                            </div>
+                            <div class="flexGrowOne">
+                                <p:inputText/>
+                                <i class="#{productSessionBean.getOrderIcon('Enable')}" onclick="clickId('editOrderTableProductEnable')"/>
+                                <p:commandButton type="hidden" id="editOrderTableProductEnable" action="#{productSessionBean.editOrderTableProduct('Enable')}" update="@form"/>
+                            </div>
+                        </div>
+
                     </f:facet>
 
-                    <p:column headerText="Id #{productSessionBean.orderFilteredLogoOrder('Id')}">
+                    <p:column headerText="Id">
                         <h:outputText value="#{product.id}"/>
                     </p:column>
 
-                    <p:column headerText="ProductName #{productSessionBean.orderFilteredLogoOrder('ProductName')}">
+                    <p:column headerText="ProductName">
                         <h:outputText value="#{product.productName}"/>
                     </p:column>
 
-                    <p:column headerText="Pegi #{productSessionBean.orderFilteredLogoOrder('Pegi')}">
+                    <p:column headerText="Pegi">
                         <span>pegi </span>
                         <h:outputText value="#{product.pegiFormatInt}"/>
                     </p:column>
 
-                    <p:column headerText="ReleaseDate #{productSessionBean.orderFilteredLogoOrder('ReleaseDate')}">
+                    <p:column headerText="ReleaseDate">
                         <h:outputText value="#{product.releaseDateFormatDate}">
                             <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Enable #{productSessionBean.orderFilteredLogoOrder('Enable')}">
+                    <p:column headerText="Enable">
                         <h:outputText value="#{product.enableFormatStr}"/>
                     </p:column>
                 </p:dataTable>
