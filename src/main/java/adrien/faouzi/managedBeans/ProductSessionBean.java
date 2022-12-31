@@ -1,11 +1,14 @@
 package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.Product;
+import adrien.faouzi.utility.UtilityProcessing;
+import com.mysql.jdbc.log.Log;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named
 @SessionScoped
@@ -25,19 +28,24 @@ public class ProductSessionBean implements Serializable {
     }
 
 
-    private String orderFiltered = "Id";
 
-    public void setOrderFiltered(String orderFiltered){
-        this.orderFiltered = orderFiltered;
+    private String order = "Id";
+    private boolean orderAsc = true;
 
-        //reload table catalogue. !!! a faire !!!
+    public void editOrderTableProduct(String order){
+
+        if(this.order.equals(order)){
+            orderAsc = !orderAsc;
+        }else{
+            orderAsc = true;
+            this.order = order;
+        }
+
     }
 
-    public String orderFilteredLogoOrder(String columnName){
-        return (isOrderFilteredOrder(columnName)? "⌄": "");
+    public String getOrderIcon(String order){
+        if(!this.order.equals(order))
+            return "pi pi-circle-off";
+        return ((orderAsc)? "pi pi-chevron-circle-down": "pi pi-chevron-circle-up");
     }
-    public boolean isOrderFilteredOrder(String columnName){
-        return orderFiltered.equals(columnName);
-    }
-
 }

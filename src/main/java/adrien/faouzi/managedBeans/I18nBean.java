@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewHandler;
@@ -29,6 +30,7 @@ public class I18nBean implements Serializable {
 	private Locale locale = FacesContext.getCurrentInstance().getApplication().getDefaultLocale();
 	private String language;
 	//private TimeZone timeZone = TimeZone.getTimeZone("Europe/Brussels");
+
 
 	public void selectLanguage() {
 		//log.debug("Selected language: " + language);
