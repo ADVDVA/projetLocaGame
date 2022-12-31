@@ -47,6 +47,50 @@
     flex-grow: 1;
 }
 
+/*______ formulary css ______*/
+
+.responsiveForm{
+    width: 50%;
+    min-width : 600px;
+    margin : 0 auto;
+}
+
+.responsiveInput{
+    width : 100%;
+    /*display: flex;*/
+}
+
+.responsiveInput > *, .responsiveSubmit{
+     /*width: 32%;*/
+
+     display: flex;
+}
+
+.responsiveInput > *:first-child > *{
+    width : 50%;
+}
+
+.responsiveInput > *:first-child > *:nth-child(2) > *:first-child{
+    width: 100%;
+
+}
+
+.responsiveInput > *:nth-child(2){
+    width: 99%;
+}
+
+.responsiveSubmit > *{
+    width: 25%;
+    margin : 0 12.5% !important;
+}
+
+/*______ title css ______*/
+
+h1{
+    text-align : center ;
+    margin : 20px 0 ;
+}
+
 /*______ header css ______*/
 
 #header #headerLogoBlock{

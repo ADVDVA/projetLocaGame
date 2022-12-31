@@ -3,6 +3,7 @@ package adrien.faouzi.managedBeans;
 import adrien.faouzi.enumeration.TypeAddress;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.validation.constraints.Pattern;
@@ -43,7 +44,8 @@ public class UserBean implements Serializable
     @Pattern(regexp= "^[a-zA-Z1-9]{1,20}")
     private String box;
 
-    private int postalCode;
+    @Pattern(regexp = "^[0-9]{1,}$")
+    private String postalCode;
     private String City;
     private String country;
 
@@ -65,15 +67,17 @@ public class UserBean implements Serializable
         maxDate = new Date(today.getTime()- (365  * oneDay) * 18 -( 4 * oneDay) );// *18 pour 18 ans
     }
 
-
     /**
      * validation méthod
      */
-//    public String validationAccount()
-//    {
+    public String validationAccount()
+    {
 //        // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
             // vérifier mot de passe avec l'autre mot de passe.
-//    }
+        return "accueil";
+    }
+
+
 
     /**
      * Getter and setter method
@@ -183,11 +187,11 @@ public class UserBean implements Serializable
     }
 
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

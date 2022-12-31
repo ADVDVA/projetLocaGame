@@ -16,105 +16,140 @@
         <h1>
             <h:outputText value="#{I18N['application.inscriptionpage.title']}"/>
         </h1>
-        <h:form>
+        <h:form class="responsiveForm">
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_lastname_inscription" value="#{I18N['application.inscriptionpage.lastnametitle']}"/>
-                    <p:inputText id="input_lastname_inscription" value="#{userBean.lastName}"
-                                 placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}">
-                    </p:inputText>
-                <p:message for="@previous"/>
+                <p:inputText id="input_lastname_inscription" value="#{userBean.lastName}"
+                             placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"
+                             validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}"
+                             required="true">
+                </p:inputText>
+            </span>
+            <p:message for="@previous"/>
             </span>
 
 
+            <span class="responsiveInput">
             <span>
                  <p:outputLabel for="input_firstame_inscription" value="#{I18N['application.inscriptionpage.firstnametitle']}"/>
                     <p:inputText id="input_firstame_inscription" value="#{userBean.firstName}"
                                  placeholder="#{I18N['application.inscriptionpage.firstnameplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}">
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}"
+                                 required="true">
                     </p:inputText>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
-                <p:outputLabel for="minmax" value="#{I18N['application.inscriptionpage.daysOfBirthtitle']}"/>
+                <p:outputLabel for="minmax" value="#{I18N['application.inscriptionpage.dayofbirthtitle']}"/>
                 <p:datePicker id="minmax" value="#{userBean.dateOfBirth}" mindate="#{userBean.minDate}"
-                              maxdate="#{userBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true" pattern="dd.MM.yyyy"/>
+                              placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
+                              maxdate="#{userBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true"
+                              pattern="dd.MM.yyyy"
+                              validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}"
+                              required="true"/>
+            </span>
+            <p:message for="@previous"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                  <p:outputLabel for="input_phone_inscription" value="#{I18N['application.inscriptionpage.phonetitle']}"/>
                     <p:inputText id="input_phone_inscription" value="#{userBean.phone}"
                                  placeholder="#{I18N['application.inscriptionpage.phoneplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}">
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}"
+                                 required="true">
                     </p:inputText>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                  <p:outputLabel for="input_mail_inscription" value="#{I18N['application.inscriptionpage.mailtitle']}"/>
                     <p:inputText id="input_mail_inscription" value="#{userBean.mail}"
                                  placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}">
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}"
+                                 required="true">
                     </p:inputText>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_password_inscription" value="#{I18N['application.inscriptionpage.passwordtitle']}"/>
                 <p:password id="input_password_inscription" value="#{userBean.password}" toggleMask="true"
                             redisplay="true"
                             placeholder="#{I18N['application.inscriptionpage.passwordplaceholder']}"
-                            validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}">
+                            validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}"
+                            required="true">
                 </p:password>
+            </span>
                 <p:message for="@previous" styleClass="errorMessage"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_passwordverification_inscription" value="#{I18N['application.inscriptionpage.passwordverificationtitle']}"/>
                 <p:password id="input_passwordverification_inscription" value="#{userBean.passwordVerify}" toggleMask="true"
                             redisplay="true"
                             placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}"
-                            validatorMessage="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}">
+                            validatorMessage="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"
+                            required="true">
                 </p:password>
+            </span>
                 <p:message for="@previous" styleClass="errorMessage"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                  <p:outputLabel for="input_street_inscription" value="#{I18N['application.inscriptionpage.streettitle']}"/>
                     <p:inputText id="input_street_inscription" value="#{userBean.street}"
                                  placeholder="#{I18N['application.inscriptionpage.streetplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}">
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}"
+                                 required="true">
                     </p:inputText>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_number_inscription" value="#{I18N['application.inscriptionpage.numbertitle']}"/>
                 <p:inputNumber id="input_number_inscription" value="#{userBean.number}"
                                placeholder="#{I18N['application.inscriptionpage.numberplaceholder']}"
                                validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}"
-                               minValue="1">
+                               required="true"
+                               emptyValue="null">
                 </p:inputNumber>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
+            <span class="responsiveInput">
             <span>
                  <p:outputLabel for="input_box_inscription" value="#{I18N['application.inscriptionpage.boxtitle']}"/>
                     <p:inputText id="input_box_inscription" value="#{userBean.box}"
                                  placeholder="#{I18N['application.inscriptionpage.boxplaceholder']}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorbox']}">
                     </p:inputText>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_country_inscription" value="#{I18N['application.inscriptionpage.countrytitle']}"/>
                 <p:selectOneMenu id="input_country_inscription" value="#{userBean.country}"
                                  hideNoSelectionOption="#{not empty userBean.hideNoSelectOption}"
-                                   required="true">
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}"
+                                 required="true">
                     <p:ajax update="@this" process="@this"/>
                     <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="#{null}" noSelectionOption="true"/>
                     <f:selectItem itemLabel="Option1" itemValue="Option1"/>
@@ -123,22 +158,28 @@
                     <!--<f:selectItem itemLabel="Option1" itemValue="Option1"/>-->
                 </p:selectOneMenu>
             </span>
+                <p:message for="@previous"/>
+            </span>
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_postalcode_inscription" value="#{I18N['application.inscriptionpage.postalcodetitle']}"/>
-                <p:inputNumber id="input_postalcode_inscription" value="#{userBean.postalCode}"
+                <p:inputText id="input_postalcode_inscription" value="#{userBean.postalCode}"
                                placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"
                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}"
-                               minValue="1">
-                </p:inputNumber>
+                               required="true">
+                </p:inputText>
+            </span>
                 <p:message for="@previous"/>
             </span>
 
 
+            <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_city_inscription" value="#{I18N['application.inscriptionpage.citytitle']}"/>
                 <p:selectOneMenu id="input_city_inscription" value="#{userBean.city}"
                                  hideNoSelectionOption="#{not empty userBean.hideNoSelectOption}"
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}"
                                  required="true">
                     <p:ajax update="@this" process="@this"/>
                     <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}" noSelectionOption="true"/>
@@ -148,17 +189,21 @@
                     <!--<f:selectItem itemLabel="Option1" itemValue="Option1"/>-->
                 </p:selectOneMenu>
             </span>
+                <p:message for="@previous"/>
+            </span>
 
+            <span class="responsiveSubmit">
+                <p:commandButton value="#{I18N['application.connexionpage.buttonsubmit']}" ajax="false"
+                                 validateClient="true"
+                                 class="ui-button-success"
+                                 action="connexion"/>
+                <p:commandButton value="#{I18N['application.connexionpage.buttonreturn']}"
+                                 class="ui-button-danger"
+                                 action="connexionBean.goToPageAccueil"/>
+            </span>
 
-
-
-            <p:commandButton value="test" ajax="false" validateClient="true" action="accueil"/>
-
-
-        </h:form>
-        <p class ="spaceBottomConnexion">#{I18N['application.connexionpage.messageinscription']}<h:link value="#{I18N['application.connexionpage.linkinscription']}" outcome="/accueil"/></p>
+    </h:form>
     </div>
-
-</ui:define>
+    </ui:define>
 </ui:composition>
-        </html>
+</html>
