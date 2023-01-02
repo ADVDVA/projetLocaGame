@@ -78,6 +78,14 @@ public class UserBean implements Serializable
     }
 
 
+    /**
+     * Verification method
+     */
+    public String lastVerificationSignIn()
+    {
+        return "/view/accueil";
+    }
+
 
     /**
      * Getter and setter method

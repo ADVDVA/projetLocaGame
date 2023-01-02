@@ -196,13 +196,19 @@
                 <p:commandButton value="#{I18N['application.connexionpage.buttonsubmit']}" ajax="false"
                                  validateClient="true"
                                  class="ui-button-success"
-                                 action="connexion"/>
-                <p:commandButton value="#{I18N['application.connexionpage.buttonreturn']}"
-                                 class="ui-button-danger"
-                                 action="connexionBean.goToPageAccueil"/>
+                                 action="#{userBean.lastVerificationSignIn}"/>
+
+            </span>
+    </h:form>
+        <div class="responsiveForm positionCancel">
+            <span class="responsiveSubmit">
+                <span class="flexGrowOne"> </span>
+                <p:commandButton value="#{I18N['application.connexionpage.buttonreturn']}" action="#{connexionBean.goToPageConnexion}"
+                                 class="ui-button-danger" id="cancelButtonSignUp"/>
             </span>
 
-    </h:form>
+    </div>
+
     </div>
     </ui:define>
 </ui:composition>

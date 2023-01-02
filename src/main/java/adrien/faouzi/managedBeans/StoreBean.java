@@ -1,5 +1,6 @@
 package adrien.faouzi.managedBeans;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -20,33 +21,33 @@ public class StoreBean implements Serializable {
     /**
      * DB data recovery
      */
-//    public void loadDataStore()
-//    {
-//        //DB data recovery
-//        if(this.store == null)
-//        {
-//
-//            //initialize
-//            Logger log = Logger.getLogger(StoreBean.class);
-//            log.info("---------------- A");
-//            EntityManager em = EMF.getEM();
-//            StoreService storeService = new StoreService();
-//            log.info("---------------- B");
-//
-//            try
-//            {
-//                //Call of the service that will use the NamedQuery of the "Store" entity
-//                 this.store = storeService.findStoreByIdStore(1, em);
-//
-//            }catch(Exception e)
-//            {
-//                log.info("Erreur de récupération de données de la page du magasin " + e);
-//            }
-//            finally {
-//                em.close();
-//            }
-//        }
-//    }
+    public void loadDataStore()
+    {
+        //DB data recovery
+        if(this.store == null)
+        {
+
+            //initialize
+            Logger log = Logger.getLogger(StoreBean.class);
+            log.info("---------------- A");
+            EntityManager em = EMF.getEM();
+            StoreService storeService = new StoreService();
+            log.info("---------------- B");
+
+            try
+            {
+                //Call of the service that will use the NamedQuery of the "Store" entity
+                 this.store = storeService.findStoreByIdStore(1, em);
+
+            }catch(Exception e)
+            {
+                log.info("Erreur de récupération de données de la page du magasin " + e);
+            }
+            finally {
+                em.close();
+            }
+        }
+    }
 
     /**
      *getter and setter method
@@ -55,7 +56,7 @@ public class StoreBean implements Serializable {
 
     public Store getStore()
     {
-//        this.loadDataStore();
+        this.loadDataStore();
         return store;
     }
 
