@@ -5,6 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
 <ui:define name="title">
@@ -25,9 +26,10 @@
                              placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"
                              validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}"
                              required="true">
+                    <p:ajax update="messageLastName" event="keyup"/>
                 </p:inputText>
             </span>
-            <p:message for="@previous"/>
+            <p:message id="messageLastName" for="@previous"/>
             </span>
 
 
@@ -38,9 +40,10 @@
                                  placeholder="#{I18N['application.inscriptionpage.firstnameplaceholder']}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}"
                                  required="true">
+                        <p:ajax update="messageFirstName" event="keyup"/>
                     </p:inputText>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageFirstName" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -52,8 +55,9 @@
                               pattern="dd.MM.yyyy"
                               validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}"
                               required="true"/>
+                <p:ajax update="messageDateOfBirth" event="keyup"/>
             </span>
-            <p:message for="@previous"/>
+            <p:message id="messageDateOfBirth" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -63,9 +67,10 @@
                                  placeholder="#{I18N['application.inscriptionpage.phoneplaceholder']}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}"
                                  required="true">
+                        <p:ajax update="messagePhone" event="keyup"/>
                     </p:inputText>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messagePhone" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -75,9 +80,10 @@
                                  placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}"
                                  required="true">
+                        <p:ajax update="messageMail" event="keyup"/>
                     </p:inputText>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageMail" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -88,9 +94,10 @@
                             placeholder="#{I18N['application.inscriptionpage.passwordplaceholder']}"
                             validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}"
                             required="true">
+                    <p:ajax update="messagePassword" event="keyup"/>
                 </p:password>
             </span>
-                <p:message for="@previous" styleClass="errorMessage"/>
+                <p:message id="messagePassword" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -101,9 +108,10 @@
                             placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}"
                             validatorMessage="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"
                             required="true">
+                    <p:ajax update="messagePasswordVerification" event="keyup"/>
                 </p:password>
             </span>
-                <p:message for="@previous" styleClass="errorMessage"/>
+                <p:message id="messagePasswordVerification" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -113,9 +121,10 @@
                                  placeholder="#{I18N['application.inscriptionpage.streetplaceholder']}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}"
                                  required="true">
+                        <p:ajax update="messageStreet" event="keyup"/>
                     </p:inputText>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageStreet" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -126,9 +135,10 @@
                                validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}"
                                required="true"
                                emptyValue="null">
+                    <p:ajax update="messageNumber" event="keyup"/>
                 </p:inputNumber>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageNumber" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -137,9 +147,10 @@
                     <p:inputText id="input_box_inscription" value="#{userBean.box}"
                                  placeholder="#{I18N['application.inscriptionpage.boxplaceholder']}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorbox']}">
+                        <p:ajax update="messageBox" event="keyup"/>
                     </p:inputText>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageBox" for="@previous"/>
             </span>
 
 
@@ -157,8 +168,9 @@
                     <!-- faire un for avec toute les country -->
                     <!--<f:selectItem itemLabel="Option1" itemValue="Option1"/>-->
                 </p:selectOneMenu>
+                <p:ajax update="messageCountry" event="keyup"/>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageCountry" for="@previous"/>
             </span>
 
             <span class="responsiveInput">
@@ -168,28 +180,42 @@
                                placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"
                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}"
                                required="true">
+
+                 <p:ajax update="messagePostalCode" event="keyup"/>
                 </p:inputText>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messagePostalCode" for="@previous"/>
             </span>
+
+            <!--commandButton hidden redo to fields on postal code-->
+            <p:commandButton type="hidden" id="updatePostalCodeWithCity" action="#{userBean.updatePostalCodeWithCity}"/>
 
 
             <span class="responsiveInput">
             <span>
                 <p:outputLabel for="input_city_inscription" value="#{I18N['application.inscriptionpage.citytitle']}"/>
                 <p:selectOneMenu id="input_city_inscription" value="#{userBean.city}"
-                                 hideNoSelectionOption="#{not empty userBean.hideNoSelectOption}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}"
                                  required="true">
-                    <p:ajax update="@this" process="@this"/>
-                    <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}" noSelectionOption="true"/>
-                    <f:selectItem itemLabel="Option1" itemValue="Option1"/>
-                    <f:selectItem itemLabel="Option2" itemValue="Option2"/>
+                    <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}"/>
+
+                    <!--
+                    <c:choose>
+                        <c:when test="#{userBean.city.size() == 0}">
+                            <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}" noSelectionOption="true"/>
+                        </c:when>
+                        <c:otherwise>
+                            <ui:repeat value="#{userBean.city}" var="city">
+                                <f:selectItem itemLabel="#{city}" itemValue="#{city}"/>
+                            </ui:repeat>
+                        </c:otherwise>
+                    </c:choose>-->
                     <!-- faire un for avec toute les city -->
                     <!--<f:selectItem itemLabel="Option1" itemValue="Option1"/>-->
                 </p:selectOneMenu>
+                <p:ajax update="messageCity" event="keyup"/>
             </span>
-                <p:message for="@previous"/>
+                <p:message id="messageCity" for="@previous"/>
             </span>
 
             <span class="responsiveSubmit">

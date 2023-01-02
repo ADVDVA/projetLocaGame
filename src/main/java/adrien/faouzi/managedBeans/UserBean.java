@@ -9,7 +9,9 @@ import javax.inject.Named;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Named
 @SessionScoped
@@ -46,7 +48,7 @@ public class UserBean implements Serializable
 
     @Pattern(regexp = "^[0-9]{1,}$")
     private String postalCode;
-    private String City;
+    private List<String> city = new ArrayList<>();
     private String country;
 
     private Date dateOfBirth;
@@ -67,25 +69,31 @@ public class UserBean implements Serializable
         maxDate = new Date(today.getTime()- (365  * oneDay) * 18 -( 4 * oneDay) );// *18 pour 18 ans
     }
 
-    /**
-     * validation méthod
-     */
-    public String validationAccount()
-    {
-//        // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
-            // vérifier mot de passe avec l'autre mot de passe.
-        return "accueil";
-    }
-
 
     /**
      * Verification method
      */
     public String lastVerificationSignIn()
     {
+        //        // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
+        // vérifier mot de passe avec l'autre mot de passe.
         return "/accueil";
     }
 
+//    /**
+//     *
+//     */
+//    public void updatePostalCodeWithCity ()
+//    {
+//        if(this.postalCode.equals("6000"))
+//        {
+//            this.city = new ArrayList<>();
+//            this.city.add("Charleroi");
+//            this.city.add("kjhgf");
+//            this.city.add("oiuyt");
+//            this.city.add("Gerpinnes");
+//        }
+//    }
 
     /**
      * Getter and setter method
@@ -166,12 +174,13 @@ public class UserBean implements Serializable
         return box;
     }
 
-    public String getCity() {
-        return City;
+    public List<String> getCity() {
+
+        return city;
     }
 
-    public void setCity(String city) {
-        City = city;
+    public void setCity(List<String> city) {
+        this.city = city;
     }
 
     public void setBox(String box) {

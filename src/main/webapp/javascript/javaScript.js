@@ -24,4 +24,3 @@ function clickId(id){
     }
     domElements[0].click();
 }
-
