@@ -30,7 +30,7 @@ public class UserBean implements Serializable
     @Pattern(regexp = "^[0]{1}[0-9]{2,3}[/]{1}[0-9]{6}$")
     private String phone;
 
-
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}$")
     private String mail;
 
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
