@@ -34,8 +34,8 @@
         <h:form id="headerLanguageButtonContainer">
             <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
 
-                <p:menuitem value="#{I18N['application.header.languageFr']}" class="languageOption" action="#{i18nBean.changeLanguage('fr','headerLanguageButtonContainer')}"/>
-                <p:menuitem value="#{I18N['application.header.languageEn']}" class="languageOption" action="#{i18nBean.changeLanguage('en','headerLanguageButtonContainer')}"/>
+                <p:menuitem value="#{I18N['application.header.languageFr']}" action="#{i18nBean.changeLanguage('fr','headerLanguageButtonContainer')}"/>
+                <p:menuitem value="#{I18N['application.header.languageEn']}" action="#{i18nBean.changeLanguage('en','headerLanguageButtonContainer')}"/>
 
             </p:menuButton>
         </h:form>

@@ -44,8 +44,16 @@ html{
     padding-left : 10%;
 }
 
+#headerLanguageButtonContainer{
+        width: fit-content;
+        position: absolute;
+        right: 10px;
+
+}
+
 /*__Error message style__*/
 
 .errorMessage{
     color: #FF7659;
 }
+

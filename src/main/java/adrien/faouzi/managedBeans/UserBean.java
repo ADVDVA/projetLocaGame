@@ -31,7 +31,7 @@ public class UserBean implements Serializable
 
     private String mail;
 
-    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{1,}$")
+    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     private String password;
 
     private String passwordVerify;
@@ -83,7 +83,7 @@ public class UserBean implements Serializable
      */
     public String lastVerificationSignIn()
     {
-        return "/view/accueil";
+        return "/accueil";
     }
 
 
