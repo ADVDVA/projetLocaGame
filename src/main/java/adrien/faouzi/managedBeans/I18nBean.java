@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ViewHandler;
@@ -13,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import adrien.faouzi.utility.UtilityProcessing;
 import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
 
@@ -39,13 +41,13 @@ public class I18nBean implements Serializable {
 		//	String country = this.language.substring(index + 1);
 		//	locale = new Locale(selectLanguage, country);
 		//} else {
-		locale = new Locale(this.language);
+		//locale = new Locale(this.language);
 		//}
 
 		// Loading language to the view
-		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
-		viewRoot.setLocale(locale);
-		FacesContext.getCurrentInstance().getApplication().setDefaultLocale(locale);
+		//UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+		//viewRoot.setLocale(locale);
+		//FacesContext.getCurrentInstance().getApplication().setDefaultLocale(locale);
 
 		// Navigation - back to the outcome
 		//FacesContext context = FacesContext.getCurrentInstance();
@@ -82,11 +84,22 @@ public class I18nBean implements Serializable {
 	//	return new Date();
 	//}
 
+	private void loadLocal(){
+		locale = new Locale(this.language);
+	}
+
+	public void loadLanguagePage(){
+		UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+		viewRoot.setLocale(locale);
+		FacesContext.getCurrentInstance().getApplication().setDefaultLocale(locale);
+	}
+
 
 	public void changeLanguage(String language, String idForm){
 		//apply and load new language.
 		this.setLanguage(language);
-		this.selectLanguage();
+		this.loadLocal();
+		this.loadLanguagePage();
 
 		//call js function to submit form after execution.
 		PrimeFaces.current().executeScript("submitLanguageForm(\""+idForm+"\")");

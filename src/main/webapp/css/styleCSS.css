@@ -86,9 +86,10 @@
 
 /*______ title css ______*/
 
-h1{
+h2{
     text-align : center ;
     margin : 20px 0 ;
+    font-size: 30px;
 }
 
 /*______ header css ______*/
