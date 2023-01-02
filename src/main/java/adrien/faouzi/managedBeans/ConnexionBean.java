@@ -18,7 +18,7 @@ public class ConnexionBean implements Serializable {
 
     public String goToPageConnexion()
     {
-        return "view/connexion";
+        return "/view/connexion";
     }
 
     public String goToPageAccueil(){
