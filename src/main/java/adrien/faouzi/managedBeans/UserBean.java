@@ -21,13 +21,13 @@ public class UserBean implements Serializable
      * Fields
      */
 
-    @Pattern(regexp = "^[a-zA-Z]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
     private String lastName;
 
-    @Pattern(regexp = "^[a-zA-Z]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
     private String firstName;
 
-    @Pattern(regexp = "^[0]{1}[0-9]{2,3}[/]{1}[0-9]{6}$")
+    @Pattern(regexp = "^[+][0-9]{1,4}[ ]{1}[0-9]{2,4}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}$")
     private String phone;
 
     @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}$")
