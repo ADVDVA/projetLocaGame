@@ -1,48 +1,38 @@
 package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.Product;
+import adrien.faouzi.utility.TableFilter;
+import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Hashtable;
 import java.util.List;
 
 @Named
 @SessionScoped
-public class ProductSessionBean implements Serializable {
+public class ProductSessionBean extends TableFilter implements Serializable {
 
     //all products filtered by user, session scope.
     private List<Product> productsFiltered;
 
     public List<Product> getProductsFiltered(){
-        if(productsFiltered==null)
-            initialiseProductsFiltered();
         return productsFiltered;
     }
 
+    // do SQL research (width filter, order by, pagination managed by PrimeFaces).
     public void initialiseProductsFiltered(){
         productsFiltered = ProductBean.getProducts();
+
+        UtilityProcessing.debug("actualiseResearch");
+
+        //SQL.
+        //select * from *Product*
+        //where (
+        // *all param == this.filter*
+        //)
+        //order by this.order (orderAsc? "asc": "desc")
     }
 
-
-
-    private String order = "Id";
-    private boolean orderAsc = true;
-
-    public void editOrderTableProduct(String order){
-
-        if(this.order.equals(order)){
-            orderAsc = !orderAsc;
-        }else{
-            orderAsc = true;
-            this.order = order;
-        }
-
-    }
-
-    public String getOrderIcon(String order){
-        if(!this.order.equals(order))
-            return "pi pi-circle-off";
-        return ((orderAsc)? "pi pi-chevron-circle-down": "pi pi-chevron-circle-up");
-    }
 }

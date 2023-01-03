@@ -160,14 +160,22 @@ font-weight: bold;
 color: red;
 }
 
-/*______ catalogue css ______*/
+/*______ table css ______*/
 
+body .tableHeaderTitleCenter table thead th,
+body .tableHeaderTitleCenter table tbody td{
+    text-align: center;
+}
 .tableHeaderNoPadding > div.ui-datatable-header{
     margin: 0;
     padding: 0 !important;
 }
-.containerTableHeaderFilter > *{
+.containerTableHeaderFilter:nth-child(1) > *{
     padding: 16px;
+}
+.containerTableHeaderFilter:nth-child(1) input{
+    width: 70%;
+    min-width: 300px;
 }
 .containerTableHeaderFilter > * > input{
     width: 100%;
@@ -183,6 +191,18 @@ color: red;
 .containerTableHeaderFilter > * > i:hover{
     color: #c0c0c0;
 }
+.containerRedirectButtonTable{
+    text-align: right;
+}
+.containerRedirectButtonTable > button{
+    margin-right: 10px;
+}
+.containerRedirectButtonTable > button:last-child{
+    margin-right: 0;
+}
+
+
+
 
 button[type="hidden"]{
     visibility: hidden;

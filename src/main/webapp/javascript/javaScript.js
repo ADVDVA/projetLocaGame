@@ -24,3 +24,12 @@ function clickId(id){
     }
     domElements[0].click();
 }
+
+
+//function for research in table before manny character.
+function researchTable(event, idClickFunction){
+    let valueInput = event.value;
+    if(valueInput.length >= 3){
+        clickId(idClickFunction);
+    }
+}

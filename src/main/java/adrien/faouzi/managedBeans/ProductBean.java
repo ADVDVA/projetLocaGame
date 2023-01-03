@@ -16,7 +16,7 @@ import java.util.List;
 @Named
 @ManagedBean
 @ApplicationScoped
-public class ProductBean implements Serializable {
+public class ProductBean  implements Serializable {
 
     //all products DB in application scope.
     private static List<Product> products;
@@ -27,6 +27,7 @@ public class ProductBean implements Serializable {
         return products;
     }
 
+    //get all row from DB (Application scope).
     private static void initialiseProducts(){
         products = new ArrayList<>();
         products.add(new Product());
