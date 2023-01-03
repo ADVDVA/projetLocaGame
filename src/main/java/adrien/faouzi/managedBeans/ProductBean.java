@@ -49,5 +49,4 @@ public class ProductBean  implements Serializable {
         products.get(2).setReleaseDate(LocalDateTime.now());
         products.get(2).setEnable(true);
     }
-
 }
