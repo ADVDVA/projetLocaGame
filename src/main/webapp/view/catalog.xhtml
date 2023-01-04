@@ -10,14 +10,14 @@
 
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        #{I18N['application.header.menuListCatalog']}
+        #{I18N['application.header.menulistcatalog']}
     </ui:define>
     <ui:define name="content">
         <div id="catalogue">
 
             <div>
                 <h2>
-                    <h:outputText value="#{I18N['application.header.menuListCatalog']}"/>
+                    <h:outputText value="#{I18N['application.header.menulistcatalog']}"/>
                 </h2>
             </div>
 
@@ -44,35 +44,35 @@
                             <div class="flexGrowOne">
                                 <p:inputText value="#{productSessionBean.filter}"
                                              onkeyup="researchTable(this, 'editFilterTableProduct')"
-                                             placeholder="#{I18N['application.cataloguepage.filter']}"/>
+                                             placeholder="#{I18N['application.listpage.filter']}"/>
                                 <p:commandButton type="hidden" id="editFilterTableProduct" update="@form"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
-                                <p:commandButton value="#{I18N['application.cataloguepage.addproductbutton']}" class="ui-button-warning"/>
-                                <p:commandButton value="#{I18N['application.cataloguepage.addproductbutton']}" class="ui-button-warning"/>
+                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"/>
+                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"/>
                             </div>
                         </div>
 
                         <div class="containerFlex containerTableHeaderFilter containerTableHeaderOrder">
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('Id')}" onclick="clickId('editOrderTableProductId')"/>
-                                <p:commandButton type="hidden" id="editOrderTableProductId" action="#{productSessionBean.editOrderTableProduct('Id')}" update="@form"/>
+                                <i class="#{productSessionBean.getOrderIcon('Id')}" onclick="clickId('editOrderTableId')"/>
+                                <p:commandButton type="hidden" id="editOrderTableId" action="#{productSessionBean.editOrderTable('Id')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('ProductName')}" onclick="clickId('editOrderTableProductName')"/>
-                                <p:commandButton type="hidden" id="editOrderTableProductName" action="#{productSessionBean.editOrderTableProduct('ProductName')}" update="@form"/>
+                                <i class="#{productSessionBean.getOrderIcon('ProductName')}" onclick="clickId('editOrderTableName')"/>
+                                <p:commandButton type="hidden" id="editOrderTableName" action="#{productSessionBean.editOrderTable('ProductName')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('Pegi')}" onclick="clickId('editOrderTableProductPegi')"/>
-                                <p:commandButton type="hidden" id="editOrderTableProductPegi" action="#{productSessionBean.editOrderTableProduct('Pegi')}" update="@form"/>
+                                <i class="#{productSessionBean.getOrderIcon('Pegi')}" onclick="clickId('editOrderTablePegi')"/>
+                                <p:commandButton type="hidden" id="editOrderTablePegi" action="#{productSessionBean.editOrderTable('Pegi')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('ReleaseDate')}" onclick="clickId('editOrderTableProductReleaseDate')"/>
-                                <p:commandButton type="hidden" id="editOrderTableProductReleaseDate" action="#{productSessionBean.editOrderTableProduct('ReleaseDate')}" update="@form"/>
+                                <i class="#{productSessionBean.getOrderIcon('ReleaseDate')}" onclick="clickId('editOrderTableReleaseDate')"/>
+                                <p:commandButton type="hidden" id="editOrderTableReleaseDate" action="#{productSessionBean.editOrderTable('ReleaseDate')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('Enable')}" onclick="clickId('editOrderTableProductEnable')"/>
-                                <p:commandButton type="hidden" id="editOrderTableProductEnable" action="#{productSessionBean.editOrderTableProduct('Enable')}" update="@form"/>
+                                <i class="#{productSessionBean.getOrderIcon('Enable')}" onclick="clickId('editOrderTableEnable')"/>
+                                <p:commandButton type="hidden" id="editOrderTableEnable" action="#{productSessionBean.editOrderTable('Enable')}" update="@form"/>
                             </div>
 
                             <div class="flexGrowOne">

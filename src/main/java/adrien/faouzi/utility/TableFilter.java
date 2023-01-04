@@ -5,7 +5,7 @@ public class TableFilter {
     private String order = "Id";
     private boolean orderAsc = true;
 
-    public void editOrderTableProduct(String order){
+    public void editOrderTable(String order){
 
         if(this.order.equals(order)){
             orderAsc = !orderAsc;
