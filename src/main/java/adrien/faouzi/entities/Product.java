@@ -2,9 +2,11 @@ package adrien.faouzi.entities;
 
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
+import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -94,6 +96,9 @@ public class Product {
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
+    public String getEnableFormatStr(){
+        return (enable? "indisponible": "disponible");
+    }
 
     public String getDescription() {
         return description;
@@ -105,6 +110,9 @@ public class Product {
 
     public LocalDateTime getReleaseDate() {
         return releaseDate;
+    }
+    public Date getReleaseDateFormatDate(){
+        return UtilityProcessing.castLocalDateTimeToDate(releaseDate);
     }
 
     public void setReleaseDate(LocalDateTime releaseDate) {
@@ -119,8 +127,14 @@ public class Product {
         this.multiPlayer = multiPlayer;
     }
 
-    public String getPegi() {
+    public String getPegiString() {
         return pegi.getPegi();
+    }
+    public Pegi getPegi() {
+        return pegi;
+    }
+    public int getPegiFormatInt(){
+        return pegi.getPegiInt();
     }
 
     public void setPegi(Pegi pegi) {
