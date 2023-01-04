@@ -10,18 +10,22 @@
 <div class="containerFlex">
     <div id="footerLeftBlock" class="flexGrowOne blockFooter">
         <p>
-            <span>test addresse</span>
             <!-- adresse store (rue + num). -->
+            <h:outputText value="#{storeBean.store.streetStore}"/><span>,&nbsp;</span>
+            <h:outputText value="#{storeBean.store.numberStore}"/>
         </p>
         <p>
-            <span>test addresse</span>
             <!-- adresse store (postal code + city + contry). -->
+            <h:outputText value="#{storeBean.store.idCity.postalCode}"/>&nbsp;
+            <h:outputText value="#{storeBean.store.idCity.cityName}"/>
+            (<h:outputText value="#{storeBean.store.idCity.idCountry.countryName}"/>)
         </p>
         <p>&nbsp;</p>
     </div>
     <div id="footerCenterBlock" class="flexGrowOne blockFooter">
         <p>
             <h:outputText value="#{I18N['application.footer.phoneStore']}"/>&nbsp;
+            <h:outputText value="#{storeBean.store.phone}"/>
         </p>
         <p>&nbsp;</p>
         <p>

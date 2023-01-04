@@ -9,12 +9,20 @@ import javax.persistence.Persistence;
  * 
  * @author Renaud DIANA
  */
-public final class EMF {
-	
+public class EMF {
+
+    protected EntityManager em;
+
 	private static EntityManagerFactory emfInstance =
 	        Persistence.createEntityManagerFactory("locagame");
 
-    private EMF() {}
+    public EMF(){
+        this.em = EMF.getEM();
+    }
+
+    public void close(){
+        this.em.close();
+    }
 
     public static EntityManagerFactory getEMF() {
         return emfInstance;

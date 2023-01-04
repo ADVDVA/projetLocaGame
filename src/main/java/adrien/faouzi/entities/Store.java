@@ -5,6 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore")
+})
 @Entity
 @Table(name = "store")
 public class Store {
