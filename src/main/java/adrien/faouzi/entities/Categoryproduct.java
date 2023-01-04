@@ -5,7 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "categoryproduct")
-public class CategoryProduct {
+public class Categoryproduct {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCategoryProduct", nullable = false)
+    private int id;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idCategory", nullable = false)
     private Category idCategory;
@@ -18,7 +23,7 @@ public class CategoryProduct {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CategoryProduct that = (CategoryProduct) o;
+        Categoryproduct that = (Categoryproduct) o;
         return idCategory == that.idCategory && idProduct == that.idProduct;
     }
 
@@ -41,5 +46,13 @@ public class CategoryProduct {
 
     public void setIdCategory(Category idCategory) {
         this.idCategory = idCategory;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -1,12 +1,10 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
-
-@NamedQueries(value = {
-        @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore")
-})
 @Entity
 @Table(name = "store")
 public class Store {
@@ -34,6 +32,9 @@ public class Store {
     @Column(name = "phone", length = 45)
     private String phone;
 
+    @OneToMany(mappedBy = "idStore")
+    private Set<Copy> copies = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,14 +48,11 @@ public class Store {
         return Objects.hash(id, idCity, storeName, streetStore, numberStore, boxStore, phone);
     }
 
-    @OneToMany(mappedBy = "idStore")
-    private List<Copy> copies = new ArrayList<>();
-
-    public List<Copy> getCopies() {
+    public Set<Copy> getCopies() {
         return copies;
     }
 
-    public void setCopies(List<Copy> copies) {
+    public void setCopies(Set<Copy> copies) {
         this.copies = copies;
     }
 

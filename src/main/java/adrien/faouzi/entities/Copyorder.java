@@ -5,7 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "copyorder")
-public class CopyOrder {
+public class Copyorder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCopyOrder", nullable = false)
+    private int id;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idCopy", nullable = false)
     private Copy idCopy;
@@ -27,7 +32,7 @@ public class CopyOrder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CopyOrder copyorder = (CopyOrder) o;
+        Copyorder copyorder = (Copyorder) o;
         return idCopy == copyorder.idCopy && idOrder == copyorder.idOrder && returnDestroy == copyorder.returnDestroy && Objects.equals(copyPrice, copyorder.copyPrice) && Objects.equals(penalityPrice, copyorder.penalityPrice);
     }
 
@@ -35,6 +40,7 @@ public class CopyOrder {
     public int hashCode() {
         return Objects.hash(idCopy, idOrder, copyPrice, returnDestroy, penalityPrice);
     }
+
     public float getPenalityPrice() {
         return penalityPrice;
     }
@@ -73,5 +79,13 @@ public class CopyOrder {
 
     public void setIdCopy(Copy idCopy) {
         this.idCopy = idCopy;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

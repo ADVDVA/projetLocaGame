@@ -3,7 +3,9 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumeration.StatusCopy;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "copy", indexes = {
@@ -33,6 +35,9 @@ public class Copy {
     @Column(name = "status", nullable = false)
     private StatusCopy status;
 
+    @OneToMany(mappedBy = "idCopy")
+    private Set<Copyorder> copyorders = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,15 +51,12 @@ public class Copy {
         return Objects.hash(id, idStore, idPricePlatform, copyName, buyPrice, status);
     }
 
-    @OneToMany(mappedBy = "idCopy")
-    private List<CopyOrder> copyOrders = new ArrayList<>();
-
-    public List<CopyOrder> getCopyOrders() {
-        return copyOrders;
+    public Set<Copyorder> getCopyorders() {
+        return copyorders;
     }
 
-    public void setCopyOrders(List<CopyOrder> copyOrders) {
-        this.copyOrders = copyOrders;
+    public void setCopyorders(Set<Copyorder> copyorders) {
+        this.copyorders = copyorders;
     }
 
     public String getStatus() {

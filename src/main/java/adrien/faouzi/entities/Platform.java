@@ -1,7 +1,9 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "platform")
@@ -15,10 +17,10 @@ public class Platform {
     private String platformName;
 
     @OneToMany(mappedBy = "idPlatform")
-    private List<PricePlatform> pricePlatforms = new ArrayList<>();
+    private Set<Priceplatform> priceplatforms = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idPricePlatform")
-    private List<Copy> copies = new ArrayList<>();
+    private Set<Copy> copies = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -33,20 +35,20 @@ public class Platform {
         return Objects.hash(id, platformName);
     }
 
-    public List<Copy> getCopies() {
+    public Set<Copy> getCopies() {
         return copies;
     }
 
-    public void setCopies(List<Copy> copies) {
+    public void setCopies(Set<Copy> copies) {
         this.copies = copies;
     }
 
-    public List<PricePlatform> getPricePlatforms() {
-        return pricePlatforms;
+    public Set<Priceplatform> getPriceplatforms() {
+        return priceplatforms;
     }
 
-    public void setPricePlatforms(List<PricePlatform> pricePlatforms) {
-        this.pricePlatforms = pricePlatforms;
+    public void setPriceplatforms(Set<Priceplatform> priceplatforms) {
+        this.priceplatforms = priceplatforms;
     }
 
     public String getPlatformName() {

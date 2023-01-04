@@ -3,7 +3,9 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumeration.TypeAddress;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "address")
@@ -37,6 +39,9 @@ public class Address {
     @Column(name = "enable", nullable = false)
     private boolean enable = false;
 
+    @OneToMany(mappedBy = "idAddress")
+    private Set<Addressorder> addressorders = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,18 +55,12 @@ public class Address {
         return Objects.hash(id, idUser, idCity, street, number, box, typeAddress, enable);
     }
 
-    @ManyToMany
-    @JoinTable(name = "addressorder",
-            joinColumns = @JoinColumn(name = "idAddress"),
-            inverseJoinColumns = @JoinColumn(name = "idOrder"))
-    private List<Order> orders = new ArrayList<>();
-
-    public List<Order> getOrders() {
-        return orders;
+    public Set<Addressorder> getAddressorders() {
+        return addressorders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setAddressorders(Set<Addressorder> addressorders) {
+        this.addressorders = addressorders;
     }
 
     public boolean getEnable() {
@@ -75,6 +74,7 @@ public class Address {
     public String getTypeAddress() {
         return typeAddress.getTypeAddress();
     }
+
     public void setTypeAddress(TypeAddress typeAddress) {
         this.typeAddress = typeAddress;
     }

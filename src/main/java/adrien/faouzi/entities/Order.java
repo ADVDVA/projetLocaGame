@@ -4,10 +4,10 @@ import adrien.faouzi.enumeration.RentalModOfPayment;
 import adrien.faouzi.enumeration.ReturnModOfPayment;
 
 import javax.persistence.*;
-import java.time.LocalDateTime ;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "`order`")
@@ -22,20 +22,20 @@ public class Order {
     private User idUser;
 
     @Column(name = "startDate")
-    private LocalDateTime  startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "receptionDate")
-    private LocalDateTime  receptionDate;
+    private LocalDateTime receptionDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rentalModOfPayment", nullable = false)
     private RentalModOfPayment rentalModOfPayment;
 
     @Column(name = "endDate")
-    private LocalDateTime  endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "returnDate")
-    private LocalDateTime  returnDate;
+    private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "returnModOfPayment", nullable = false)
@@ -45,10 +45,13 @@ public class Order {
     private boolean customerNotCame = false;
 
     @OneToMany(mappedBy = "idOrder")
-    private List<CopyOrder> copyOrders = new ArrayList<>();
+    private Set<Copyorder> copyorders = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idOrder")
-    private List<Document> documents = new ArrayList<>();
+    private Set<Document> documents = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idOrder")
+    private Set<Addressorder> addressorders = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -63,34 +66,28 @@ public class Order {
         return Objects.hash(id, idUser, startDate, receptionDate, rentalModOfPayment, endDate, returnDate, returnModOfPayment, customerNotCame);
     }
 
-    @ManyToMany
-    @JoinTable(name = "addressorder",
-            joinColumns = @JoinColumn(name = "idOrder"),
-            inverseJoinColumns = @JoinColumn(name = "idAddress"))
-    private List<Address> addresses = new ArrayList<>();
-
-    public List<Address> getAddresses() {
-        return addresses;
+    public Set<Addressorder> getAddressorders() {
+        return addressorders;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddressorders(Set<Addressorder> addressorders) {
+        this.addressorders = addressorders;
     }
 
-    public List<Document> getDocuments() {
+    public Set<Document> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<Document> documents) {
+    public void setDocuments(Set<Document> documents) {
         this.documents = documents;
     }
 
-    public List<CopyOrder> getCopyOrders() {
-        return copyOrders;
+    public Set<Copyorder> getCopyorders() {
+        return copyorders;
     }
 
-    public void setCopyOrders(List<CopyOrder> copyOrders) {
-        this.copyOrders = copyOrders;
+    public void setCopyorders(Set<Copyorder> copyorders) {
+        this.copyorders = copyorders;
     }
 
     public boolean getCustomerNotCame() {
@@ -109,19 +106,19 @@ public class Order {
         this.returnModOfPayment = returnModOfPayment;
     }
 
-    public LocalDateTime  getReturnDate() {
+    public LocalDateTime getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDateTime  returnDate) {
+    public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
     }
 
-    public LocalDateTime  getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime  endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -133,19 +130,19 @@ public class Order {
         this.rentalModOfPayment = rentalModOfPayment;
     }
 
-    public LocalDateTime  getReceptionDate() {
+    public LocalDateTime getReceptionDate() {
         return receptionDate;
     }
 
-    public void setReceptionDate(LocalDateTime  receptionDate) {
+    public void setReceptionDate(LocalDateTime receptionDate) {
         this.receptionDate = receptionDate;
     }
 
-    public LocalDateTime  getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime  startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 

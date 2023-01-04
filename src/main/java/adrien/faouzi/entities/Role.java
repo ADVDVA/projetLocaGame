@@ -1,7 +1,9 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "role", indexes = {
@@ -16,6 +18,12 @@ public class Role {
     @Column(name = "roleName", nullable = false, length = 60)
     private String roleName;
 
+    @OneToMany(mappedBy = "idRole")
+    private Set<User> users = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idRole")
+    private Set<Permissionrole> permissionroles = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -29,28 +37,20 @@ public class Role {
         return Objects.hash(id, roleName);
     }
 
-    @OneToMany(mappedBy = "idRole")
-    private List<User> users = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "permissionrole",
-            joinColumns = @JoinColumn(name = "idRole"),
-            inverseJoinColumns = @JoinColumn(name = "idPermission"))
-    private List<Permission> permissions = new ArrayList<>();
-
-    public List<Permission> getPermissions() {
-        return permissions;
+    public Set<Permissionrole> getPermissionroles() {
+        return permissionroles;
     }
 
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
+    public void setPermissionroles(Set<Permissionrole> permissionroles) {
+        this.permissionroles = permissionroles;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 

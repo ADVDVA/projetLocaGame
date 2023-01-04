@@ -1,7 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.time.LocalDateTime ;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +14,7 @@ public class Document {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idDocumentType", nullable = false)
-    private DocumentType idDocumentType;
+    private Documenttype idDocumentType;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idOrder", nullable = false)
@@ -24,7 +24,7 @@ public class Document {
     private int numberDocument;
 
     @Column(name = "documentDate", nullable = false)
-    private LocalDateTime  documentDate;
+    private LocalDateTime documentDate;
 
     @Override
     public boolean equals(Object o) {
@@ -39,12 +39,11 @@ public class Document {
         return Objects.hash(id, idDocumentType, idOrder, numberDocument, documentDate);
     }
 
-
-    public LocalDateTime  getDocumentDate() {
+    public LocalDateTime getDocumentDate() {
         return documentDate;
     }
 
-    public void setDocumentDate(LocalDateTime  documentDate) {
+    public void setDocumentDate(LocalDateTime documentDate) {
         this.documentDate = documentDate;
     }
 
@@ -64,11 +63,11 @@ public class Document {
         this.idOrder = idOrder;
     }
 
-    public DocumentType getIdDocumentType() {
+    public Documenttype getIdDocumentType() {
         return idDocumentType;
     }
 
-    public void setIdDocumentType(DocumentType idDocumentType) {
+    public void setIdDocumentType(Documenttype idDocumentType) {
         this.idDocumentType = idDocumentType;
     }
 

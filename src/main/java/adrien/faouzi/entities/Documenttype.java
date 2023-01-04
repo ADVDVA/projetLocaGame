@@ -1,11 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "documenttype")
-public class DocumentType {
+public class Documenttype {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idDocumentType", nullable = false)
@@ -15,13 +17,13 @@ public class DocumentType {
     private String documentType;
 
     @OneToMany(mappedBy = "idDocumentType")
-    private List<Document> documents = new ArrayList<>();
+    private Set<Document> documents = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DocumentType that = (DocumentType) o;
+        Documenttype that = (Documenttype) o;
         return id == that.id && Objects.equals(documentType, that.documentType);
     }
 
@@ -30,12 +32,11 @@ public class DocumentType {
         return Objects.hash(id, documentType);
     }
 
-
-    public List<Document> getDocuments() {
+    public Set<Document> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<Document> documents) {
+    public void setDocuments(Set<Document> documents) {
         this.documents = documents;
     }
 

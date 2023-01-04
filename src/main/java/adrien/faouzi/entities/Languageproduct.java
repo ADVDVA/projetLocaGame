@@ -5,10 +5,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "languageproduct")
-public class LanguageProduct {
+public class Languageproduct {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idLanguageProduct", nullable = false)
+    private int id;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idLanguage", nullable = false)
-    private LanguageGame idLanguage;
+    private Languagegame idLanguage;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idProduct", nullable = false)
@@ -18,7 +23,7 @@ public class LanguageProduct {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LanguageProduct that = (LanguageProduct) o;
+        Languageproduct that = (Languageproduct) o;
         return idLanguage == that.idLanguage && idProduct == that.idProduct;
     }
 
@@ -26,6 +31,7 @@ public class LanguageProduct {
     public int hashCode() {
         return Objects.hash(idLanguage, idProduct);
     }
+
     public Product getIdProduct() {
         return idProduct;
     }
@@ -34,11 +40,19 @@ public class LanguageProduct {
         this.idProduct = idProduct;
     }
 
-    public LanguageGame getIdLanguage() {
+    public Languagegame getIdLanguage() {
         return idLanguage;
     }
 
-    public void setIdLanguage(LanguageGame idLanguage) {
+    public void setIdLanguage(Languagegame idLanguage) {
         this.idLanguage = idLanguage;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

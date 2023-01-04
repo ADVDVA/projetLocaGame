@@ -2,15 +2,12 @@ package adrien.faouzi.entities;
 
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
-import adrien.faouzi.utility.UtilityProcessing;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 import javax.persistence.*;
-import java.time.LocalDateTime ;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -36,13 +33,22 @@ public class Product {
     private MultiPlayer multiPlayer;
 
     @Column(name = "releaseDate", nullable = false)
-    private LocalDateTime  releaseDate;
+    private LocalDateTime releaseDate;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "enable", nullable = false)
     private boolean enable = false;
+
+    @OneToMany(mappedBy = "idProduct")
+    private Set<Priceplatform> priceplatforms = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idProduct")
+    private Set<Languageproduct> languageproducts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idProduct")
+    private Set<Categoryproduct> categoryproducts = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -57,51 +63,32 @@ public class Product {
         return Objects.hash(id, idEditor, productName, pegi, multiPlayer, releaseDate, description, enable);
     }
 
-    @OneToMany(mappedBy = "idProduct")
-    private List<PricePlatform> pricePlatforms = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(name = "languageproduct",
-            joinColumns = @JoinColumn(name = "idProduct"),
-            inverseJoinColumns = @JoinColumn(name = "idLanguage"))
-    private List<LanguageGame> languageGames = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(name = "categoryproduct",
-            joinColumns = @JoinColumn(name = "idProduct"),
-            inverseJoinColumns = @JoinColumn(name = "idCategory"))
-    private List<Category> categories = new ArrayList<>();
-
-    public List<Category> getCategories() {
-        return categories;
+    public Set<Categoryproduct> getCategoryproducts() {
+        return categoryproducts;
     }
 
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategoryproducts(Set<Categoryproduct> categoryproducts) {
+        this.categoryproducts = categoryproducts;
     }
 
-    public List<LanguageGame> getLanguageGames() {
-        return languageGames;
+    public Set<Languageproduct> getLanguageproducts() {
+        return languageproducts;
     }
 
-    public void setLanguageGames(List<LanguageGame> languageGames) {
-        this.languageGames = languageGames;
+    public void setLanguageproducts(Set<Languageproduct> languageproducts) {
+        this.languageproducts = languageproducts;
     }
 
-    public List<PricePlatform> getPricePlatforms() {
-        return pricePlatforms;
+    public Set<Priceplatform> getPriceplatforms() {
+        return priceplatforms;
     }
 
-    public void setPricePlatforms(List<PricePlatform> pricePlatforms) {
-        this.pricePlatforms = pricePlatforms;
+    public void setPriceplatforms(Set<Priceplatform> priceplatforms) {
+        this.priceplatforms = priceplatforms;
     }
 
     public boolean getEnable() {
         return enable;
-    }
-    public String getEnableFormatStr(){
-        return (enable? "indisponible": "disponible");
     }
 
     public void setEnable(boolean enable) {
@@ -119,11 +106,8 @@ public class Product {
     public LocalDateTime getReleaseDate() {
         return releaseDate;
     }
-    public Date getReleaseDateFormatDate(){
-        return UtilityProcessing.castLocalDateTimeToDate(releaseDate);
-    }
 
-    public void setReleaseDate(LocalDateTime  releaseDate) {
+    public void setReleaseDate(LocalDateTime releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -135,14 +119,8 @@ public class Product {
         this.multiPlayer = multiPlayer;
     }
 
-    public String getPegiString() {
+    public String getPegi() {
         return pegi.getPegi();
-    }
-    public Pegi getPegi() {
-        return pegi;
-    }
-    public int getPegiFormatInt(){
-        return pegi.getPegiInt();
     }
 
     public void setPegi(Pegi pegi) {

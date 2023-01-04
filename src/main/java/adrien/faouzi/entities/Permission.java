@@ -1,7 +1,9 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "permission", indexes = {
@@ -16,6 +18,9 @@ public class Permission {
     @Column(name = "permissionName", nullable = false, length = 60)
     private String permissionName;
 
+    @OneToMany(mappedBy = "idPermission")
+    private Set<Permissionrole> permissionroles = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -29,18 +34,12 @@ public class Permission {
         return Objects.hash(id, permissionName);
     }
 
-    @ManyToMany
-    @JoinTable(name = "permissionrole",
-            joinColumns = @JoinColumn(name = "idPermission"),
-            inverseJoinColumns = @JoinColumn(name = "idRole"))
-    private List<Role> roles = new ArrayList<>();
-
-    public List<Role> getRoles() {
-        return roles;
+    public Set<Permissionrole> getPermissionroles() {
+        return permissionroles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setPermissionroles(Set<Permissionrole> permissionroles) {
+        this.permissionroles = permissionroles;
     }
 
     public String getPermissionName() {

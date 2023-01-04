@@ -1,8 +1,10 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.time.LocalDateTime ;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "user", indexes = {
@@ -25,7 +27,7 @@ public class User {
     private String firstName;
 
     @Column(name = "dateOfBirth", nullable = false)
-    private LocalDateTime  dateOfBirth;
+    private LocalDateTime dateOfBirth;
 
     @Column(name = "phone", length = 45)
     private String phone;
@@ -37,10 +39,16 @@ public class User {
     private String password;
 
     @Column(name = "registrationDate", nullable = false)
-    private LocalDateTime  registrationDate;
+    private LocalDateTime registrationDate;
 
     @Column(name = "enable", nullable = false)
     private boolean enable = false;
+
+    @OneToMany(mappedBy = "idUser")
+    private Set<Order> orders = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idUser")
+    private Set<Address> addresses = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -55,25 +63,19 @@ public class User {
         return Objects.hash(id, idRole, lastName, firstName, dateOfBirth, phone, mail, password, registrationDate, enable);
     }
 
-    @OneToMany(mappedBy = "idUser")
-    private List<Order> orders = new ArrayList<>();
-
-    @OneToMany(mappedBy = "idUser")
-    private List<Address> addresses = new ArrayList<>();
-
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 
@@ -85,11 +87,11 @@ public class User {
         this.enable = enable;
     }
 
-    public LocalDateTime  getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(LocalDateTime  registrationDate) {
+    public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
 
@@ -117,11 +119,11 @@ public class User {
         this.phone = phone;
     }
 
-    public LocalDateTime  getDateOfBirth() {
+    public LocalDateTime getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDateTime  dateOfBirth) {
+    public void setDateOfBirth(LocalDateTime dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

@@ -5,7 +5,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "addressorder")
-public class AddressOrder {
+public class Addressorder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idAddressOrder", nullable = false)
+    private int id;
+
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idAddress", nullable = false)
     private Address idAddress;
@@ -18,7 +23,7 @@ public class AddressOrder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AddressOrder that = (AddressOrder) o;
+        Addressorder that = (Addressorder) o;
         return idAddress == that.idAddress && idOrder == that.idOrder;
     }
 
@@ -42,5 +47,13 @@ public class AddressOrder {
 
     public void setIdAddress(Address idAddress) {
         this.idAddress = idAddress;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

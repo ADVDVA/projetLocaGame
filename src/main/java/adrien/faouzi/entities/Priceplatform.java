@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "priceplatform")
-public class PricePlatform {
+public class Priceplatform {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPricePlatform", nullable = false)
@@ -38,7 +38,7 @@ public class PricePlatform {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PricePlatform that = (PricePlatform) o;
+        Priceplatform that = (Priceplatform) o;
         return id == that.id && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
     }
 

@@ -1,7 +1,9 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "country")
@@ -13,6 +15,9 @@ public class Country {
 
     @Column(name = "countryName", nullable = false, length = 60)
     private String countryName;
+
+    @OneToMany(mappedBy = "idCountry")
+    private Set<City> cities = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -27,14 +32,11 @@ public class Country {
         return Objects.hash(id, countryName);
     }
 
-    @OneToMany(mappedBy = "idCountry")
-    private List<City> cities = new ArrayList<>();
-
-    public List<City> getCities() {
+    public Set<City> getCities() {
         return cities;
     }
 
-    public void setCities(List<City> cities) {
+    public void setCities(Set<City> cities) {
         this.cities = cities;
     }
 

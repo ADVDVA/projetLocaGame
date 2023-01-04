@@ -1,7 +1,9 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "editor")
@@ -15,11 +17,7 @@ public class Editor {
     private String editorName;
 
     @OneToMany(mappedBy = "idEditor")
-    private List<Product> products = new ArrayList<>();
-
-    public List<Product> getProducts() {
-        return products;
-    }
+    private Set<Product> products = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -34,7 +32,11 @@ public class Editor {
         return Objects.hash(id, editorName);
     }
 
-    public void setProducts(List<Product> products) {
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 

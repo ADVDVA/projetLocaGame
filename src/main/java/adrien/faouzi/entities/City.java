@@ -1,14 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
-
+import java.util.Set;
 
 @Entity
 @Table(name = "city", indexes = {
-        @Index(name = "idCountry", columnList = "idCountry")
+        @Index(name = "fk_idCountry", columnList = "idCountry")
 })
 public class City {
     @Id
@@ -26,6 +25,12 @@ public class City {
     @Column(name = "cityName", nullable = false, length = 60)
     private String cityName;
 
+    @OneToMany(mappedBy = "idCity")
+    private Set<Address> addresses = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idCity")
+    private Set<Store> stores = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,25 +44,20 @@ public class City {
         return Objects.hash(id, idCountry, postalCode, cityName);
     }
 
-    @OneToMany(mappedBy = "idCity")
-    private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "idCity")
-    private List<Store> stores = new ArrayList<>();
-
-    public List<Store> getStores() {
+    public Set<Store> getStores() {
         return stores;
     }
 
-    public void setStores(List<Store> stores) {
+    public void setStores(Set<Store> stores) {
         this.stores = stores;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 

@@ -1,11 +1,13 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "languagegame")
-public class LanguageGame {
+public class Languagegame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idLanguage", nullable = false)
@@ -14,11 +16,14 @@ public class LanguageGame {
     @Column(name = "languageName", nullable = false, length = 60)
     private String languageName;
 
+    @OneToMany(mappedBy = "idLanguage")
+    private Set<Languageproduct> languageproducts = new LinkedHashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LanguageGame that = (LanguageGame) o;
+        Languagegame that = (Languagegame) o;
         return id == that.id && Objects.equals(languageName, that.languageName);
     }
 
@@ -27,18 +32,12 @@ public class LanguageGame {
         return Objects.hash(id, languageName);
     }
 
-    @ManyToMany
-    @JoinTable(name = "languageproduct",
-            joinColumns = @JoinColumn(name = "idLanguage"),
-            inverseJoinColumns = @JoinColumn(name = "idProduct"))
-    private List<Product> products = new ArrayList<>();
-
-    public List<Product> getProducts() {
-        return products;
+    public Set<Languageproduct> getLanguageproducts() {
+        return languageproducts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setLanguageproducts(Set<Languageproduct> languageproducts) {
+        this.languageproducts = languageproducts;
     }
 
     public String getLanguageName() {
@@ -49,11 +48,11 @@ public class LanguageGame {
         this.languageName = languageName;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

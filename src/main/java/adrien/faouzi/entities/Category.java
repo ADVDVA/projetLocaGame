@@ -1,7 +1,9 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -13,6 +15,9 @@ public class Category {
 
     @Column(name = "categoryName", nullable = false, length = 60)
     private String categoryName;
+
+    @OneToMany(mappedBy = "idCategory")
+    private Set<Categoryproduct> categoryproducts = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -27,18 +32,12 @@ public class Category {
         return Objects.hash(id, categoryName);
     }
 
-    @ManyToMany
-    @JoinTable(name = "categoryproduct",
-            joinColumns = @JoinColumn(name = "idCategory"),
-            inverseJoinColumns = @JoinColumn(name = "idProduct"))
-    private List<Product> products = new ArrayList<>();
-
-    public List<Product> getProducts() {
-        return products;
+    public Set<Categoryproduct> getCategoryproducts() {
+        return categoryproducts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setCategoryproducts(Set<Categoryproduct> categoryproducts) {
+        this.categoryproducts = categoryproducts;
     }
 
     public String getCategoryName() {
