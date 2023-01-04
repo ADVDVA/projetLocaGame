@@ -25,11 +25,19 @@ function clickId(id){
     domElements[0].click();
 }
 
+//function for click element next.
+function clickNext(target){
+    console.log(target);
+    console.log(target.nextSibling);
+    target.nextSibling.click();
+}
+
 
 //function for research in table before manny character.
-function researchTable(event, idClickFunction){
-    let valueInput = event.value;
+function researchTable(target){
+    let valueInput = target.value;
     if(valueInput.length >= 3){
-        clickId(idClickFunction);
+        //clickId(idClickFunction);
+        clickNext(target);
     }
 }

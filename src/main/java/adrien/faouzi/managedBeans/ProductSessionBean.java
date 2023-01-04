@@ -24,8 +24,6 @@ public class ProductSessionBean extends TableFilter implements Serializable {
     public void initialiseProductsFiltered(){
         productsFiltered = ProductBean.getProducts();
 
-        UtilityProcessing.debug("actualiseResearch");
-
         //SQL.
         //select * from *Product*
         //where (

@@ -9,14 +9,11 @@
         #{I18N['application.welcomepage.title']}
     </ui:define>
     <ui:define name="content">
-        #{I18N['application.welcome']}, #{usersBean.name}! <br/>
-        #{I18N['application.password']}, #{usersBean.password}!<br/>
 
-    <ul>
-        <ui:repeat value="#{usersBean.favoriteSports}" var="sport">
-            <li>#{sport}</li>
-        </ui:repeat>
-    </ul>
+        <!-- get id row click. -->
+        <p>
+            ID redirect = <h:outputText value="#{productSessionBean.getIdRedirection()}"/>
+        </p>
 
         <h:link value="#{I18N['application.welcomepage.return']}" outcome="accueil"/> <br/><br/>
     </ui:define>

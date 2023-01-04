@@ -12,26 +12,10 @@
         <!--
         <h:link value="#{(false ? I18N_EN['application.welcomepage.return'] : I18N_FR['application.welcomepage.return'])}" outcome="index"></h:link>
        -->
-        <h:form>
-            <h:panelGrid columns="3">
-                <h:outputText value="#{I18N['user.name']}">.</h:outputText>
-                <h:inputText id="userName"
-                             value="#{usersBean.name}"
-                             required="true"
-                             requiredMessage="#{I18N['user.name.validation']}">
-                </h:inputText>
-                <h:message for="userName" styleClass="errorMessage"/>
-                <h:outputText value="#{I18N['user.password']}">.</h:outputText>
-                <h:inputSecret id="password"
-                               value="#{usersBean.password}"
-                               required="true"
-                               requiredMessage="#{I18N['user.password.validation']}">
-                </h:inputSecret>
-                <h:message for="password" styleClass="errorMessage"/>
-            </h:panelGrid>
-            <h:commandButton value="#{I18N['application.login']}" action="#{usersBean.testreturn}">
-            </h:commandButton> <br/><br/>
-        </h:form>
+        <p>
+            Adrien Faouzi.
+        </p>
+
     </ui:define>
 </ui:composition>
 </html>

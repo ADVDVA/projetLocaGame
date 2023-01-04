@@ -43,9 +43,9 @@
                         <div class="containerFlex containerTableHeaderFilter">
                             <div class="flexGrowOne">
                                 <p:inputText value="#{userListBean.filter}"
-                                             onkeyup="researchTable(this, 'editFilterTableUser')"
+                                             onkeyup="researchTable(this)"
                                              placeholder="#{I18N['application.listpage.filter']}"/>
-                                <p:commandButton type="hidden" id="editFilterTableUser" update="@form"/>
+                                <p:commandButton type="hidden" update="@form"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
                                 <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"/>
@@ -54,24 +54,24 @@
 
                         <div class="containerFlex containerTableHeaderFilter containerTableHeaderOrder">
                             <div class="flexGrowOne">
-                                <i class="#{userListBean.getOrderIcon('lastName')}" onclick="clickId('editOrderTableLastName')"/>
-                                <p:commandButton type="hidden" id="editOrderTableLastName" action="#{userListBean.editOrderTable('lastName')}" update="@form"/>
+                                <i class="#{userListBean.getOrderIcon('lastName')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{userListBean.editOrderTable('lastName')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{userListBean.getOrderIcon('phone')}" onclick="clickId('editOrderTablePhone')"/>
-                                <p:commandButton type="hidden" id="editOrderTablePhone" action="#{userListBean.editOrderTable('phone')}" update="@form"/>
+                                <i class="#{userListBean.getOrderIcon('phone')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{userListBean.editOrderTable('phone')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{userListBean.getOrderIcon('mail')}" onclick="clickId('editOrderTableMail')"/>
-                                <p:commandButton type="hidden" id="editOrderTableMail" action="#{userListBean.editOrderTable('mail')}" update="@form"/>
+                                <i class="#{userListBean.getOrderIcon('mail')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{userListBean.editOrderTable('mail')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{userListBean.getOrderIcon('idRole')}" onclick="clickId('editOrderTabledRole')"/>
-                                <p:commandButton type="hidden" id="editOrderTabledRole" action="#{userListBean.editOrderTable('idRole')}" update="@form"/>
+                                <i class="#{userListBean.getOrderIcon('idRole')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{userListBean.editOrderTable('idRole')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{userListBean.getOrderIcon('enable')}" onclick="clickId('editOrderTableEnable')"/>
-                                <p:commandButton type="hidden" id="editOrderTableEnable" action="#{userListBean.editOrderTable('Enable')}" update="@form"/>
+                                <i class="#{userListBean.getOrderIcon('enable')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{userListBean.editOrderTable('enable')}" update="@form"/>
                             </div>
 
                             <div class="flexGrowOne">
@@ -113,11 +113,13 @@
                     <!-- button column -->
 
                     <p:column headerText="#{I18N['application.listpage.headerlistiledit']}">
-                        <i class="pi pi-pencil" onclick="alert('send id product : '+#{user.id}+'')"/>
+                        <i class="pi pi-pencil" onclick="clickNext(this)"/>
+                        <p:commandButton type="hidden" action="#{userListBean.redirectPageWidthId('/view/welcome', user.id)}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.listpage.headerlistildetails']}">
-                        <i class="pi pi-info-circle" onclick="alert('send id product : '+#{user.id}+'')"/>
+                        <i class="pi pi-info-circle" onclick="clickNext(this)"/>
+                        <p:commandButton type="hidden" action="#{userListBean.redirectPageWidthId('/view/welcome', user.id)}"/>
                     </p:column>
 
                 </p:dataTable>
