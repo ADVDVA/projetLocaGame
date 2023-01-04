@@ -11,21 +11,17 @@
     <div id="footerLeftBlock" class="flexGrowOne blockFooter">
         <p>
             <!-- adresse store (rue + num). -->
-            <h:outputText value="#{storeBean.store.streetStore}"/><span>,&nbsp;</span>
-            <h:outputText value="#{storeBean.store.numberStore}"/>
+            <h:outputText value="#{storeBean.store.streetStore}, #{storeBean.store.numberStore}"/>
         </p>
         <p>
             <!-- adresse store (postal code + city + contry). -->
-            <h:outputText value="#{storeBean.store.idCity.postalCode}"/>&nbsp;
-            <h:outputText value="#{storeBean.store.idCity.cityName}"/>
-            (<h:outputText value="#{storeBean.store.idCity.idCountry.countryName}"/>)
+            <h:outputText value="#{storeBean.store.idCity.postalCode} #{storeBean.store.idCity.cityName} (#{storeBean.store.idCity.idCountry.countryName})"/>&nbsp;
         </p>
         <p>&nbsp;</p>
     </div>
     <div id="footerCenterBlock" class="flexGrowOne blockFooter">
         <p>
-            <h:outputText value="#{I18N['application.footer.phoneStore']}"/>&nbsp;
-            <h:outputText value="#{storeBean.store.phone}"/>
+            <h:outputText value="#{I18N['application.footer.phoneStore']} #{storeBean.store.phone}"/>&nbsp;
         </p>
         <p>&nbsp;</p>
         <p>

@@ -22,7 +22,7 @@
         <setting name="provider-name" value="EclipseLink" />
         <datasource-mapping>
           <factory-entry name="default" />
-          <factory-entry name="locagame" value="e1969f3b-1065-4b04-b34b-9c1fd0e4e3d4" />
+          <factory-entry name="locagame" value="8c35347f-18a5-4320-bd0d-9d77f5244174" />
         </datasource-mapping>
         <naming-strategy-map />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
