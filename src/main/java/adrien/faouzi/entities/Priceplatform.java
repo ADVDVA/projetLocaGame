@@ -2,6 +2,7 @@ package adrien.faouzi.entities;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -37,6 +38,19 @@ public class Priceplatform {
 
     @OneToMany(mappedBy = "idPricePlatform")
     private Set<Copy> copies = new LinkedHashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Priceplatform that = (Priceplatform) o;
+        return id == that.id && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idProduct, idPlatform, rentalPrice, availableStock, latePrice, picture, enable);
+    }
 
     public Set<Copy> getCopies() {
         return copies;

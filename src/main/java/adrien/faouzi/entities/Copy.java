@@ -4,6 +4,7 @@ import adrien.faouzi.enumeration.StatusCopy;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -36,6 +37,19 @@ public class Copy {
 
     @OneToMany(mappedBy = "idCopy")
     private Set<Copyorder> copyorders = new LinkedHashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Copy copy = (Copy) o;
+        return id == copy.id && idStore == copy.idStore && idPricePlatform == copy.idPricePlatform && Float.compare(copy.buyPrice, buyPrice) == 0 && Objects.equals(copyName, copy.copyName) && Objects.equals(status, copy.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idStore, idPricePlatform, copyName, buyPrice, status);
+    }
 
     public Set<Copyorder> getCopyorders() {
         return copyorders;

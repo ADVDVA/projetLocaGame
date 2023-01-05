@@ -2,6 +2,7 @@ package adrien.faouzi.entities;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore")
@@ -35,6 +36,20 @@ public class Store {
 
     @OneToMany(mappedBy = "idStore")
     private Set<Copy> copies = new LinkedHashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return id == store.id && idCity == store.idCity && numberStore == store.numberStore && Objects.equals(storeName, store.storeName) && Objects.equals(streetStore, store.streetStore) && Objects.equals(boxStore, store.boxStore) && Objects.equals(phone, store.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idCity, storeName, streetStore, numberStore, boxStore, phone);
+    }
+
 
     public Set<Copy> getCopies() {
         return copies;
