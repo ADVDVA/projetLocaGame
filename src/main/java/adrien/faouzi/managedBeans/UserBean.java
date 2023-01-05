@@ -139,7 +139,6 @@ public class UserBean implements Serializable
         return result.verified;
     }
 
-
     /**
      * Verification Sign up method
      * @return
