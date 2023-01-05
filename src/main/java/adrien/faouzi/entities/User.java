@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+@NamedQueries(value = {
+        @NamedQuery(name = "User.SelectUserConnexion", query = "SELECT u from User u " +
+                "where u.mail = :mail")
+})
 
 @Entity
 @Table(name = "user", indexes = {

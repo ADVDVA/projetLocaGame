@@ -1,14 +1,18 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.enumeration.TypeAddress;
+import adrien.faouzi.entities.User;
+
+import adrien.faouzi.services.UserService;
+import adrien.faouzi.utility.UtilityProcessing;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import adrien.faouzi.exeption.ConnexionUserExecption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +25,7 @@ public class UserBean implements Serializable
      * Fields
      */
 
-    @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     private String lastName;
 
     @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
@@ -57,6 +61,7 @@ public class UserBean implements Serializable
 
     private String hideNoSelectOption;
 
+    private boolean messageErrorConnection = false;
     /**
      * Post construtor for input date
      */
@@ -69,12 +74,79 @@ public class UserBean implements Serializable
         maxDate = new Date(today.getTime()- (365  * oneDay) * 18 -( 4 * oneDay) );// *18 pour 18 ans
     }
 
+    /**
+     * Check connection page error message
+     */
+    public boolean checkInvalid()
+    {
+        boolean message = this.messageErrorConnection;
+        this.messageErrorConnection = false;
+        return message;
+    }
 
     /**
-     * Verification method
+     * Verification connection method
      */
     public String lastVerificationSignIn()
     {
+        //initialize.
+        UserService userService = new UserService();
+        User user ;
+        String redirect;
+
+        try
+        {
+            //Call of the service that will use the NamedQuery of the "User" entity
+             user = userService.findUserByMailAndPassword(this.mail);
+             checkUserConnection(user, password, mail);
+             redirect = "/accueil";
+
+        }
+        catch(Exception e)
+        {
+            UtilityProcessing.debug("Récupération de données d'utilisateur introuvable : " + e);
+
+            /* déclancher un message d'erreur*/
+            this.messageErrorConnection = true;
+            redirect = "/view/connexion";
+        }
+        finally
+        {
+            userService.close();
+        }
+
+        return redirect;
+    }
+
+    /**
+     * User processing method
+     */
+    public void checkUserConnection (User user, String password, String mail) throws ConnexionUserExecption
+    {
+        if (!(user.getMail().equals(mail) && user.getPassword().equals(password) /*checkPassword(password,user)*/ && user.getEnable()))
+        {
+            throw new ConnexionUserExecption();
+        }
+    }
+
+    /**
+     * Verification password method
+     * @param password
+     * @return
+     */
+    public boolean checkPassword (String password, User user){
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
+        return result.verified;
+    }
+
+
+    /**
+     * Verification Sign up method
+     * @return
+     */
+    public String lastVerificationSignUp()
+    {
+
         //        // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
         // vérifier mot de passe avec l'autre mot de passe.
         return "/accueil";

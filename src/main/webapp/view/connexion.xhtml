@@ -32,14 +32,13 @@
             <h:form>
 
 
+                <p:message for="messageLoginError" value="#{I18N['application.connexionpage.messageerror']}" rendered="#{userBean.checkInvalid()}"/>
+
                 <h5>#{I18N['application.connexionpage.mailtitle']}</h5>
                 <span class="ui-float-label">
                     <p:inputText id="float-input" value="#{connexionBean.mail}"
-                                 placeholder="#{I18N['application.connexionpage.mailplaceholder']}"
-                                 validatorMessage="#{I18N['application.connexionpage.messageerror']}">
-                        <f:validateRegex pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}+$"/>
+                                 placeholder="#{I18N['application.connexionpage.mailplaceholder']}">
                     </p:inputText>
-                    <p:message for="float-input" styleClass="errorMessage"/>
                 </span>
 
 
@@ -47,12 +46,8 @@
                 <span class="ui-float-label">
                 <p:password id="toggle" value="#{connexionBean.password}" toggleMask="true"
                             redisplay="true"
-                            placeholder="#{I18N['application.connexionpage.passwordplaceholder']}"
-                            required="true"
-                            validatorMessage="#{I18N['application.connexionpage.messageerror']}">
-                    <f:validateRegex pattern="^[a-zA-Z0-9._-]{2,15}+$"/>
+                            placeholder="#{I18N['application.connexionpage.passwordplaceholder']}">
                 </p:password>
-                    <p:message for="toggle" styleClass="errorMessage"/>
                 </span>
 
 
