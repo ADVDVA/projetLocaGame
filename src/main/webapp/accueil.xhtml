@@ -12,24 +12,20 @@
     </ui:define>
     <ui:define name="content">
 
-        <div>
-            <p:carousel value="#{homePageBean.imagesCarousel}" var="img" circular="true" autoplayInterval="3000"
-                        responsiveOptions="#{homePageBean.responsiveOptions}" numVisible="1" numScroll="1">
-                <f:facet name="header">
-                    <h2>
-                        <h:outputText value="#{I18N['application.homepage.slogan']}"/>
-                    </h2>
-                </f:facet>
+        <div id="containerHomePage">
+            <h2 id="titleHomePageH2">
+                <h:outputText value="#{I18N['application.homepage.slogan']}"/>
+            </h2>
 
-                <div class="product-item">
-                    <div class="product-item-content">
-                        <div class="mb-3">
-                            <p:graphicImage name="#{img}" styleClass="product-image"/>
-                        </div>
-                    </div>
-                </div>
-            </p:carousel>
+            <div id="imageHomePageContainer">
+                <p:graphicImage
+                        id="imageHomePage"
+                        style="height:100%; width:100%;"
+                        url="#{pageContext.request.contextPath}/images/#{homePageBean.randomImageForHomePage}"
+                        alt="#{I18N['application.homepage.altimage']}"/>
+            </div>
         </div>
+
 
     </ui:define>
 </ui:composition>
