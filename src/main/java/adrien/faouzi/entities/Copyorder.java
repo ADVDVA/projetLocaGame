@@ -1,7 +1,6 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "copyorder")
@@ -27,19 +26,6 @@ public class Copyorder {
 
     @Column(name = "penalityPrice")
     private float penalityPrice;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Copyorder copyorder = (Copyorder) o;
-        return idCopy == copyorder.idCopy && idOrder == copyorder.idOrder && returnDestroy == copyorder.returnDestroy && Objects.equals(copyPrice, copyorder.copyPrice) && Objects.equals(penalityPrice, copyorder.penalityPrice);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idCopy, idOrder, copyPrice, returnDestroy, penalityPrice);
-    }
 
     public float getPenalityPrice() {
         return penalityPrice;

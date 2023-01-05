@@ -2,7 +2,6 @@ package adrien.faouzi.entities;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -18,30 +17,6 @@ public class Platform {
 
     @OneToMany(mappedBy = "idPlatform")
     private Set<Priceplatform> priceplatforms = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "idPricePlatform")
-    private Set<Copy> copies = new LinkedHashSet<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Platform platform = (Platform) o;
-        return id == platform.id && Objects.equals(platformName, platform.platformName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, platformName);
-    }
-
-    public Set<Copy> getCopies() {
-        return copies;
-    }
-
-    public void setCopies(Set<Copy> copies) {
-        this.copies = copies;
-    }
 
     public Set<Priceplatform> getPriceplatforms() {
         return priceplatforms;

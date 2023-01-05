@@ -1,7 +1,8 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "priceplatform")
@@ -34,17 +35,15 @@ public class Priceplatform {
     @Column(name = "enable", nullable = false)
     private boolean enable = false;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Priceplatform that = (Priceplatform) o;
-        return id == that.id && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
+    @OneToMany(mappedBy = "idPricePlatform")
+    private Set<Copy> copies = new LinkedHashSet<>();
+
+    public Set<Copy> getCopies() {
+        return copies;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, idProduct, idPlatform, rentalPrice, availableStock, latePrice, picture, enable);
+    public void setCopies(Set<Copy> copies) {
+        this.copies = copies;
     }
 
     public boolean getEnable() {

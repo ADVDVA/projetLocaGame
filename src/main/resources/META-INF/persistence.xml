@@ -15,19 +15,19 @@
         <class>adrien.faouzi.entities.Address</class>
         <class>adrien.faouzi.entities.Order</class>
         <class>adrien.faouzi.entities.Addressorder</class>
-        <class>adrien.faouzi.entities.Store</class>
         <class>adrien.faouzi.entities.Documenttype</class>
         <class>adrien.faouzi.entities.Document</class>
         <class>adrien.faouzi.entities.Editor</class>
         <class>adrien.faouzi.entities.Category</class>
         <class>adrien.faouzi.entities.Product</class>
         <class>adrien.faouzi.entities.Categoryproduct</class>
-        <class>adrien.faouzi.entities.Platform</class>
+        <class>adrien.faouzi.entities.Languagegame</class>
+        <class>adrien.faouzi.entities.Languageproduct</class>
         <class>adrien.faouzi.entities.Priceplatform</class>
         <class>adrien.faouzi.entities.Copy</class>
         <class>adrien.faouzi.entities.Copyorder</class>
-        <class>adrien.faouzi.entities.Languagegame</class>
-        <class>adrien.faouzi.entities.Languageproduct</class>
+        <class>adrien.faouzi.entities.Store</class>
+        <class>adrien.faouzi.entities.Platform</class>
 
     </persistence-unit>
 </persistence>

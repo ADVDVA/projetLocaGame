@@ -4,7 +4,6 @@ import adrien.faouzi.enumeration.StatusCopy;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -23,7 +22,7 @@ public class Copy {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idPricePlatform", nullable = false)
-    private Platform idPricePlatform;
+    private Priceplatform idPricePlatform;
 
     @Column(name = "copyName", nullable = false, length = 60)
     private String copyName;
@@ -31,25 +30,12 @@ public class Copy {
     @Column(name = "buyPrice", nullable = false)
     private float buyPrice;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     @Column(name = "status", nullable = false)
     private StatusCopy status;
 
     @OneToMany(mappedBy = "idCopy")
     private Set<Copyorder> copyorders = new LinkedHashSet<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Copy copy = (Copy) o;
-        return id == copy.id && idStore == copy.idStore && idPricePlatform == copy.idPricePlatform && Float.compare(copy.buyPrice, buyPrice) == 0 && Objects.equals(copyName, copy.copyName) && Objects.equals(status, copy.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, idStore, idPricePlatform, copyName, buyPrice, status);
-    }
 
     public Set<Copyorder> getCopyorders() {
         return copyorders;
@@ -83,11 +69,11 @@ public class Copy {
         this.copyName = copyName;
     }
 
-    public Platform getIdPricePlatform() {
+    public Priceplatform getIdPricePlatform() {
         return idPricePlatform;
     }
 
-    public void setIdPricePlatform(Platform idPricePlatform) {
+    public void setIdPricePlatform(Priceplatform idPricePlatform) {
         this.idPricePlatform = idPricePlatform;
     }
 
