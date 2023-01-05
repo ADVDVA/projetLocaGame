@@ -24,10 +24,10 @@
         <class>adrien.faouzi.entities.Languagegame</class>
         <class>adrien.faouzi.entities.Languageproduct</class>
         <class>adrien.faouzi.entities.Priceplatform</class>
-        <class>adrien.faouzi.entities.Copy</class>
         <class>adrien.faouzi.entities.Copyorder</class>
         <class>adrien.faouzi.entities.Store</class>
         <class>adrien.faouzi.entities.Platform</class>
+        <class>adrien.faouzi.entities.Copy</class>
 
     </persistence-unit>
 </persistence>
