@@ -17,14 +17,9 @@ public class ConnexionBean implements Serializable {
 
     private String password;
 
-    public String goToPageConnexion()
-    {
-        return "/view/connexion";
-    }
 
-    public String goToPageAccueil(){
-        return "accueil";
-    }
+
+
 
     /**
      * getter and setter method

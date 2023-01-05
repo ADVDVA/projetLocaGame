@@ -9,10 +9,14 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import javax.annotation.PostConstruct;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import adrien.faouzi.exeption.ConnexionUserExecption;
+import org.primefaces.PrimeFaces;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,7 +65,12 @@ public class UserBean implements Serializable
 
     private String hideNoSelectOption;
 
-    private boolean messageErrorConnection = false;
+    private String messageErrorConnection ="hidden";
+
+    private String emailConnexion;
+    private  String passwordConnexion;
+    private User user;
+
     /**
      * Post construtor for input date
      */
@@ -75,40 +84,28 @@ public class UserBean implements Serializable
     }
 
     /**
-     * Check connection page error message
-     */
-    public boolean checkInvalid()
-    {
-        boolean message = this.messageErrorConnection;
-        this.messageErrorConnection = false;
-        return message;
-    }
-
-    /**
      * Verification connection method
      */
     public String lastVerificationSignIn()
     {
-        UtilityProcessing.debug("test");
         //initialize.
         UserService userService = new UserService();
-        User user ;
         String redirect;
 
         try
         {
             //Call of the service that will use the NamedQuery of the "User" entity
-             user = userService.findUserByMailAndPassword(this.mail);
-             checkUserConnection(user, password, mail);
+             this.user = userService.findUserByMailAndPassword(this.emailConnexion);
+             checkUserConnection(this.user, this.passwordConnexion, this.emailConnexion);
+            this.messageErrorConnection = "hidden";
              redirect = "/accueil";
 
         }
         catch(Exception e)
         {
             UtilityProcessing.debug("Récupération de données d'utilisateur introuvable : " + e);
-
             /* déclancher un message d'erreur*/
-            this.messageErrorConnection = true;
+            this.messageErrorConnection = "";
             redirect = "/view/connexion";
         }
         finally
@@ -117,6 +114,46 @@ public class UserBean implements Serializable
         }
 
         return redirect;
+    }
+
+    /**
+     * distroy session connected method
+     */
+    public String destroySession()
+    {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        this.user = null;
+        UtilityProcessing.debug( FacesContext.getCurrentInstance().getViewRoot().getViewId());
+        if("/accueil.xhtml".equals( FacesContext.getCurrentInstance().getViewRoot().getViewId()))
+        {
+            // managed bean go to js
+            PrimeFaces.current().executeScript("submitLanguageForm(\"headerLanguageButtonContainer\")");
+            return "";
+        }
+        else
+        {
+            return "/accueil";
+        }
+
+
+    }
+
+
+    /**
+     * Redirection go to connection page
+     * @return
+     */
+    public String goToPageConnection()
+    {
+        return "/view/connexion";
+    }
+
+    /**
+     * Redirection go to home page
+     * @return
+     */
+    public String goToPageAccueil(){
+        return "/accueil";
     }
 
     /**
@@ -167,9 +204,46 @@ public class UserBean implements Serializable
 //        }
 //    }
 
+    public String getEmailConnexion() {
+        return emailConnexion;
+    }
+
+    public void setEmailConnexion(String emailConnexion) {
+        this.emailConnexion = emailConnexion;
+    }
+
+    public String getPasswordConnexion() {
+        return passwordConnexion;
+    }
+
+    public void setPasswordConnexion(String passwordConnexion) {
+        this.passwordConnexion = passwordConnexion;
+    }
+
+    public String getMessageErrorConnection() {
+        String message = this.messageErrorConnection;
+        this.messageErrorConnection = "hidden";
+        return message;
+    }
+
+    public void setMessageErrorConnection(String messageErrorConnection) {
+        this.messageErrorConnection = messageErrorConnection;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     /**
      * Getter and setter method
      */
+
+
+
     public String getLastName() {
         return lastName;
     }

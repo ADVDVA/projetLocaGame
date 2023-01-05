@@ -29,10 +29,15 @@
     </div>
 
     <div id="headerLoginBlock">
-        <p:commandButton value="#{I18N['application.header.loginbutton']}" action="#{connexionBean.goToPageConnexion}" class="ui-button-warning" id="headerLoginButton"/>
+
+        <span>
+            <p:commandButton value="#{I18N['application.header.connectionmessage']} #{userBean.user.lastName} " action="#{userBean.destroySession}" class="ui-button-warning " icon="pi pi-sign-out" rendered="#{userBean.user != null}" iconPos="right"/>
+        </span>
+
+        <p:commandButton value="#{I18N['application.header.loginbutton']}" action="#{userBean.goToPageConnection}" icon="pi pi-sign-in" class="ui-button-warning" rendered="#{userBean.user == null}" iconPos="right"/>
 
         <h:form id="headerLanguageButtonContainer">
-            <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning">
+            <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning" iconPos="right">
 
                 <p:menuitem value="#{I18N['application.header.languagefr']}" action="#{i18nBean.changeLanguage('fr','headerLanguageButtonContainer')}"/>
                 <p:menuitem value="#{I18N['application.header.languageen']}" action="#{i18nBean.changeLanguage('en','headerLanguageButtonContainer')}"/>
@@ -41,7 +46,7 @@
         </h:form>
 
         <div class="card" id="headerMenuButtonContainer">
-            <p:commandButton id="dynaButton" value="#{I18N['application.header.menutitle']}" type="button" icon="pi pi-bars" class="ui-button-warning headerMenuButton"/>
+            <p:commandButton id="dynaButton" value="#{I18N['application.header.menutitle']}" type="button" icon="pi pi-bars" class="ui-button-warning headerMenuButton" iconPos="right"/>
             <p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
 
                 <p:menuitem value="#{I18N['application.header.menulisthome']}" action="/accueil.xhtml"/>

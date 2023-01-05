@@ -118,17 +118,14 @@ h2{
     height: 80px;
 }
 
-#header #headerMainContainer{}
 
 #header #headerLoginBlock{
     text-align: right;
 }
-#header #headerLoginButton{}
-#header #headerMenuButtonContainer{}
+
 #header .headerMenuButton{
     margin-top: 10px;
 }
-#header #headerLanguageButtonContainer{}
 #header .headerLanguageButton{
     margin-top: 10px;
 }

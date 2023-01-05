@@ -17,7 +17,7 @@
         </f:metadata>
 
         <h:form id="headerLanguageButtonContainer">
-            <p:menuButton value="#{I18N['application.header.language']}" class="ui-button-warning">
+            <p:menuButton value="#{I18N['application.header.language']}" class="ui-button-warning" iconPos="right">
 
                 <p:menuitem value="#{I18N['application.header.languagefr']}" action="#{i18nBean.changeLanguage('fr','headerLanguageButtonContainer')}"/>
                 <p:menuitem value="#{I18N['application.header.languageen']}" action="#{i18nBean.changeLanguage('en','headerLanguageButtonContainer')}"/>
@@ -27,16 +27,19 @@
 
         <div class ="containers">
             <h1>
-                <h:outputText value="#{I18N['application.connexionpage.title']}"/>
+                <h:outputText value="#{I18N['application.connexionpage.title']}" />
             </h1>
             <h:form>
 
-
-                <p:message for="messageLoginError" value="#{I18N['application.connexionpage.messageerror']}" rendered="#{userBean.checkInvalid()}"/>
+                <div id="j_idt29:messageLastName" role="alert" aria-atomic="true"
+                     aria-live="polite" class="ui-message ui-message-error ui-widget ui-corner-all #{userBean.messageErrorConnection}" >
+                    <div><span class="ui-message-error-icon"> </span>
+                        <span class="ui-message-error-detail" id="j_idt29:messageLastName_error-detail"><h:outputText value="#{I18N['application.connexionpage.messageerror']}"/></span>
+                    </div></div>
 
                 <h5>#{I18N['application.connexionpage.mailtitle']}</h5>
                 <span class="ui-float-label">
-                    <p:inputText id="float-input" value="#{userBean.mail}"
+                    <p:inputText id="float-input" value="#{userBean.emailConnexion}"
                                  placeholder="#{I18N['application.connexionpage.mailplaceholder']}">
                     </p:inputText>
                 </span>
@@ -44,7 +47,7 @@
 
                 <h5>#{I18N['application.connexionpage.passwordtitle']}</h5>
                 <span class="ui-float-label">
-                <p:password id="toggle" value="#{userBean.password}" toggleMask="true"
+                <p:password id="toggle" value="#{userBean.passwordConnexion}" toggleMask="true"
                             redisplay="true"
                             placeholder="#{I18N['application.connexionpage.passwordplaceholder']}">
                 </p:password>
@@ -53,10 +56,15 @@
 
 
                 <div class="spaceformeConnexion">
-                    <p:commandButton value="#{I18N['application.connexionpage.buttonsubmit']}" action="#{userBean.lastVerificationSignIn}" class="ui-button-warning"/>
+                    <p:commandButton value="#{I18N['application.connexionpage.buttonsubmit']}"
+                                     action="#{userBean.lastVerificationSignIn}" class="ui-button-success" update="@form"/>
                 </div>
 
             </h:form>
+            <div class="spaceformeConnexion">
+                <p:commandButton value="#{I18N['application.connexionpage.buttonreturn']}" action="#{userBean.goToPageAccueil}"
+                                 class="ui-button-danger" id="cancelButtonSignUp"/>
+            </div>
              <p class ="spaceBottomConnexion">#{I18N['application.connexionpage.messageinscription']}<h:link value="#{I18N['application.connexionpage.linkinscription']}" outcome="/view/inscription"/></p>
         </div>
 
