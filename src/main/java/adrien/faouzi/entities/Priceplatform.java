@@ -1,10 +1,30 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.utility.UtilityProcessing;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+
+@NamedQueries(value = {
+        @NamedQuery(name= "Priceplatform.SelectPricePlatformByFilter",
+                query = "select pp from Priceplatform pp " +
+                        //"join Product p on (pp.idPorduct.id = p.id) " +
+                        "where ( " +
+                        "  (lower(pp.idProduct.productName) like concat('%', lower(:researchWord), '%')) or " +
+                        "  (1 like 1) or "+ //condition for filter all category.
+                        "  (1 like 1) or "+ //condition for filter all platform.
+                        "  (1 like 1) "+    //condition for filter all language.
+                        ") " //+
+                        //"order by case " +
+                        //"  when (:orderBy like 'productname') then p.productName " +
+                        //"  else pp.id " +
+                        //"end " +
+                        //"* case when (:ascOrDesc = 'asc') then 1 else -1 end"
+        )
+})
 @Entity
 @Table(name = "priceplatform")
 public class Priceplatform {
@@ -123,4 +143,15 @@ public class Priceplatform {
     public void setId(int id) {
         this.id = id;
     }
+
+
+
+    public String getRentalPriceFormatStr(){
+        return UtilityProcessing.floatToStrTwoDigit(this.rentalPrice);
+    }
+
+    public String getEnableFormatStrCatalog(){
+        return ((this.enable && this.idProduct.getEnable())? "disponible": "indisponible");
+    }
+
 }

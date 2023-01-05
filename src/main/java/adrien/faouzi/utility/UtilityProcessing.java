@@ -52,4 +52,11 @@ public class UtilityProcessing {
         Logger log = Logger.getAnonymousLogger();
         log.info("debug ----------------> "+message);
     }
+
+
+
+    public static String floatToStrTwoDigit(float number){
+        String outStr = String.valueOf(Math.floor(number*100));
+        return outStr.substring(0, outStr.length()-4)+"."+outStr.substring(outStr.length()-4, outStr.length()-2);
+    }
 }

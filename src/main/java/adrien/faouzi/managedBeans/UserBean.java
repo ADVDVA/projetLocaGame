@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -90,16 +91,18 @@ public class UserBean implements Serializable
     {
         //initialize.
         UserService userService = new UserService();
+        EntityTransaction transaction = userService.getTransaction();
         String redirect;
 
         try
         {
+            transaction.begin();
             //Call of the service that will use the NamedQuery of the "User" entity
              this.user = userService.findUserByMailAndPassword(this.emailConnexion);
              checkUserConnection(this.user, this.passwordConnexion, this.emailConnexion);
             this.messageErrorConnection = "hidden";
              redirect = "/accueil";
-
+            transaction.commit();
         }
         catch(Exception e)
         {
@@ -107,6 +110,8 @@ public class UserBean implements Serializable
             /* déclancher un message d'erreur*/
             this.messageErrorConnection = "";
             redirect = "/view/connexion";
+            if(transaction.isActive())
+                transaction.rollback();
         }
         finally
         {

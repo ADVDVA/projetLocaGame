@@ -23,14 +23,14 @@
 
             <h:form>
 
-                <!-- reload SQL request. -->
+                <!-- load list research catalog. -->
                 <f:metadata>
-                    <f:event type="preRenderView" listener="#{productSessionBean.initialiseProductsFiltered}"/>
+                    <f:event type="preRenderView" listener="#{pricePlatformListBean.doResearch()}"/>
                 </f:metadata>
 
                 <p:dataTable
-                        var="product"
-                        value="#{productSessionBean.productsFiltered}"
+                        var="pricePlatform"
+                        value="#{pricePlatformListBean.pricePlatformFiltered}"
                         class="tableHeaderNoPadding tableHeaderTitleCenter"
                         paginator="true"
                         paginatorPosition="bottom"
@@ -38,11 +38,12 @@
                         currentPageReportTemplate="{startRecord}-{endRecord} sur {totalRecords} elements"
                         rowsPerPageTemplate="5,10,20"
                         rows="5">
+
                     <f:facet name="header">
 
                         <div class="containerFlex containerTableHeaderFilter">
                             <div class="flexGrowOne">
-                                <p:inputText value="#{productSessionBean.filter}"
+                                <p:inputText value="#{pricePlatformListBean.filter}"
                                              onkeyup="researchTable(this)"
                                              placeholder="#{I18N['application.listpage.filter']}"/>
                                 <p:commandButton type="hidden" update="@form"/>
@@ -55,24 +56,27 @@
 
                         <div class="containerFlex containerTableHeaderFilter containerTableHeaderOrder">
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('Id')}" onclick="clickNext(this)"/>
-                                <p:commandButton type="hidden" action="#{productSessionBean.editOrderTable('Id')}" update="@form"/>
+                                <i class="#{pricePlatformListBean.getOrderIcon('productname')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('productname')}" update="@form"/>
+                            </div>
+
+                            <!-- category -->
+
+                            <!-- platform -->
+
+                            <!-- language -->
+
+                            <div class="flexGrowOne">
+                                <i class="#{pricePlatformListBean.getOrderIcon('pegi')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('pegi')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('ProductName')}" onclick="clickNext(this)"/>
-                                <p:commandButton type="hidden" action="#{productSessionBean.editOrderTable('ProductName')}" update="@form"/>
+                                <i class="#{pricePlatformListBean.getOrderIcon('rentaleprice')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('rentaleprice')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('Pegi')}" onclick="clickNext(this)"/>
-                                <p:commandButton type="hidden" action="#{productSessionBean.editOrderTable('Pegi')}" update="@form"/>
-                            </div>
-                            <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('ReleaseDate')}" onclick="clickNext(this)"/>
-                                <p:commandButton type="hidden" action="#{productSessionBean.editOrderTable('ReleaseDate')}" update="@form"/>
-                            </div>
-                            <div class="flexGrowOne">
-                                <i class="#{productSessionBean.getOrderIcon('Enable')}" onclick="clickNext(this)"/>
-                                <p:commandButton type="hidden" action="#{productSessionBean.editOrderTable('Enable')}" update="@form"/>
+                                <i class="#{pricePlatformListBean.getOrderIcon('enable')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('enable')}" update="@form"/>
                             </div>
 
                             <div class="flexGrowOne">
@@ -88,46 +92,45 @@
 
                     </f:facet>
 
-                    <p:column headerText="Id">
-                        <h:outputText value="#{product.id}"/>
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistproductname']}">
+                        <h:outputText value="#{pricePlatform.idProduct.productName}"/>
                     </p:column>
 
-                    <p:column headerText="ProductName">
-                        <h:outputText value="#{product.productName}"/>
+                    <!-- get category concat. (from product, from jointure, from category) -->
+
+                    <!-- get platform concat. (from jointure, from platform) -->
+
+                    <!-- get language concat. (from product, from jointure, from language) -->
+
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistpegi']}">
+                        <h:outputText value="pegi #{pricePlatform.idProduct.pegiFormatInt}"/>
                     </p:column>
 
-                    <p:column headerText="Pegi">
-                        <span>pegi </span>
-                        <h:outputText value="#{product.pegiFormatInt}"/>
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistprice']}">
+                        <h:outputText value="#{pricePlatform.rentalPriceFormatStr}€/semaine"/>
                     </p:column>
 
-                    <p:column headerText="ReleaseDate">
-                        <h:outputText value="#{product.releaseDateFormatDate}">
-                            <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                        </h:outputText>
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistenable']}">
+                        <h:outputText value="#{pricePlatform.enableFormatStrCatalog}"/>
                     </p:column>
 
-                    <p:column headerText="Enable">
-                        <h:outputText value="#{product.enableFormatStr}"/>
-                    </p:column>
-
-                    <!-- button column -->
+                    <!-- button column _____________________________________________ -->
 
                     <p:column headerText="#{I18N['application.listpage.headerlistildetails']}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{productSessionBean.redirectPageWidthId('/view/welcome', product.id)}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
                     </p:column>
 
                     <!--
                     <p:column headerText="#{I18N['application.listpage.headerlistiledit']}">
                         <i class="pi pi-pencil" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{productSessionBean.redirectPageWidthId('/view/welcome', product.id)}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
                     </p:column>
                     -->
 
                     <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}">
                         <i class="pi pi-cart-plus" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{productSessionBean.redirectPageWidthId('/view/welcome', product.id)}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
                     </p:column>
 
                 </p:dataTable>

@@ -2,6 +2,7 @@ package adrien.faouzi.projetlocagame.connexion;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /** 
@@ -22,6 +23,10 @@ public class EMF {
 
     public void close(){
         this.em.close();
+    }
+
+    public EntityTransaction getTransaction(){
+        return this.em.getTransaction();
     }
 
     public static EntityManagerFactory getEMF() {

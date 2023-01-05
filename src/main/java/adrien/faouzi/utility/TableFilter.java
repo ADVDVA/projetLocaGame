@@ -2,8 +2,9 @@ package adrien.faouzi.utility;
 
 public class TableFilter {
 
-    private String order = "Id";
-    private boolean orderAsc = false;
+    protected String order = "Id";
+
+    protected boolean orderAsc = false;
 
     public void editOrderTable(String order){
 
@@ -24,7 +25,7 @@ public class TableFilter {
 
 
 
-    private String filter = "";
+    protected String filter = "";
 
     public void setFilter(String filter) {
         this.filter = filter;
@@ -36,7 +37,7 @@ public class TableFilter {
 
 
 
-    private int idRedirection;
+    protected int idRedirection;
 
     public int getIdRedirection(){
 
