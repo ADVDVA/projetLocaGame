@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import adrien.faouzi.exeption.ConnexionUserExecption;
@@ -121,7 +120,12 @@ public class UserBean implements Serializable
      */
     public String destroySession()
     {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//        facesContext.getExternalContext().getSessionMap().put("userBean", null);
+
+//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        sessionMap.remove();
+
         this.user = null;
         UtilityProcessing.debug( FacesContext.getCurrentInstance().getViewRoot().getViewId());
         if("/accueil.xhtml".equals( FacesContext.getCurrentInstance().getViewRoot().getViewId()))
