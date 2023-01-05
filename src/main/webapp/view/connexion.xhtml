@@ -36,7 +36,7 @@
 
                 <h5>#{I18N['application.connexionpage.mailtitle']}</h5>
                 <span class="ui-float-label">
-                    <p:inputText id="float-input" value="#{connexionBean.mail}"
+                    <p:inputText id="float-input" value="#{userBean.mail}"
                                  placeholder="#{I18N['application.connexionpage.mailplaceholder']}">
                     </p:inputText>
                 </span>
@@ -44,7 +44,7 @@
 
                 <h5>#{I18N['application.connexionpage.passwordtitle']}</h5>
                 <span class="ui-float-label">
-                <p:password id="toggle" value="#{connexionBean.password}" toggleMask="true"
+                <p:password id="toggle" value="#{userBean.password}" toggleMask="true"
                             redisplay="true"
                             placeholder="#{I18N['application.connexionpage.passwordplaceholder']}">
                 </p:password>
@@ -53,7 +53,7 @@
 
 
                 <div class="spaceformeConnexion">
-                    <p:commandButton type="button" value="#{I18N['application.connexionpage.buttonsubmit']}" ajax="false" validateClient="true" action="#{userBean.lastVerificationSignIn}" class="ui-button-warning"/>
+                    <p:commandButton value="#{I18N['application.connexionpage.buttonsubmit']}" action="#{userBean.lastVerificationSignIn}" class="ui-button-warning"/>
                 </div>
 
             </h:form>
