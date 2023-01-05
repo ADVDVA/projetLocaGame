@@ -3,18 +3,33 @@
 <html lang="fr"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html">
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
         #{I18N['application.homepage.title']}
     </ui:define>
     <ui:define name="content">
-        <!--
-        <h:link value="#{(false ? I18N_EN['application.welcomepage.return'] : I18N_FR['application.welcomepage.return'])}" outcome="index"></h:link>
-       -->
-        <p>
-            Adrien Faouzi.
-        </p>
+
+        <div>
+            <p:carousel value="#{homePageBean.imagesCarousel}" var="img" circular="true" autoplayInterval="3000"
+                        responsiveOptions="#{homePageBean.responsiveOptions}" numVisible="1" numScroll="1">
+                <f:facet name="header">
+                    <h2>
+                        <h:outputText value="#{I18N['application.homepage.slogan']}"/>
+                    </h2>
+                </f:facet>
+
+                <div class="product-item">
+                    <div class="product-item-content">
+                        <div class="mb-3">
+                            <p:graphicImage name="#{img}" styleClass="product-image"/>
+                        </div>
+                    </div>
+                </div>
+            </p:carousel>
+        </div>
 
     </ui:define>
 </ui:composition>
