@@ -89,6 +89,7 @@ public class UserBean implements Serializable
      */
     public String lastVerificationSignIn()
     {
+        UtilityProcessing.debug("test");
         //initialize.
         UserService userService = new UserService();
         User user ;
