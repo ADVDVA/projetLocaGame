@@ -224,6 +224,7 @@ public class UserBean implements Serializable
     public String goToPageConnection()
     {
         return "/view/connexion";
+
     }
 
     /**
