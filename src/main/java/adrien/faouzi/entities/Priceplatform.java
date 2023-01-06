@@ -9,21 +9,52 @@ import java.util.Set;
 
 
 @NamedQueries(value = {
-        @NamedQuery(name= "Priceplatform.SelectPricePlatformByFilter",
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterAsc",
                 query = "select pp from Priceplatform pp " +
-                        //"join Product p on (pp.idPorduct.id = p.id) " +
+                        //"join Product p on (p.id = pp.idProduct.id) " +
                         "where ( " +
-                        "  (lower(pp.idProduct.productName) like concat('%', lower(:researchWord), '%')) or " +
-                        "  (1 like 1) or "+ //condition for filter all category.
-                        "  (1 like 1) or "+ //condition for filter all platform.
-                        "  (1 like 1) "+    //condition for filter all language.
-                        ") " //+
-                        //"order by case " +
-                        //"  when (:orderBy like 'productname') then p.productName " +
-                        //"  else pp.id " +
-                        //"end " +
-                        //"* case when (:ascOrDesc = 'asc') then 1 else -1 end"
+                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) " +
+                        "  "+ //condition for filter all category.
+                        "  "+ //condition for filter all platform.
+                        "  "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'productname') then pp.idProduct.productName " +
+                        "  when (:orderBy like 'pegi') then pp.idProduct.pegi "+
+                        "  when (:orderBy like 'rentaleprice') then pp.rentalPrice "+
+                        "  when (:orderBy like 'enable') then pp.enable "+
+                        "  else pp.id " +
+                        "end asc" //+
+                        //"* case " +
+                        //"  when (:ascOrDesc like 'asc') then 1 " +
+                        //"  else -1 " +
+                        //"end"
+        ),
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterDesc",
+                query = "select pp from Priceplatform pp " +
+                        //"join Product p on (p.id = pp.idProduct.id) " +
+                        "where ( " +
+                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) " +
+                        "  "+ //condition for filter all category.
+                        "  "+ //condition for filter all platform.
+                        "  "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'productname') then pp.idProduct.productName " +
+                        "  when (:orderBy like 'pegi') then pp.idProduct.pegi "+
+                        "  when (:orderBy like 'rentaleprice') then pp.rentalPrice "+
+                        "  when (:orderBy like 'enable') then pp.enable "+
+                        "  else pp.id " +
+                        "end desc" //+
+                        //"* case " +
+                        //"  when (:ascOrDesc like 'asc') then 1 " +
+                        //"  else -1 " +
+                        //"end"
+        ),
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformById",
+                query = "select pp from Priceplatform pp where (:idPricePlatform = pp.id)"
         )
+
 })
 @Entity
 @Table(name = "priceplatform")
@@ -150,8 +181,16 @@ public class Priceplatform {
         return UtilityProcessing.floatToStrTwoDigit(this.rentalPrice);
     }
 
-    public String getEnableFormatStrCatalog(){
+    public String getEnableFormatStr(){
         return ((this.enable && this.idProduct.getEnable())? "disponible": "indisponible");
     }
+    public String getEnableFormatIco(){
+        return ((this.enable && this.idProduct.getEnable())? "pi pi-check-circle colorGreen": "pi pi-times-circle colorRed");
+    }
+    public String getEnableClassColor(){
+        return ((this.enable && this.idProduct.getEnable())? "colorGreen": "colorRed");
+    }
+
+
 
 }

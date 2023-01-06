@@ -2,7 +2,7 @@ package adrien.faouzi.utility;
 
 public class TableFilter {
 
-    protected String order = "Id";
+    protected String order = "id";
 
     protected boolean orderAsc = false;
 
@@ -37,12 +37,9 @@ public class TableFilter {
 
 
 
-    protected int idRedirection;
+    private int idRedirection;
 
     public int getIdRedirection(){
-
-        UtilityProcessing.debug(String.valueOf(idRedirection));
-
         return this.idRedirection;
     }
 
@@ -52,9 +49,4 @@ public class TableFilter {
         return url;
     }
 
-
-    //return a string concataned with id.
-    public String concatStrId(String name, int id){
-        return name+(String.valueOf(id));
-    }
 }

@@ -61,10 +61,19 @@
                             </div>
 
                             <!-- category -->
+                            <div class="flexGrowOne">
+                                <i class="pi pi-circle-off visibilityHidden" />
+                            </div>
 
                             <!-- platform -->
+                            <div class="flexGrowOne">
+                                <i class="pi pi-circle-off visibilityHidden" />
+                            </div>
 
                             <!-- language -->
+                            <div class="flexGrowOne">
+                                <i class="pi pi-circle-off visibilityHidden" />
+                            </div>
 
                             <div class="flexGrowOne">
                                 <i class="#{pricePlatformListBean.getOrderIcon('pegi')}" onclick="clickNext(this)"/>
@@ -97,28 +106,50 @@
                     </p:column>
 
                     <!-- get category concat. (from product, from jointure, from category) -->
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistcategoryname']}">
+                        <!--<h:outputText value="#{pricePlatform.idProduct.listCategory.size()}"/>-->
+                        <h:outputText value="#{I18N['application.cataloglistpage.nothing']}" class="colorSilver" rendered="#{pricePlatform.idProduct.listCategory.size() == 0}"/>
+                        <ui:repeat value="#{pricePlatform.idProduct.listCategory}" var="category">
+                            <p>
+                                <h:outputText value="#{category.categoryName}"/>
+                            </p>
+                        </ui:repeat>
+                    </p:column>
 
                     <!-- get platform concat. (from jointure, from platform) -->
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistplatformname']}">
+                        <h:outputText value="#{pricePlatform.idPlatform.platformName}"/>
+                    </p:column>
 
                     <!-- get language concat. (from product, from jointure, from language) -->
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistlanguagename']}">
+                        <!--<h:outputText value="#{pricePlatform.idProduct.productName}"/>-->
+                        <h:outputText value="#{I18N['application.cataloglistpage.nothing']}" class="colorSilver" rendered="#{pricePlatform.idProduct.listLanguageGame.size() == 0}"/>
+                        <ui:repeat value="#{pricePlatform.idProduct.listLanguageGame}" var="platform">
+                            <p>
+                                <h:outputText value="#{platform.languageName}"/>
+                            </p>
+                        </ui:repeat>
+                    </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistpegi']}">
                         <h:outputText value="pegi #{pricePlatform.idProduct.pegiFormatInt}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistprice']}">
-                        <h:outputText value="#{pricePlatform.rentalPriceFormatStr}€/semaine"/>
+                        <h:outputText value="#{pricePlatform.rentalPriceFormatStr}€/s"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistenable']}">
-                        <h:outputText value="#{pricePlatform.enableFormatStrCatalog}"/>
+                        <h:outputText value="#{pricePlatform.enableFormatStr}" class="#{pricePlatform.enableClassColor}"/>
+                        <!--<i class="#{pricePlatform.enableFormatIco}"/>-->
                     </p:column>
 
                     <!-- button column _____________________________________________ -->
 
                     <p:column headerText="#{I18N['application.listpage.headerlistildetails']}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/detailProduct', pricePlatform.id)}"/>
                     </p:column>
 
                     <!--

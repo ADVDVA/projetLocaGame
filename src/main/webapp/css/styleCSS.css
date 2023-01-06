@@ -59,6 +59,17 @@
     flex-grow: 1;
 }
 
+.colorGreen{
+    color: #689f38;
+}
+.colorRed{
+    color: #d32f2f;
+}
+.colorSilver{
+    color: silver;
+}
+
+
 /*______ formulary css ______*/
 
 .responsiveForm{

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig" migrateIndexesAndConstraints="true">
     <option name="defaultUnitInitialized" value="true" />
+    <option name="renamerInitialized" value="true" />
     <option name="reverseEngineeringLastDbConnectionId" value="d0be8444-24ad-42ed-a566-413944c029b0" />
     <option name="reLastEntityCreationPackage" value="src/main/java/adrien/faouzi/entities" />
     <reUseDbSnapshotConnections>

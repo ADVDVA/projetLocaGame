@@ -2,14 +2,12 @@ package adrien.faouzi.entities;
 
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
+import adrien.faouzi.managedBeans.ProductStaticBean;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "product")
@@ -96,9 +94,6 @@ public class Product {
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
-    public String getEnableFormatStr(){
-        return (enable? "indisponible": "disponible");
-    }
 
     public String getDescription() {
         return description;
@@ -110,9 +105,6 @@ public class Product {
 
     public LocalDateTime getReleaseDate() {
         return releaseDate;
-    }
-    public Date getReleaseDateFormatDate(){
-        return UtilityProcessing.castLocalDateTimeToDate(releaseDate);
     }
 
     public void setReleaseDate(LocalDateTime releaseDate) {
@@ -127,14 +119,8 @@ public class Product {
         this.multiPlayer = multiPlayer;
     }
 
-    public String getPegiString() {
-        return pegi.getPegi();
-    }
     public Pegi getPegi() {
         return pegi;
-    }
-    public int getPegiFormatInt(){
-        return pegi.getPegiInt();
     }
 
     public void setPegi(Pegi pegi) {
@@ -163,5 +149,46 @@ public class Product {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+
+
+    //get data format.
+    public Date getReleaseDateFormatDate(){
+        return UtilityProcessing.castLocalDateTimeToDate(releaseDate);
+    }
+    public int getPegiFormatInt(){
+        return pegi.getPegiInt();
+    }
+    public String getPegiFormatString() {
+        return pegi.getPegi();
+    }
+    public String getEnableFormatStr(){
+        return ((enable)? "indisponible": "disponible");
+    }
+
+
+    //list of all category get by table join.
+    @Transient
+    private List<Category> listCategory;
+    public List<Category> getListCategory(){
+        if(this.listCategory == null)
+            ProductStaticBean.initListCategory(this);
+        return this.listCategory;
+    }
+    public void setListCategory(List<Category> listCategory){
+        this.listCategory = listCategory;
+    }
+
+    //list of all language game get by table join.
+    @Transient
+    private List<Languagegame> listLanguageGame;
+    public List<Languagegame> getListLanguageGame(){
+        if(this.listLanguageGame == null)
+            ProductStaticBean.initListLanguageGame(this);
+        return this.listLanguageGame;
+    }
+    public void setListLanguageGame(List<Languagegame> listLanguageGame){
+        this.listLanguageGame = listLanguageGame;
     }
 }
