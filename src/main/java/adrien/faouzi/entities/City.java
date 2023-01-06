@@ -5,6 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name = "City.SelectCityByPostalCode", query = "SELECT c from City c " +
+                "where c.postalCode = :postalCode")
+})
+
+
 @Entity
 @Table(name = "city", indexes = {
         @Index(name = "fk_idCountry", columnList = "idCountry")

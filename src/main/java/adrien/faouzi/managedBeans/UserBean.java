@@ -1,7 +1,11 @@
 package adrien.faouzi.managedBeans;
 
+import adrien.faouzi.entities.City;
+import adrien.faouzi.entities.Country;
 import adrien.faouzi.entities.User;
 
+import adrien.faouzi.services.CityService;
+import adrien.faouzi.services.CountryService;
 import adrien.faouzi.services.UserService;
 import adrien.faouzi.utility.UtilityProcessing;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -12,7 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityTransaction;
-import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import adrien.faouzi.exeption.ConnexionUserExecption;
@@ -20,6 +24,7 @@ import org.primefaces.PrimeFaces;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Named
@@ -30,41 +35,55 @@ public class UserBean implements Serializable
      * Fields
      */
 
+    @NotNull
     @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     private String lastName;
 
+    @NotNull
     @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
     private String firstName;
 
+    @NotNull
     @Pattern(regexp = "^[+][0-9]{1,4}[ ]{1}[0-9]{2,4}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}$")
     private String phone;
 
-    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+.[a-zA-Z.]{2,15}$")
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$")
     private String mail;
 
+    @NotNull
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     private String password;
 
+    @NotNull
     private String passwordVerify;
 
+    @NotNull
     @Pattern(regexp = "^[a-zA-Z ]{1,}$")
     private String street;
 
     private int number;
 
+    @NotNull
     @Pattern(regexp= "^[a-zA-Z1-9]{1,20}")
     private String box;
 
+    @NotNull
     @Pattern(regexp = "^[0-9]{1,}$")
     private String postalCode;
-    private List<String> city = new ArrayList<>();
-    private String country;
 
+    @NotNull
+    private String city;
+    private HashMap<String, String> cities ;
+
+    @NotNull
+    private String country;
+    private List<String> countryList;
+
+    @NotNull
     private Date dateOfBirth;
     private Date minDate;
     private Date maxDate;
-
-    private String hideNoSelectOption;
 
     private String messageErrorConnection ="hidden";
 
@@ -78,10 +97,41 @@ public class UserBean implements Serializable
     @PostConstruct
     public void init()
     {
+        //for input date of birth
         Date today = new Date();
         long oneDay = 24 * 60 * 60 * 1000;
         minDate = new Date(today.getTime()- (365 * oneDay) * 100 - ((100/4) * oneDay));
         maxDate = new Date(today.getTime()- (365  * oneDay) * 18 -( 4 * oneDay) );// *18 pour 18 ans
+
+        //For input country
+        //initialize.
+        CountryService countryService = new CountryService();
+        EntityTransaction transaction = countryService.getTransaction();
+        this.countryList = new ArrayList<>();
+        List <Country> countryListRequest;
+        try
+        {
+            transaction.begin();
+            //Call of the service that will use the NamedQuery of the "County" entity
+            countryListRequest = countryService.findCountryAll();
+            UtilityProcessing.debug("country list : " +countryListRequest.size());
+            for(Country countryL : countryListRequest)
+            {
+                this.countryList.add(countryL.getCountryName());
+            }
+            transaction.commit();
+        }
+        catch(Exception e)
+        {
+            UtilityProcessing.debug("Récupération de données du pays introuvable : " + e);
+            if(transaction.isActive())
+                transaction.rollback();
+        }
+        finally
+        {
+            countryService.close();
+        }
+
     }
 
     /**
@@ -126,9 +176,13 @@ public class UserBean implements Serializable
      */
     public String destroySession()
     {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//        facesContext.getExternalContext().getSessionMap().put("userBean", null);
+
+//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        sessionMap.remove();
         this.user = null;
-        UtilityProcessing.debug( FacesContext.getCurrentInstance().getViewRoot().getViewId());
+      //  UtilityProcessing.debug( FacesContext.getCurrentInstance().getViewRoot().getViewId());
         if("/accueil.xhtml".equals( FacesContext.getCurrentInstance().getViewRoot().getViewId()))
         {
             // managed bean go to js
@@ -139,10 +193,7 @@ public class UserBean implements Serializable
         {
             return "/accueil";
         }
-
-
     }
-
 
     /**
      * Redirection go to connection page
@@ -194,27 +245,68 @@ public class UserBean implements Serializable
         return "/accueil";
     }
 
-//    /**
-//     *
-//     */
-//    public void updatePostalCodeWithCity ()
-//    {
-//        if(this.postalCode.equals("6000"))
-//        {
-//            this.city = new ArrayList<>();
-//            this.city.add("Charleroi");
-//            this.city.add("kjhgf");
-//            this.city.add("oiuyt");
-//            this.city.add("Gerpinnes");
-//        }
-//    }
+    /**
+     * update field city
+     */
+    public void updatePostalCodeWithCity ()
+    {
+        if(this.postalCode != null)
+        {
+            //initialize.
+            CityService cityService = new CityService();
+            EntityTransaction transaction = cityService.getTransaction();
+            List<City> cityList;
+            this.cities = new HashMap<>();
+            try
+            {
+                transaction.begin();
+                //Call of the service that will use the NamedQuery of the "city" entity
+                cityList = cityService.findCityByPostalCode(Integer.parseInt(this.postalCode));
+                for (City cityL: cityList)
+                {
+                    cities.put(cityL.getCityName(),String.valueOf(cityL.getId()));
+                }
+                
+                //UtilityProcessing.debug("" + cities.size());
+                transaction.commit();
+            }
+            catch(Exception e)
+            {
+                UtilityProcessing.debug("Récupération de données de city introuvable : " + e);
+                if(transaction.isActive())
+                    transaction.rollback();
+            }
+            finally
+            {
+                cityService.close();
+            }
+        }
+        else
+        {
+            cities = new HashMap<>();
+        }
+    }
+
+
+    /**
+     * Getter and setter method
+     */
 
     public String getEmailConnexion() {
-        return emailConnexion;
-    }
+    return emailConnexion;
+}
 
     public void setEmailConnexion(String emailConnexion) {
         this.emailConnexion = emailConnexion;
+    }
+
+    public List<String> getCountryList() {
+
+        return countryList;
+    }
+
+    public void setCountryList(List<String> countryList) {
+        this.countryList = countryList;
     }
 
     public String getPasswordConnexion() {
@@ -243,11 +335,13 @@ public class UserBean implements Serializable
         this.user = user;
     }
 
-    /**
-     * Getter and setter method
-     */
+    public String getCity() {
+        return city;
+    }
 
-
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     public String getLastName() {
         return lastName;
@@ -325,13 +419,13 @@ public class UserBean implements Serializable
         return box;
     }
 
-    public List<String> getCity() {
+    public HashMap<String,String> getCities() {
 
-        return city;
+        return cities;
     }
 
-    public void setCity(List<String> city) {
-        this.city = city;
+    public void setCities(HashMap<String,String> cities) {
+        this.cities = cities;
     }
 
     public void setBox(String box) {
@@ -346,13 +440,6 @@ public class UserBean implements Serializable
         this.country = country;
     }
 
-    public String getHideNoSelectOption() {
-        return hideNoSelectOption;
-    }
-
-    public void setHideNoSelectOption(String hideNoSelectOption) {
-        this.hideNoSelectOption = hideNoSelectOption;
-    }
 
 
     public String getPostalCode() {

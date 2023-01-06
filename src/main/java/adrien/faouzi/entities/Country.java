@@ -5,6 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+
+@NamedQueries(value = {
+        @NamedQuery(name = "Country.SelectCountryAll", query = "SELECT c from Country C ")
+})
+
+
 @Entity
 @Table(name = "country")
 public class Country {

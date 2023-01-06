@@ -1,6 +1,5 @@
 package adrien.faouzi.services;
 
-import adrien.faouzi.entities.Store;
 import adrien.faouzi.entities.User;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 

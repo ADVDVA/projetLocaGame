@@ -1,5 +1,6 @@
 package adrien.faouzi.entities;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
