@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html">
+
+<!-- ______ ______ -->
+
+<ui:composition template="/WEB-INF/templates/simple.xhtml">
+    <ui:define name="title">
+        #{I18N['application.header.detailProduct']}
+    </ui:define>
+    <ui:define name="content">
+
+        <!-- load price platform selected from other page. -->
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{pricePlatformBean.loadPricePlatformSelected(pricePlatformListBean.idRedirection)}"/>
+        </f:metadata>
+
+        <div>
+            <h2>
+                <h:outputText value="#{pricePlatformBean.pricePlatformSelected.idProduct.productName}"/>
+            </h2>
+        </div>
+
+        <!-- a faire !!! page de details product. -->
+
+        <!-- + bouton retour page (previous historic). -->
+        <!-- + bouton add panier. -->
+
+
+    </ui:define>
+</ui:composition>
+
+<!-- ______ ______ -->
+
+</html>
+
+

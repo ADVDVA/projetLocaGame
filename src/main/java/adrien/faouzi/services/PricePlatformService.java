@@ -14,10 +14,32 @@ public class PricePlatformService extends EMF
      */
     public List<Priceplatform> findPricePlatformByFilter(String researchWord, String orderBy, boolean asc)
     {
-        return em.createNamedQuery("Priceplatform.SelectPricePlatformByFilter", Priceplatform.class)
-                .setParameter("researchWord", researchWord)
-                //.setParameter("orderBy", orderBy)
-                //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                .getResultList();
+        if(orderBy.equals("pegi") || orderBy.equals("productname") || orderBy.equals("enable"))
+            asc = !asc;
+
+        if(asc){
+            return em.createNamedQuery("PricePlatform.SelectPricePlatformByFilterAsc", Priceplatform.class)
+                    .setParameter("researchWord", researchWord.toLowerCase())
+                    .setParameter("orderBy", orderBy)
+                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                    .getResultList();
+        }else{
+            return em.createNamedQuery("PricePlatform.SelectPricePlatformByFilterDesc", Priceplatform.class)
+                    .setParameter("researchWord", researchWord.toLowerCase())
+                    .setParameter("orderBy", orderBy)
+                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                    .getResultList();
+        }
     }
+
+
+    /**
+     * PricePlatform make research catalog.
+     */
+    public Priceplatform findPricePlatformById(int idPricePlatform){
+        return em.createNamedQuery("PricePlatform.SelectPricePlatformById", Priceplatform.class)
+                .setParameter("idPricePlatform", idPricePlatform)
+                .getSingleResult();
+    }
+
 }

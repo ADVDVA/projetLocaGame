@@ -5,6 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name= "LanguageGame.SelectLanguageGameByIdProduct",
+                query = "select lg from Languageproduct lp " +
+                        "join Languagegame lg on (lp.idLanguage.id = lg.id) " +
+                        "where (lp.idProduct.id = :idProduct)")
+})
 @Entity
 @Table(name = "languagegame")
 public class Languagegame {

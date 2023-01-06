@@ -27,8 +27,6 @@ function clickId(id){
 
 //function for click element next.
 function clickNext(target){
-    console.log(target);
-    console.log(target.nextSibling);
     target.nextSibling.click();
 }
 

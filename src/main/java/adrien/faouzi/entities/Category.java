@@ -5,6 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name= "Category.SelectCategoryByIdProduct",
+                query = "select c from Categoryproduct cp " +
+                        "join Category c on (cp.idCategory.id = c.id) " +
+                        "where (cp.idProduct.id = :idProduct)")
+})
 @Entity
 @Table(name = "category")
 public class Category {
