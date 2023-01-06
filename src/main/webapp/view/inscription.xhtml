@@ -100,12 +100,31 @@
                         <p:password id="input_passwordverification_inscription" value="#{userBean.passwordVerify}" toggleMask="true"
                                 redisplay="true"
                                 placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}">
-                            <p:ajax update="messagePasswordVerification" event="keyup"/>
+                                onkeyup="clickId('messagePasswordVerificationSubmit')">
                         </p:password>
                     </span>
-                    <p:message id="messagePasswordVerification" for="@previous"/>
                 </span>
+                <p:commandButton id="messagePasswordVerificationSubmit" type="hidden" update="messagePasswordVerification"/>
+
+                <span class="responsiveInput">
+                    <span> </span>
+                    <span>
+                         <span class="placeMessageErrorCustomParent">
+                            <p:outputPanel id="messagePasswordVerification">
+                                    <f:metadata>
+                                        <f:event type="preRenderView" listener="#{userBean.checkPasswordVerify()}"/>
+                                    </f:metadata>
+                                <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{userBean.messageErrorPassword}">
+                                    <div class="placeMessageErrorCustomChild">
+                                        <span class="ui-message-error-icon"> </span>
+                                        <span class="ui-message-error-detail" id="messagePasswordVerification_error-detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"/></span>
+                                    </div>
+                                </div>
+                            </p:outputPanel>
+                        </span>
+                    </span>
+                </span>
+
 
                 <span class="responsiveInput">
                     <span>

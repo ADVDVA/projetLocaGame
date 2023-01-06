@@ -53,10 +53,9 @@ public class UserBean implements Serializable
 
     @NotNull
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
-    private String password;
+    private String password ="";
 
-    @NotNull
-    private String passwordVerify;
+    private String passwordVerify= "";
 
     @NotNull
     @Pattern(regexp = "^[a-zA-Z ]{1,}$")
@@ -86,6 +85,8 @@ public class UserBean implements Serializable
     private Date maxDate;
 
     private String messageErrorConnection ="hidden";
+
+    private String messageErrorPassword = "hidden";
 
     private String emailConnexion;
     private  String passwordConnexion;
@@ -131,6 +132,27 @@ public class UserBean implements Serializable
         {
             countryService.close();
         }
+
+    }
+
+    /**
+     * verification input passwordVerify method
+     */
+    public void checkPasswordVerify()
+    {
+        UtilityProcessing.debug("Password : "+this.password);
+        UtilityProcessing.debug("Passwordverify : "+this.passwordVerify);
+
+
+        if(this.passwordVerify.equals(this.password))
+        {
+            this.messageErrorPassword = "hidden";
+        }
+        else
+        {
+            this.messageErrorPassword = "";
+        }
+        UtilityProcessing.debug("test messageerror Password : "+this.messageErrorPassword);
 
     }
 
@@ -456,6 +478,18 @@ public class UserBean implements Serializable
 
     public void setMinDate(Date minDate) {
         this.minDate = minDate;
+    }
+
+    public String getMessageErrorPassword() {
+        String message = this.messageErrorPassword;
+        this.messageErrorPassword = "hidden";
+        UtilityProcessing.debug("test  message : "+ message);
+
+        return message;
+    }
+
+    public void setMessageErrorPassword(String messageErrorPassword) {
+        this.messageErrorPassword = messageErrorPassword;
     }
 
     public Date getMaxDate() {

@@ -89,6 +89,7 @@
 
 .responsiveInput > *:nth-child(2){
     width: 99%;
+    margin : 10px 0;
 }
 
 .responsiveSubmit > *{
@@ -99,6 +100,17 @@
 .positionCancel{
     margin-top: -66.67px;
 }
+
+.placeMessageErrorCustomParent{
+    width: 100%;
+}
+
+.placeMessageErrorCustomChild{
+    width: 100%;
+    margin-left: 0px;
+}
+
+
 
 /*______ title css ______*/
 
@@ -222,6 +234,19 @@ button[type="hidden"]{
     border: 0;
     font-size: 0;
 }
+
+.hidden{
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 0;
+    display : none !important;
+}
+
+
 button[type="hidden"] > *{
     display: none;
 }
