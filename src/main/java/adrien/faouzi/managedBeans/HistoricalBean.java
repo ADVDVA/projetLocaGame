@@ -16,18 +16,18 @@ public class HistoricalBean implements Serializable {
 
     @PostConstruct
     public void init(){
-        this.historic = new String[]{"",""};
-        this.index = 0;
+        this.historic = new String[]{"","","",""};
+        this.index = 10;
     }
 
     public void saveNewPageHistoric(String url){
-        if(url.equals(historic[(index+1)%2]))
+        if(url.equals(historic[index%historic.length]))
             return;
-        historic[++index%2]=url;
+        historic[(++index)%historic.length]=url;
     }
 
     public String backLastPageHistoric(){
-        return historic[(index-1)%2];
+        return historic[(--index)%historic.length];
     }
 
 
