@@ -27,17 +27,30 @@ public class PricePlatformBean implements Serializable {
     public void setPricePlatformSelected(Priceplatform pricePlatformSelected){
         this.pricePlatformSelected = pricePlatformSelected;
     }
+    public boolean pricePlatformSelectedIsErrorLoad(){
+        return (this.pricePlatformSelected == null);
+    }
+
+    //char for type of page generate (c,r,u,d).
+    private char modeSelected = 'r';
+    public boolean isModeSelected(char modeAsk){
+        return (this.modeSelected == modeAsk);
+    }
 
 
     //load price platform selected in previous page.
-    public void loadPricePlatformSelected(int idRedirection){
+    public void loadPricePlatformSelected(PricePlatformListBean pricePlatformListBean){
+
+        this.modeSelected = pricePlatformListBean.getModeRedirection();
 
         PricePlatformService pricePlatformService = new PricePlatformService();
         EntityTransaction transaction = pricePlatformService.getTransaction();
 
         try{
             transaction.begin();
-            this.pricePlatformSelected = pricePlatformService.findPricePlatformById(idRedirection);
+            this.pricePlatformSelected = pricePlatformService.findPricePlatformById(
+                    pricePlatformListBean.getIdRedirection()
+            );
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());

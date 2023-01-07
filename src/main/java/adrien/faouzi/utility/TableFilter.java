@@ -1,5 +1,7 @@
 package adrien.faouzi.utility;
 
+import org.primefaces.PrimeFaces;
+
 public class TableFilter {
 
     protected String order = "id";
@@ -38,15 +40,31 @@ public class TableFilter {
 
 
     private int idRedirection;
+    private char modeRedirection;
 
     public int getIdRedirection(){
         return this.idRedirection;
     }
+    public char getModeRedirection() { return this.modeRedirection; }
 
     //redirect page with sending id of row click.
     public String redirectPageWidthId(String url, int id){
         this.idRedirection = id;
         return url;
+    }
+
+
+    //redirect page with sending id of row click AND mode (c,r,u,d).
+    public String redirectPageWidthId(String url, int id, char mode){
+        this.modeRedirection = mode;
+        return this.redirectPageWidthId(url, id);
+    }
+
+
+
+    //call JS for apply class research word in a table list.
+    public void applyResearchWordClass(){
+        PrimeFaces.current().executeScript("applyClassWordResearch(\""+this.filter+"\")");
     }
 
 }

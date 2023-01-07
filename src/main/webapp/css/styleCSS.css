@@ -69,6 +69,9 @@
     color: silver;
 }
 
+.textCenter{
+    text-align: center;
+}
 
 /*______ formulary css ______*/
 
@@ -231,6 +234,10 @@ body .tableHeaderTitleCenter table tbody td{
 }
 .containerRedirectButtonTable > button:last-child{
     margin-right: 0;
+}
+
+.wordResearch{
+    background-color: rgb(251,192,45, 1);
 }
 
 

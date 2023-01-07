@@ -11,12 +11,16 @@ import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterAsc",
                 query = "select pp from Priceplatform pp " +
-                        //"join Product p on (p.id = pp.idProduct.id) " +
+                        "join fetch pp.idProduct p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
                         "where ( " +
-                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) " +
-                        "  "+ //condition for filter all category.
-                        "  "+ //condition for filter all platform.
-                        "  "+ //condition for filter all language.
+                        "  ((lower(pp.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  (lower(pp.idPlatform.platformName) like concat('%', :researchWord, '%')) or "+ //condition for filter all platform.
+                        "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
                         ") "+
                         "order by case " +
                         "  when (:orderBy like 'productname') then pp.idProduct.productName " +
@@ -32,12 +36,16 @@ import java.util.Set;
         ),
         @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterDesc",
                 query = "select pp from Priceplatform pp " +
-                        //"join Product p on (p.id = pp.idProduct.id) " +
+                        "join fetch pp.idProduct p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
                         "where ( " +
-                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) " +
-                        "  "+ //condition for filter all category.
-                        "  "+ //condition for filter all platform.
-                        "  "+ //condition for filter all language.
+                        "  ((lower(pp.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  (lower(pp.idPlatform.platformName) like concat('%', :researchWord, '%')) or "+ //condition for filter all platform.
+                        "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
                         ") "+
                         "order by case " +
                         "  when (:orderBy like 'productname') then pp.idProduct.productName " +

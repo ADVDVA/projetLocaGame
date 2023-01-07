@@ -14,22 +14,67 @@
     </ui:define>
     <ui:define name="content">
 
-        <!-- load price platform selected from other page. -->
+        <!-- load price platform selected from other page.-->
         <f:metadata>
-            <f:event type="preRenderView" listener="#{pricePlatformBean.loadPricePlatformSelected(pricePlatformListBean.idRedirection)}"/>
+            <f:event type="preRenderView" listener="#{pricePlatformBean.loadPricePlatformSelected(pricePlatformListBean)}"/>
         </f:metadata>
 
-        <div>
-            <h2>
-                <h:outputText value="#{pricePlatformBean.pricePlatformSelected.idProduct.productName}"/>
-            </h2>
+        <div class ="containers">
+
+            <!-- error loading message -->
+            <p:outputPanel rendered="#{pricePlatformBean.pricePlatformSelectedIsErrorLoad()}">
+                <h2>
+                    <h:outputText value="#{I18N['application.detailproductpage.errorloadtitle']}"/>
+                </h2>
+                <p class="textCenter">
+                    <h:outputText value="#{I18N['application.detailproductpage.errorloadmessage']}"/>
+                </p>
+            </p:outputPanel>
+
+            <!-- no error -->
+            <p:outputPanel rendered="#{!pricePlatformBean.pricePlatformSelectedIsErrorLoad()}">
+
+                <div>
+                    <h2>
+                        <h:outputText value="#{pricePlatformBean.pricePlatformSelected.idProduct.productName}"/>
+                    </h2>
+                </div>
+
+                <!-- Main form start ________________________________________________________________ -->
+                <h:form class="responsiveForm">
+
+                    <span class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputProductName" value="#{I18N['application.detailproductpage.labelproductname']}"/>
+                            <p:inputText id="inputProductName"
+                                         value="#{pricePlatformBean.pricePlatformSelected.idProduct.productName}"
+                                         disabled="#{pricePlatformBean.isModeSelected('r')}"
+                                         placeholder="#{I18N['application.detailproductpage.placeholderproductname']}"
+                                         validatorMessage="#{I18N['application.detailproductpage.messageerrorproductname']}">
+                                <p:ajax update="messageProductName" event="keyup"/>
+                            </p:inputText>
+                        </span>
+                        <p:message id="messageProductName" for="@previous"/>
+                    </span>
+
+                    <!-- + bouton retour page (previous historic). -->
+                    <!-- + bouton add panier. -->
+
+                </h:form>
+                <div class="responsiveForm positionCancel">
+                    <span class="responsiveSubmit">
+                        <span class="flexGrowOne"> </span>
+                            <p:commandButton id="cancelButtonSignUp"
+                                             value="#{I18N['application.inscriptionpage.buttonreturn']}"
+                                             action="#{userBean.goToPageConnection}"
+                                             class="ui-button-danger"/>
+                    </span>
+                </div>
+                <!-- Main form end ________________________________________________________________ -->
+
+            </p:outputPanel>
+
         </div>
-
-        <!-- a faire !!! page de details product. -->
-
-        <!-- + bouton retour page (previous historic). -->
-        <!-- + bouton add panier. -->
-
 
     </ui:define>
 </ui:composition>

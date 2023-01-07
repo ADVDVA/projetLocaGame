@@ -14,7 +14,7 @@ public class PricePlatformService extends EMF
      */
     public List<Priceplatform> findPricePlatformByFilter(String researchWord, String orderBy, boolean asc)
     {
-        if(orderBy.equals("pegi") || orderBy.equals("productname") || orderBy.equals("enable"))
+        if(orderBy.equals("pegi") || orderBy.equals("enable"))
             asc = !asc;
 
         if(asc){

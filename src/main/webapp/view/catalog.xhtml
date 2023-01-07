@@ -101,12 +101,12 @@
 
                     </f:facet>
 
-                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistproductname']}">
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistproductname']}" class="columnTableListResearchWord">
                         <h:outputText value="#{pricePlatform.idProduct.productName}"/>
                     </p:column>
 
                     <!-- get category concat. (from product, from jointure, from category) -->
-                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistcategoryname']}">
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistcategoryname']}" class="columnTableListResearchWord">
                         <!--<h:outputText value="#{pricePlatform.idProduct.listCategory.size()}"/>-->
                         <h:outputText value="#{I18N['application.cataloglistpage.nothing']}" class="colorSilver" rendered="#{pricePlatform.idProduct.listCategory.size() == 0}"/>
                         <ui:repeat value="#{pricePlatform.idProduct.listCategory}" var="category">
@@ -117,12 +117,12 @@
                     </p:column>
 
                     <!-- get platform concat. (from jointure, from platform) -->
-                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistplatformname']}">
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistplatformname']}" class="columnTableListResearchWord">
                         <h:outputText value="#{pricePlatform.idPlatform.platformName}"/>
                     </p:column>
 
                     <!-- get language concat. (from product, from jointure, from language) -->
-                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistlanguagename']}">
+                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistlanguagename']}" class="columnTableListResearchWord">
                         <!--<h:outputText value="#{pricePlatform.idProduct.productName}"/>-->
                         <h:outputText value="#{I18N['application.cataloglistpage.nothing']}" class="colorSilver" rendered="#{pricePlatform.idProduct.listLanguageGame.size() == 0}"/>
                         <ui:repeat value="#{pricePlatform.idProduct.listLanguageGame}" var="platform">
@@ -161,10 +161,16 @@
 
                     <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}">
                         <i class="pi pi-cart-plus" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id, 'r')}"/>
                     </p:column>
 
                 </p:dataTable>
+
+                <!-- when table was full load, call wordResearch class. -->
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{pricePlatformListBean.applyResearchWordClass()}"/>
+                </f:metadata>
+
             </h:form>
 
         </div>
