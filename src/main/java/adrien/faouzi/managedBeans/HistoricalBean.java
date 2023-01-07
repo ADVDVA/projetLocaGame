@@ -31,5 +31,4 @@ public class HistoricalBean implements Serializable {
     }
 
 
-
 }
