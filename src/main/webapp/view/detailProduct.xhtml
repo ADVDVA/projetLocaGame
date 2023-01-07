@@ -14,9 +14,10 @@
     </ui:define>
     <ui:define name="content">
 
-        <!-- load price platform selected from other page.-->
+        <!-- load price platform selected from other page. + save historic.-->
         <f:metadata>
             <f:event type="preRenderView" listener="#{pricePlatformBean.loadPricePlatformSelected(pricePlatformListBean)}"/>
+            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/detailProduct')}"/>
         </f:metadata>
 
         <div class ="containers">
@@ -60,13 +61,30 @@
                     <!-- + bouton retour page (previous historic). -->
                     <!-- + bouton add panier. -->
 
+                    <span class="responsiveSubmit">
+                        <p:commandButton value="#{I18N['application.detailproductpage.buttoncreatesubmit']}"
+                                         rendered="#{pricePlatformBean.isModeSelected('c')}"
+                                         ajax="false"
+                                         validateClient="true"
+                                         class="ui-button-success"
+                                         action="#{pricePlatformBean.submitForm()}"/>
+                        <p:commandButton rendered="#{pricePlatformBean.isModeSelected('r')}"
+                                         class="ui-button-success hiddenBlock"/>
+                        <p:commandButton value="#{I18N['application.detailproductpage.buttonupdatesubmit']}"
+                                         rendered="#{pricePlatformBean.isModeSelected('u')}"
+                                         ajax="false"
+                                         validateClient="true"
+                                         class="ui-button-success"
+                                         action="#{pricePlatformBean.submitForm(historicalBean.backLastPageHistoric())}"/>
+                    </span>
+
                 </h:form>
                 <div class="responsiveForm positionCancel">
                     <span class="responsiveSubmit">
                         <span class="flexGrowOne"> </span>
                             <p:commandButton id="cancelButtonSignUp"
-                                             value="#{I18N['application.inscriptionpage.buttonreturn']}"
-                                             action="#{userBean.goToPageConnection}"
+                                             value="#{I18N['application.detailproductpage.buttonbacklastpage']}"
+                                             action="#{historicalBean.backLastPageHistoric()}"
                                              class="ui-button-danger"/>
                     </span>
                 </div>

@@ -40,7 +40,7 @@ public class TableFilter {
 
 
     private int idRedirection;
-    private char modeRedirection;
+    private char modeRedirection = 'r';
 
     public int getIdRedirection(){
         return this.idRedirection;

@@ -12,6 +12,11 @@
     </ui:define>
     <ui:define name="content">
 
+        <!-- save historic. -->
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/accueil')}"/>
+        </f:metadata>
+
         <div id="containerHomePage">
             <h2 id="titleHomePageH2">
                 <h:outputText value="#{I18N['application.homepage.slogan']}"/>

@@ -42,6 +42,10 @@ public class PricePlatformBean implements Serializable {
     public void loadPricePlatformSelected(PricePlatformListBean pricePlatformListBean){
 
         this.modeSelected = pricePlatformListBean.getModeRedirection();
+        if(modeSelected == 'c') {
+            this.pricePlatformSelected = new Priceplatform();
+            return; //no load from DB with create mode.
+        }
 
         PricePlatformService pricePlatformService = new PricePlatformService();
         EntityTransaction transaction = pricePlatformService.getTransaction();
@@ -61,6 +65,15 @@ public class PricePlatformBean implements Serializable {
             pricePlatformService.close();
         }
 
+    }
+
+
+
+    //submit form (c,u).
+    public String submitForm(String urlRedirectIfSucces){
+        //do Create or Update.
+        //if error, return null for stay in page.
+        return urlRedirectIfSucces;
     }
 
 }

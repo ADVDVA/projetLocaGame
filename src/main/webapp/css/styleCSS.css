@@ -263,6 +263,9 @@ button[type="hidden"]{
     font-size: 0;
     display : none !important;
 }
+.hiddenBlock{
+    visibility: hidden;
+}
 
 
 button[type="hidden"] > *{

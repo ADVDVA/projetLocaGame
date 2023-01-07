@@ -13,6 +13,12 @@
         #{I18N['application.header.menulistcatalog']}
     </ui:define>
     <ui:define name="content">
+
+        <!-- save historic. -->
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/catalog')}"/>
+        </f:metadata>
+
         <div id="catalogue">
 
             <div>
@@ -49,8 +55,7 @@
                                 <p:commandButton type="hidden" update="@form"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
-                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"/>
-                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"/>
+                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning" action="#{pricePlatformListBean.redirectPageWidthId('/view/detailProduct', 0, 'c')}"/>
                             </div>
                         </div>
 
@@ -149,7 +154,7 @@
 
                     <p:column headerText="#{I18N['application.listpage.headerlistildetails']}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/detailProduct', pricePlatform.id)}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/detailProduct', pricePlatform.id, 'r')}"/>
                     </p:column>
 
                     <!--
@@ -161,7 +166,7 @@
 
                     <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}">
                         <i class="pi pi-cart-plus" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id, 'r')}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
                     </p:column>
 
                 </p:dataTable>

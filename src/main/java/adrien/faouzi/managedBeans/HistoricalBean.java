@@ -1,5 +1,7 @@
 package adrien.faouzi.managedBeans;
 
+import adrien.faouzi.utility.UtilityProcessing;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -14,18 +16,18 @@ public class HistoricalBean implements Serializable {
 
     @PostConstruct
     public void init(){
-        this.historic = new String[2];
-        this.historic[0] = "";
-        this.historic[1] = "";
+        this.historic = new String[]{"",""};
         this.index = 0;
     }
 
     public void saveNewPageHistoric(String url){
+        if(url.equals(historic[(index+1)%2]))
+            return;
         historic[++index%2]=url;
     }
 
     public String backLastPageHistoric(){
-        return historic[index++%2];
+        return historic[(index-1)%2];
     }
 
 
