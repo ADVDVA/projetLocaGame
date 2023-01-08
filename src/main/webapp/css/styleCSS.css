@@ -125,6 +125,11 @@
 }
 
 
+.responsiveForm .titreSectionH3{
+    margin: 15px 0;
+    text-align: center;
+}
+
 
 /*______ title css ______*/
 
@@ -237,7 +242,7 @@ body .tableHeaderTitleCenter table tbody td{
 }
 
 .wordResearch{
-    background-color: rgb(251,192,45, 1);
+    color: #b6891a;
 }
 
 

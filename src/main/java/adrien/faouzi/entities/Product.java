@@ -9,6 +9,11 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@NamedQueries(value = {
+        @NamedQuery(name= "Product.SelectProductAll", query = "select p from Product p"),
+        @NamedQuery(name= "Product.SelectProductByIdProduct", query = "select p from Product p where (p.id = :idProduct)")
+
+})
 @Entity
 @Table(name = "product")
 public class Product {

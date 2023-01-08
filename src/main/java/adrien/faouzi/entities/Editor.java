@@ -5,6 +5,10 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name= "Editor.SelectEditorAll", query = "select e from Editor e"),
+        @NamedQuery(name= "Editor.SelectEditorByIdEditor", query = "select e from Editor e where (e.id = :idEditor)")
+})
 @Entity
 @Table(name = "editor")
 public class Editor {

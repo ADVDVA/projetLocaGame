@@ -41,15 +41,22 @@ public class TableFilter {
 
     private int idRedirection;
     private char modeRedirection = 'r';
+    private boolean newRedirect = false;
 
     public int getIdRedirection(){
         return this.idRedirection;
     }
     public char getModeRedirection() { return this.modeRedirection; }
+    public boolean getNewRedirect() {
+        boolean newRedirect = this.newRedirect;
+        this.newRedirect = false;
+        return newRedirect;
+    }
 
     //redirect page with sending id of row click.
     public String redirectPageWidthId(String url, int id){
         this.idRedirection = id;
+        this.newRedirect = true;
         return url;
     }
 

@@ -4,6 +4,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:jsp="http://java.sun.com/JSP/Page"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html">
 
 <!-- ______ ______ -->
@@ -37,12 +38,44 @@
 
                 <div>
                     <h2>
-                        <h:outputText value="#{pricePlatformBean.pricePlatformSelected.idProduct.productName}"/>
+                        <h:outputText value="#{I18N['application.detailproductpage.titlepagenewproduct']}"
+                                      rendered="#{pricePlatformBean.isModeSelected('c')}"/>
+                        <h:outputText value="#{I18N['application.detailproductpage.titlepage']} : #{pricePlatformBean.pricePlatformSelected.idProduct.productName}"
+                                      rendered="#{pricePlatformBean.isNotModeSelected('c')}"/>
                     </h2>
                 </div>
 
                 <!-- Main form start ________________________________________________________________ -->
-                <h:form class="responsiveForm">
+                <h:form class="responsiveForm" id="detailProductForm">
+
+                    <div>
+                        <h3 class="titreSectionH3">
+                            <h:outputText value="#{I18N['application.detailproductpage.titleproduct']}"/>
+                        </h3>
+                    </div>
+
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.isModeSelected('c')}">
+                        <span>
+                            <p:outputLabel for="inputProductSelector" value="#{I18N['application.detailproductpage.labelproductselector']}"/>
+                            <p:selectOneMenu id="inputProductSelector"
+                                             value="#{pricePlatformBean.productSelectedId}"
+                                             disabled="#{pricePlatformBean.isModeSelected('r')}"
+                                             onchange="clickId('inputProductSelectorOnChange');">
+                                <!-- reload list editor from db. -->
+                                <f:metadata>
+                                    <f:event type="preRenderView" listener="#{pricePlatformBean.initAllProduct()}"/>
+                                </f:metadata>
+                                <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproductselector']}"
+                                              itemValue="#{0}"/>
+                                <f:selectItems value="#{pricePlatformBean.allProduct}"
+                                               var="product"
+                                               itemLabel="#{product.productName}"
+                                               itemValue="#{product.id}"/>
+                            </p:selectOneMenu>
+                        </span>
+                        <p:message for="@previous"/>
+                    </p:outputPanel>
+                    <p:commandButton type="hidden" id="inputProductSelectorOnChange" action="#{pricePlatformBean.inputProductSelectorOnChange()}" update="@form"/>
 
                     <span class="responsiveInput">
                         <span>
@@ -58,6 +91,31 @@
                         <p:message id="messageProductName" for="@previous"/>
                     </span>
 
+                    <span class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputProductEditor" value="#{I18N['application.detailproductpage.labelproducteditor']}"/>
+                            <p:selectOneMenu id="inputProductEditor"
+                                             value="#{pricePlatformBean.editorSelectedId}"
+                                             disabled="#{pricePlatformBean.isModeSelected('r')}"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}"
+                                             onchange="clickId('inputProductEditorOnChange');">
+                                <!-- reload list editor from db. -->
+                                <f:metadata>
+                                    <f:event type="preRenderView" listener="#{pricePlatformBean.initAllEditor()}"/>
+                                </f:metadata>
+                                <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproducteditor']}"
+                                              itemValue="#{0}"
+                                              rendered="#{(pricePlatformBean.editorSelectedId == 0)}"/>
+                                <f:selectItems value="#{pricePlatformBean.allEditor}"
+                                               var="editor"
+                                               itemLabel="#{editor.editorName}"
+                                               itemValue="#{editor.id}"/>
+                            </p:selectOneMenu>
+                        </span>
+                        <p:message id="messageProductEditor" for="@previous"/>
+                    </span>
+                    <p:commandButton type="hidden" id="inputProductEditorOnChange" action="#{pricePlatformBean.inputProductEditorOnChange()}" update="@form"/>
+
                     <!-- + bouton retour page (previous historic). -->
                     <!-- + bouton add panier. -->
 
@@ -67,7 +125,7 @@
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success"
-                                         action="#{pricePlatformBean.submitForm()}"/>
+                                         action="#{pricePlatformBean.submitForm(historicalBean.backLastPageHistoric())}"/>
                         <p:commandButton rendered="#{pricePlatformBean.isModeSelected('r')}"
                                          class="ui-button-success hiddenBlock"/>
                         <p:commandButton value="#{I18N['application.detailproductpage.buttonupdatesubmit']}"
