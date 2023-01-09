@@ -18,4 +18,15 @@ public class CityService extends EMF {
                 .setParameter("postalCode", postalCode)
                 .getResultList();
     }
+
+    /**
+     * City request method by id
+     */
+    public City findCityById (int id)
+    {
+        return em.createNamedQuery("City.SelectCityById", City.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
 }

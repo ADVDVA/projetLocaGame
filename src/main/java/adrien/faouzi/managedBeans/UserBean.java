@@ -1,12 +1,9 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.entities.City;
-import adrien.faouzi.entities.Country;
-import adrien.faouzi.entities.User;
+import adrien.faouzi.entities.*;
 
-import adrien.faouzi.services.CityService;
-import adrien.faouzi.services.CountryService;
-import adrien.faouzi.services.UserService;
+import adrien.faouzi.enumeration.TypeAddress;
+import adrien.faouzi.services.*;
 import adrien.faouzi.utility.UtilityProcessing;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -15,17 +12,19 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.mail.search.AddressStringTerm;
 import javax.persistence.EntityTransaction;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import adrien.faouzi.exeption.ConnexionUserExecption;
 import org.primefaces.PrimeFaces;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Named
 @SessionScoped
@@ -40,31 +39,32 @@ public class UserBean implements Serializable
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     private String firstName;
 
     @NotNull
     @Pattern(regexp = "^[+][0-9]{1,4}[ ]{1}[0-9]{2,4}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}$")
     private String phone;
 
-    @NotNull
-    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$")
-    private String mail;
+
+    private String mail= null;
+    private String messageErrorMail ="hidden";
 
     @NotNull
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     private String password ="";
-
     private String passwordVerify= "";
+    private String messageErrorPassword = "hidden";
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z ]{1,}$")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]{1,}$")
     private String street;
 
+    @NotNull
+    @Min(1)
     private int number;
 
-    @NotNull
-    @Pattern(regexp= "^[a-zA-Z1-9]{1,20}")
+    @Pattern(regexp= "^[a-zA-Z1-9]{0,20}$")
     private String box;
 
     @NotNull
@@ -73,11 +73,11 @@ public class UserBean implements Serializable
 
     @NotNull
     private String city;
-    private HashMap<String, String> cities ;
+    private HashMap<String, String> citiesMap ;
 
     @NotNull
     private String country;
-    private List<String> countryList;
+    private HashMap<String, String> countryMap;
 
     @NotNull
     private Date dateOfBirth;
@@ -86,7 +86,7 @@ public class UserBean implements Serializable
 
     private String messageErrorConnection ="hidden";
 
-    private String messageErrorPassword = "hidden";
+
 
     private String emailConnexion;
     private  String passwordConnexion;
@@ -108,23 +108,22 @@ public class UserBean implements Serializable
         //initialize.
         CountryService countryService = new CountryService();
         EntityTransaction transaction = countryService.getTransaction();
-        this.countryList = new ArrayList<>();
+        this.countryMap = new HashMap<>();
         List <Country> countryListRequest;
         try
         {
             transaction.begin();
             //Call of the service that will use the NamedQuery of the "County" entity
             countryListRequest = countryService.findCountryAll();
-            UtilityProcessing.debug("country list : " +countryListRequest.size());
             for(Country countryL : countryListRequest)
             {
-                this.countryList.add(countryL.getCountryName());
+                this.countryMap.put(countryL.getCountryName(), String.valueOf(countryL.getId()));
             }
             transaction.commit();
         }
         catch(Exception e)
         {
-            UtilityProcessing.debug("Récupération de données du pays introuvable : " + e);
+            //UtilityProcessing.debug("Je suis dans le catch de country : " + e);
             if(transaction.isActive())
                 transaction.rollback();
         }
@@ -132,18 +131,59 @@ public class UserBean implements Serializable
         {
             countryService.close();
         }
-
     }
 
+
     /**
-     * verification input passwordVerify method
+     * Verification input mail method
+     */
+    public void checkMail()
+    {
+        //For input mail
+        //initialize.
+        UserService userService = new UserService();
+        EntityTransaction transaction = userService.getTransaction();
+        try
+        {
+            transaction.begin();
+            //Call of the service that will use the NamedQuery of the "User" entity
+            User user = userService.findUserByMail(this.mail);
+            this.messageErrorMail ="";
+            transaction.commit();
+        }
+        catch(Exception e)
+        {
+            //UtilityProcessing.debug("Je suis dans le catch de mail : " + e);
+            if(this.mail == null)
+            {
+                messageErrorMail = "hidden";
+            }
+            else
+            {
+                if(UtilityProcessing.checKDataWithRegex(this.mail, "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$"))
+                {
+                    this.messageErrorMail="hidden";
+                }
+                else
+                {
+                    this.messageErrorMail="";
+                }
+            }
+            if(transaction.isActive())
+                transaction.rollback();
+        }
+        finally
+        {
+            userService.close();
+        }
+    }
+
+
+    /**
+     * Verification input passwordVerify method
      */
     public void checkPasswordVerify()
     {
-        UtilityProcessing.debug("Password : "+this.password);
-        UtilityProcessing.debug("Passwordverify : "+this.passwordVerify);
-
-
         if(this.passwordVerify.equals(this.password))
         {
             this.messageErrorPassword = "hidden";
@@ -152,9 +192,8 @@ public class UserBean implements Serializable
         {
             this.messageErrorPassword = "";
         }
-        UtilityProcessing.debug("test messageerror Password : "+this.messageErrorPassword);
-
     }
+
 
     /**
      * Verification connection method
@@ -170,7 +209,7 @@ public class UserBean implements Serializable
         {
             transaction.begin();
             //Call of the service that will use the NamedQuery of the "User" entity
-             this.user = userService.findUserByMailAndPassword(this.emailConnexion);
+             this.user = userService.findUserByMail(this.emailConnexion);
              checkUserConnection(this.user, this.passwordConnexion, this.emailConnexion);
             this.messageErrorConnection = "hidden";
              redirect = "/accueil";
@@ -178,7 +217,7 @@ public class UserBean implements Serializable
         }
         catch(Exception e)
         {
-            UtilityProcessing.debug("Récupération de données d'utilisateur introuvable : " + e);
+            //UtilityProcessing.debug(" je suis dans le catch de la connexion : " + e);
             /* déclancher un message d'erreur*/
             this.messageErrorConnection = "";
             redirect = "/view/connexion";
@@ -194,7 +233,7 @@ public class UserBean implements Serializable
     }
 
     /**
-     * distroy session connected method
+     * destroy session connected method
      */
     public String destroySession()
     {
@@ -240,32 +279,10 @@ public class UserBean implements Serializable
      */
     public void checkUserConnection (User user, String password, String mail) throws ConnexionUserExecption
     {
-        if (!(user.getMail().equals(mail) && user.getPassword().equals(password) /*checkPassword(password,user)*/ && user.getEnable()))
+        if (!(user.getMail().equals(mail) && UtilityProcessing.checkPassword(password,user) && user.getEnable()))
         {
             throw new ConnexionUserExecption();
         }
-    }
-
-    /**
-     * Verification password method
-     * @param password
-     * @return
-     */
-    public boolean checkPassword (String password, User user){
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
-        return result.verified;
-    }
-
-    /**
-     * Verification Sign up method
-     * @return
-     */
-    public String lastVerificationSignUp()
-    {
-
-        //        // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
-        // vérifier mot de passe avec l'autre mot de passe.
-        return "/accueil";
     }
 
     /**
@@ -279,7 +296,7 @@ public class UserBean implements Serializable
             CityService cityService = new CityService();
             EntityTransaction transaction = cityService.getTransaction();
             List<City> cityList;
-            this.cities = new HashMap<>();
+            this.citiesMap = new HashMap<>();
             try
             {
                 transaction.begin();
@@ -287,7 +304,7 @@ public class UserBean implements Serializable
                 cityList = cityService.findCityByPostalCode(Integer.parseInt(this.postalCode));
                 for (City cityL: cityList)
                 {
-                    cities.put(cityL.getCityName(),String.valueOf(cityL.getId()));
+                    citiesMap.put(cityL.getCityName(),String.valueOf(cityL.getId()));
                 }
                 
                 //UtilityProcessing.debug("" + cities.size());
@@ -295,7 +312,7 @@ public class UserBean implements Serializable
             }
             catch(Exception e)
             {
-                UtilityProcessing.debug("Récupération de données de city introuvable : " + e);
+                //UtilityProcessing.debug("Je suis dans le catch de city  : " + e);
                 if(transaction.isActive())
                     transaction.rollback();
             }
@@ -306,10 +323,135 @@ public class UserBean implements Serializable
         }
         else
         {
-            cities = new HashMap<>();
+            citiesMap = new HashMap<>();
         }
     }
 
+    /**
+     * Verification Sign up method
+     * @return
+     */
+    public String lastVerificationSignUp()
+    {
+
+        //Verification password with passwordVerify
+        checkPasswordVerify();
+
+        //Verification mail
+        checkMail();
+
+        //last check before adding it to DB
+        if(this.messageErrorPassword.equals("hidden") && this.messageErrorMail.equals("hidden"))
+        {
+
+
+//            UtilityProcessing.debug(UtilityProcessing.addAccentCharacter(this.lastName) + ", " + UtilityProcessing.addAccentCharacter(this.firstName)+
+//                    ", " + this.dateOfBirth + ", " +this.mail + ", " +
+//                    this.phone +", "+ this.password +", "+UtilityProcessing.addAccentCharacter(this.street) +
+//                    ","+ this.number+ ", " + this.box+ ", " + this.country +","+ this.postalCode+
+//                    "," + this.city);
+//            UtilityProcessing.debug(""+ UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
+
+
+            //For input user
+            //initialize.
+            UserService userService = new UserService();
+            RoleService roleService = new RoleService();
+            AddressService addressService = new AddressService();
+            CityService cityService = new CityService();
+            EntityTransaction transactionUser = userService.getTransaction();
+            EntityTransaction transactionAddress = addressService.getTransaction();
+            EntityTransaction transactionCity = cityService.getTransaction();
+            EntityTransaction transactionRole = roleService.getTransaction();
+
+            Role role;
+            City city;
+            User user = new User();
+            Address address = new Address();
+
+
+            user.setLastName(this.lastName);
+            user.setFirstName(this.firstName);
+            user.setDateOfBirth(UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
+            user.setPhone(this.phone);
+            user.setMail(this.mail);
+            user.setPassword(UtilityProcessing.cryptPassword(this.password));
+            user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
+            user.setEnable(true);
+
+            address.setStreet(this.street);
+            address.setNumber(this.number);
+            if(this.box.equals(""))
+            {
+               address.setBox(null);
+            }
+            else
+            {
+              address.setBox(this.box);
+            }
+
+            address.setTypeAddress(TypeAddress.FACTURATION);
+            address.setEnable(true);
+
+            try
+            {
+                transactionUser.begin();
+                transactionCity.begin();
+                transactionAddress.begin();
+                transactionRole.begin();
+
+                //Call of the service that will use the NamedQuery of the "role" entity
+                role = roleService.findRoleByRoleName("Client");
+
+                user.setIdRole(role);
+
+                //Call of the service that will use the NamedQuery of the "user" entity
+                user = userService.addUser(user);
+
+                //Call of the service that will use the NamedQuery of the "city" entity
+                city = cityService.findCityById(Integer.parseInt(this.city));
+
+                address.setIdCity(city);
+                address.setIdUser(user);
+                UtilityProcessing.debug(address.getIdCity()+", "+address.getIdUser()+", "+address.getStreet()+", "+ address.getNumber()+", "+address.getBox()+", "+address.getTypeAddress());
+                //Call of the service that will use the NamedQuery of the "address" entity
+                addressService.addAddress(address);
+
+                transactionCity.commit();
+                transactionRole.commit();
+                transactionUser.commit();
+                transactionAddress.commit();
+            }
+            catch(Exception e)
+            {
+                //UtilityProcessing.debug("Je suis dans le catch de l'ajout d'un user : " + e);
+                if(transactionAddress.isActive()||
+                transactionCity.isActive()||
+                transactionUser.isActive()||
+                transactionRole.isActive())
+                {
+                    transactionAddress.rollback();
+                    transactionCity.rollback();
+                    transactionUser.rollback();
+                    transactionRole.rollback();
+                }
+            }
+            finally
+            {
+                userService.close();
+                roleService.close();
+                cityService.close();
+                addressService.close();
+            }
+
+
+            return "/accueil";
+        }
+        else
+        {
+            return "";
+        }
+    }
 
     /**
      * Getter and setter method
@@ -323,13 +465,23 @@ public class UserBean implements Serializable
         this.emailConnexion = emailConnexion;
     }
 
-    public List<String> getCountryList() {
+    public HashMap<String, String> getCountryMap() {
 
-        return countryList;
+        return countryMap;
     }
 
-    public void setCountryList(List<String> countryList) {
-        this.countryList = countryList;
+    public void setCountryMap(HashMap<String, String> countryMap) {
+        this.countryMap = countryMap;
+    }
+
+    public String getMessageErrorMail() {
+        String message = this.messageErrorMail;
+        this.messageErrorMail = "hidden";
+        return message;
+    }
+
+    public void setMessageErrorMail(String messageErrorMail) {
+        this.messageErrorMail = messageErrorMail;
     }
 
     public String getPasswordConnexion() {
@@ -442,13 +594,13 @@ public class UserBean implements Serializable
         return box;
     }
 
-    public HashMap<String,String> getCities() {
+    public HashMap<String,String> getCitiesMap() {
 
-        return cities;
+        return citiesMap;
     }
 
-    public void setCities(HashMap<String,String> cities) {
-        this.cities = cities;
+    public void setCitiesMap(HashMap<String,String> citiesMap) {
+        this.citiesMap = citiesMap;
     }
 
     public void setBox(String box) {
@@ -484,8 +636,6 @@ public class UserBean implements Serializable
     public String getMessageErrorPassword() {
         String message = this.messageErrorPassword;
         this.messageErrorPassword = "hidden";
-        UtilityProcessing.debug("test  message : "+ message);
-
         return message;
     }
 
