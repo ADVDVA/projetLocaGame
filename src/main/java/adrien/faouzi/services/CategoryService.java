@@ -18,4 +18,26 @@ public class CategoryService extends EMF {
                 .getResultList();
     }
 
+
+    /**
+     * get all category from db.
+     */
+    public List<Category> selectCategoryAll()
+    {
+        return em.createNamedQuery("Category.SelectCategoryAll", Category.class)
+                .getResultList();
+    }
+
+
+    /**
+     * get category selected by id.
+     */
+    public Category selectCategoryByIdCategory(int idCategory)
+    {
+        return em.createNamedQuery("Category.SelectCategoryByIdCategory", Category.class)
+                .setParameter("idCategory", idCategory)
+                .getSingleResult();
+    }
+
+
 }

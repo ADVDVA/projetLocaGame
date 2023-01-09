@@ -1,8 +1,10 @@
 package adrien.faouzi.managedBeans;
 
+import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Editor;
 import adrien.faouzi.entities.Priceplatform;
 import adrien.faouzi.entities.Product;
+import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.services.EditorService;
 import adrien.faouzi.services.PricePlatformService;
 import adrien.faouzi.services.ProductService;
@@ -51,6 +53,9 @@ public class PricePlatformBean implements Serializable {
             return; //do not reload entity from db.
         }
 
+        this.categorySelected = null;
+        this.listCategoryApply = null;
+
         this.modeSelected = pricePlatformListBean.getModeRedirection();
         if(modeSelected == 'c') {
             this.pricePlatformSelected = new Priceplatform();
@@ -58,6 +63,7 @@ public class PricePlatformBean implements Serializable {
             productSelectedId = 0;
             this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
             editorSelectedId = 0;
+            this.listCategoryApply = new ArrayList<>();
             return;
         }
 
@@ -72,6 +78,7 @@ public class PricePlatformBean implements Serializable {
             this.pricePlatformSelected = pricePlatformService.findPricePlatformById(
                     pricePlatformListBean.getIdRedirection()
             );
+            this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
@@ -90,6 +97,11 @@ public class PricePlatformBean implements Serializable {
     public String submitForm(String urlRedirectIfSucces){
         //do Create or Update.
         //if error, return null for stay in page.
+
+        //if Create, verify if productSelectedId!=0, if !=0 not insert Product in DB but update.
+
+        //create or update, need to comparate listCategoryApply width list category into product.
+
         return urlRedirectIfSucces;
     }
 
@@ -103,11 +115,14 @@ public class PricePlatformBean implements Serializable {
     public void setProductSelectedId(int productSelectedId){
         this.productSelectedId = productSelectedId;
     }
+    public boolean renderSelectProduct(){
+        return (this.isModeSelected('c') && this.productSelectedId == 0);
+    }
     public void inputProductSelectorOnChange(){
         if(this.productSelectedId == 0){
-            this.pricePlatformSelected.setIdProduct(new Product());
-            this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
-            editorSelectedId = 0;
+            //this.pricePlatformSelected.setIdProduct(new Product());
+            //this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
+            //editorSelectedId = 0;
             return;
         }
         //reload product from db into price platform selected.
@@ -119,6 +134,7 @@ public class PricePlatformBean implements Serializable {
                     productService.selectProductByIdProduct(this.productSelectedId)
             );
             editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
+            this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
@@ -154,6 +170,7 @@ public class PricePlatformBean implements Serializable {
     }
 
 
+
     //list editor for select input.
     private List<Editor> allEditor;
     public List<Editor> getAllEditor(){
@@ -184,7 +201,7 @@ public class PricePlatformBean implements Serializable {
     public boolean isPricePlatformSelectedHasNotEditorValid(){
         return !(this.isPricePlatformSelectedHasEditorValid());
     }
-
+    //managed editor in detail product.
     private int editorSelectedId = 0;
     public int getEditorSelectedId(){
         return this.editorSelectedId;
@@ -213,6 +230,80 @@ public class PricePlatformBean implements Serializable {
         }finally{
             editorService.close();
         }
+    }
+
+
+
+    //managed category in detail product.
+    private Category categorySelected;
+    public Category getCategorySelected(){
+        return categorySelected;
+    }
+    public String getCategorySelectedName(){
+        return ((categorySelected==null)? "": categorySelected.getCategoryName());
+    }
+    public void setCategorySelectedName(String categorySelectedName){}
+    //list category get all from db.
+    private List<Category> allCategory;
+    public List<Category> getAllCategory(){
+        return this.allCategory;
+    }
+    public void initAllCategory(){
+        CategoryService categoryService = new CategoryService();
+        EntityTransaction transaction = categoryService.getTransaction();
+        try{
+            transaction.begin();
+            this.allCategory = categoryService.selectCategoryAll();
+            transaction.commit();
+        }catch(Exception e){
+            UtilityProcessing.debug("error catch : "+e.getMessage());
+            this.allCategory = new ArrayList<>();
+            if(transaction.isActive())
+                transaction.rollback();
+        }finally{
+            categoryService.close();
+        }
+    }
+    //when user select category for crud.
+    public void selectCategory(int idCategory){
+        CategoryService categoryService = new CategoryService();
+        EntityTransaction transaction = categoryService.getTransaction();
+        try{
+            transaction.begin();
+            this.categorySelected = categoryService.selectCategoryByIdCategory(idCategory);
+            transaction.commit();
+        }catch(Exception e){
+            UtilityProcessing.debug("error catch : "+e.getMessage());
+            this.categorySelected = null;
+            if(transaction.isActive())
+                transaction.rollback();
+        }finally{
+            categoryService.close();
+        }
+    }
+    //get set list category into product into price platform selected.
+    private List<Category> listCategoryApply;
+    public List<Category> getListCategoryApply(){
+        return this.listCategoryApply;
+    }
+    public void setListCategoryApply(List<Category> listCategoryApply){
+        this.listCategoryApply = listCategoryApply;
+    }
+    //when user select category for apply to product.
+    public void applyCategory(int idCategory){
+        listCategoryApply.add(
+                allCategory.stream().filter(c -> c.getId() == idCategory)
+                .findFirst()
+                .orElse(null)
+        );
+    }
+    //when user select category for delete to product.
+    public void deleteCategoryApply(int idCategory){
+        listCategoryApply.remove(
+                listCategoryApply.stream().filter(c -> c.getId() == idCategory)
+                .findFirst()
+                .orElse(null)
+        );
     }
 
 

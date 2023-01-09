@@ -54,7 +54,7 @@
                         </h3>
                     </div>
 
-                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.isModeSelected('c')}">
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderSelectProduct()}">
                         <span>
                             <p:outputLabel for="inputProductSelector" value="#{I18N['application.detailproductpage.labelproductselector']}"/>
                             <p:selectOneMenu id="inputProductSelector"
@@ -112,9 +112,89 @@
                                                itemValue="#{editor.id}"/>
                             </p:selectOneMenu>
                         </span>
+                        <span class="crudButtonContainer">
+                            <span>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-minus" disabled="true"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil" disabled="true"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-plus" disabled="true"/>
+                            </span>
+                        </span>
                         <p:message id="messageProductEditor" for="@previous"/>
                     </span>
                     <p:commandButton type="hidden" id="inputProductEditorOnChange" action="#{pricePlatformBean.inputProductEditorOnChange()}" update="@form"/>
+
+                    <span class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputProductCategory" value="#{I18N['application.detailproductpage.labelproductcategory']}"/>
+                            <p:inputText id="inputProductCategory"
+                                         value="#{pricePlatformBean.categorySelectedName}"
+                                         disabled="true"
+                                         placeholder="#{I18N['application.detailproductpage.placeholderproductcategory']}"
+                                         validatorMessage="#{I18N['application.detailproductpage.messageerrorproductcategory']}"/>
+                        </span>
+                        <span class="crudButtonContainer">
+                            <span>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-minus" disabled="#{pricePlatformBean.categorySelected == null}"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil" disabled="#{pricePlatformBean.categorySelected == null}"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-plus"/>
+                            </span>
+                        </span>
+                        <p:message id="messageProductCategory" for="@previous"/>
+                    </span>
+                    <p:outputPanel class="responsiveManyToMany">
+                        <div>
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlecategoryenable']}"/>
+                            </h4>
+                            <!-- reload list category from db. -->
+                            <f:metadata>
+                                <f:event type="preRenderView" listener="#{pricePlatformBean.initAllCategory()}"/>
+                            </f:metadata>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{pricePlatformBean.allCategory.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.categoriesnotfound']}"/>
+                                </p:outputPanel>
+                                <!-- c:forEach items -->
+                                <ui:repeat value="${pricePlatformBean.allCategory}"
+                                           var="category">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{category.categoryName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning" icon="pi pi-angle-up" action="#{pricePlatformBean.selectCategory(category.id)}" update="@form"/>
+                                            <p:commandButton class="ui-button-warning" icon="pi pi-chevron-right" action="#{pricePlatformBean.applyCategory(category.id)}" update="@form"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </div>
+                        <div>
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlecategoryapply']}"/>
+                            </h4>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{pricePlatformBean.listCategoryApply.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.categoriesnotfound']}"/>
+                                </p:outputPanel>
+                                <!-- c:forEach items -->
+                                <ui:repeat value="${pricePlatformBean.listCategoryApply}"
+                                           var="category">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{category.categoryName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning" icon="pi pi-minus" action="#{pricePlatformBean.deleteCategoryApply(category.id)}" update="@form"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </div>
+                    </p:outputPanel>
+
 
                     <!-- + bouton retour page (previous historic). -->
                     <!-- + bouton add panier. -->

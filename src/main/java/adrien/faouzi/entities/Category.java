@@ -9,7 +9,11 @@ import java.util.Set;
         @NamedQuery(name= "Category.SelectCategoryByIdProduct",
                 query = "select c from Categoryproduct cp " +
                         "join Category c on (cp.idCategory.id = c.id) " +
-                        "where (cp.idProduct.id = :idProduct)")
+                        "where (cp.idProduct.id = :idProduct)"),
+        @NamedQuery(name= "Category.SelectCategoryAll",
+                query = "select c from Category c"),
+        @NamedQuery(name= "Category.SelectCategoryByIdCategory",
+                query = "select c from Category c where (c.id = :idCategory)")
 })
 @Entity
 @Table(name = "category")
