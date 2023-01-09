@@ -73,13 +73,32 @@
                     <span>
                         <p:outputLabel for="input_mail_inscription" value="#{I18N['application.inscriptionpage.mailtitle']}"/>
                         <p:inputText id="input_mail_inscription" value="#{userBean.mail}"
-                                 placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}">
-                            <p:ajax update="messageMail" event="keyup"/>
+                                 placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}">
+                            <p:ajax update="messageErrorMail" event="keyup"/>
                         </p:inputText>
                     </span>
-                    <p:message id="messageMail" for="@previous"/>
                 </span>
+                <span class="responsiveInput">
+                    <span> </span>
+                    <span>
+                         <span class="placeMessageErrorCustomParent">
+                            <p:outputPanel id="messageErrorMail">
+                                    <f:metadata>
+                                        <f:event type="preRenderView" listener="#{userBean.checkMail()}"/>
+                                    </f:metadata>
+                                <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{userBean.messageErrorMail}">
+                                    <div class="placeMessageErrorCustomChild">
+                                        <span class="ui-message-error-icon"> </span>
+                                        <span class="ui-message-error-detail" id="messageMail_error_detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrormail']}"/></span>
+                                    </div>
+                                </div>
+                            </p:outputPanel>
+                        </span>
+                    </span>
+                </span>
+
+
+
 
                 <span class="responsiveInput">
                     <span>
@@ -99,13 +118,11 @@
                         <p:outputLabel for="input_passwordverification_inscription" value="#{I18N['application.inscriptionpage.passwordverificationtitle']}"/>
                         <p:password id="input_passwordverification_inscription" value="#{userBean.passwordVerify}" toggleMask="true"
                                 redisplay="true"
-                                placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}"
-                                onkeyup="clickId('messagePasswordVerificationSubmit')">
+                                placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}">
+                            <p:ajax update="messagePasswordVerification" event="keyup"/>
                         </p:password>
                     </span>
                 </span>
-                <p:commandButton id="messagePasswordVerificationSubmit" type="hidden" update="messagePasswordVerification"/>
-
                 <span class="responsiveInput">
                     <span> </span>
                     <span>
@@ -117,7 +134,7 @@
                                 <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{userBean.messageErrorPassword}">
                                     <div class="placeMessageErrorCustomChild">
                                         <span class="ui-message-error-icon"> </span>
-                                        <span class="ui-message-error-detail" id="messagePasswordVerification_error-detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"/></span>
+                                        <span class="ui-message-error-detail" id="messagePasswordVerification_error_detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"/></span>
                                     </div>
                                 </div>
                             </p:outputPanel>
@@ -143,8 +160,7 @@
                         <p:outputLabel for="input_number_inscription" value="#{I18N['application.inscriptionpage.numbertitle']}"/>
                         <p:inputNumber id="input_number_inscription" value="#{userBean.number}"
                                 placeholder="#{I18N['application.inscriptionpage.numberplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}"
-                                emptyValue="#{null}">
+                                validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}">
                             <p:ajax update="messageNumber" event="keyup"/>
                         </p:inputNumber>
                     </span>

@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityTransaction;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -47,9 +48,10 @@ public class UserBean implements Serializable
     @Pattern(regexp = "^[+][0-9]{1,4}[ ]{1}[0-9]{2,4}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}$")
     private String phone;
 
-    @NotNull
-    @Pattern(regexp = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$")
+
     private String mail;
+
+    private String messageErrorMail ="hidden";
 
     @NotNull
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
@@ -57,10 +59,13 @@ public class UserBean implements Serializable
 
     private String passwordVerify= "";
 
+    private String messageErrorPassword = "hidden";
     @NotNull
     @Pattern(regexp = "^[a-zA-Z ]{1,}$")
     private String street;
 
+    @NotNull
+    @Min(1)
     private int number;
 
     @NotNull
@@ -86,7 +91,7 @@ public class UserBean implements Serializable
 
     private String messageErrorConnection ="hidden";
 
-    private String messageErrorPassword = "hidden";
+
 
     private String emailConnexion;
     private  String passwordConnexion;
@@ -132,18 +137,55 @@ public class UserBean implements Serializable
         {
             countryService.close();
         }
-
     }
 
+
     /**
-     * verification input passwordVerify method
+     * Verification input mail method
+     */
+    public void checkMail()
+    {
+        //For input mail
+        //initialize.
+        UserService userService = new UserService();
+        EntityTransaction transaction = userService.getTransaction();
+        User user;
+        try
+        {
+            transaction.begin();
+            //Call of the service that will use the NamedQuery of the "County" entity
+            user = userService.findUserByMail();
+            UtilityProcessing.debug("mail DB : " + user.getMail());
+           // Pattern pattern = Pattern.
+
+            if(user.getMail().equals(this.mail) && this.mail.equals( "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$)"))
+            {
+                this.messageErrorMail ="";
+            }
+            else
+            {
+                this.messageErrorMail="hidden";
+            }
+            transaction.commit();
+        }
+        catch(Exception e)
+        {
+            UtilityProcessing.debug("Récupération de données du pays introuvable : " + e);
+            if(transaction.isActive())
+                transaction.rollback();
+        }
+        finally
+        {
+            countryService.close();
+        }
+    }
+
+
+    /**
+     * Verification input passwordVerify method
      */
     public void checkPasswordVerify()
     {
-        UtilityProcessing.debug("Password : "+this.password);
-        UtilityProcessing.debug("Passwordverify : "+this.passwordVerify);
-
-
         if(this.passwordVerify.equals(this.password))
         {
             this.messageErrorPassword = "hidden";
@@ -152,8 +194,6 @@ public class UserBean implements Serializable
         {
             this.messageErrorPassword = "";
         }
-        UtilityProcessing.debug("test messageerror Password : "+this.messageErrorPassword);
-
     }
 
     /**
@@ -263,9 +303,27 @@ public class UserBean implements Serializable
     public String lastVerificationSignUp()
     {
 
+        //Verification password with passwordVerify
+        checkPasswordVerify();
+
+        //last check before adding it to DB
+        if(this.messageErrorPassword.equals("hidden"))
+        {
+            return "/accueil";
+        }
+        else
+        {
+            return "";
+        }
+
+
         //        // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
-        // vérifier mot de passe avec l'autre mot de passe.
-        return "/accueil";
+        // vérifier le mail unique
+        //ajouter idRole à 3
+        // type address à "FACTURATION"
+        //crypter le mot de passe
+        // user.enable à 1
+
     }
 
     /**
@@ -310,7 +368,6 @@ public class UserBean implements Serializable
         }
     }
 
-
     /**
      * Getter and setter method
      */
@@ -330,6 +387,14 @@ public class UserBean implements Serializable
 
     public void setCountryList(List<String> countryList) {
         this.countryList = countryList;
+    }
+
+    public String getMessageErrorMail() {
+        return messageErrorMail;
+    }
+
+    public void setMessageErrorMail(String messageErrorMail) {
+        this.messageErrorMail = messageErrorMail;
     }
 
     public String getPasswordConnexion() {
