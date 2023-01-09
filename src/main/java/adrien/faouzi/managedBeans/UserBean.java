@@ -643,6 +643,7 @@ public class UserBean implements Serializable
         this.messageErrorPassword = messageErrorPassword;
     }
 
+
     public Date getMaxDate() {
         return maxDate;
     }
