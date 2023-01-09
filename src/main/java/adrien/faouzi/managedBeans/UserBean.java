@@ -282,6 +282,7 @@ public class UserBean implements Serializable
             this.cities = new HashMap<>();
             try
             {
+
                 transaction.begin();
                 //Call of the service that will use the NamedQuery of the "city" entity
                 cityList = cityService.findCityByPostalCode(Integer.parseInt(this.postalCode));
