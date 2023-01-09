@@ -9,9 +9,23 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UtilityProcessing {
     private UtilityProcessing(){}
+
+    /**
+     * function to check regex with data
+     * @return
+     */
+    public static boolean checKDataWithRegex(String data, String regex)
+    {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(data);
+        return matcher.find();
+    }
+
 
     /**
      * function to convert a localdatetime to a string.

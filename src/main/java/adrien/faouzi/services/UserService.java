@@ -10,10 +10,11 @@ public class UserService extends EMF
      * @param mail
      * @return
      */
-    public User findUserByMailAndPassword(String mail)
+    public User findUserByMail(String mail)
     {
         return em.createNamedQuery("User.SelectUserConnexion", User.class)
                 .setParameter("mail", mail)
                 .getSingleResult();
     }
+
 }
