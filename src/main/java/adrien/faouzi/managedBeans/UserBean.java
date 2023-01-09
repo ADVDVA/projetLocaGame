@@ -35,11 +35,11 @@ public class UserBean implements Serializable
      */
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Zéèà -]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Zéèà -]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     private String firstName;
 
     @NotNull
@@ -57,7 +57,7 @@ public class UserBean implements Serializable
     private String messageErrorPassword = "hidden";
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z0-9éèàçù' ]{1,}$")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]{1,}$")
     private String street;
 
     @NotNull
@@ -279,20 +279,10 @@ public class UserBean implements Serializable
      */
     public void checkUserConnection (User user, String password, String mail) throws ConnexionUserExecption
     {
-        if (!(user.getMail().equals(mail) && user.getPassword().equals(password) /*checkPassword(password,user)*/ && user.getEnable()))
+        if (!(user.getMail().equals(mail) && UtilityProcessing.checkPassword(password,user) && user.getEnable()))
         {
             throw new ConnexionUserExecption();
         }
-    }
-
-    /**
-     * Verification password method
-     * @param password
-     * @return
-     */
-    public boolean checkPassword (String password, User user){
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
-        return result.verified;
     }
 
     /**
@@ -367,25 +357,29 @@ public class UserBean implements Serializable
             //initialize.
             UserService userService = new UserService();
             RoleService roleService = new RoleService();
-              AddressService addressService = new AddressService();
-              CityService cityService = new CityService();
-            EntityTransaction transaction = userService.getTransaction();
+            AddressService addressService = new AddressService();
+            CityService cityService = new CityService();
+            EntityTransaction transactionUser = userService.getTransaction();
+            EntityTransaction transactionAddress = addressService.getTransaction();
+            EntityTransaction transactionCity = cityService.getTransaction();
+            EntityTransaction transactionRole = roleService.getTransaction();
 
             Role role;
+            City city;
             User user = new User();
-              Address address = new Address();
-              City city = new City();
+            Address address = new Address();
+
 
             user.setLastName(this.lastName);
             user.setFirstName(this.firstName);
             user.setDateOfBirth(UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
             user.setPhone(this.phone);
             user.setMail(this.mail);
-            user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
             user.setPassword(UtilityProcessing.cryptPassword(this.password));
+            user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
             user.setEnable(true);
 
-            address.setStreet(UtilityProcessing.addAccentCharacter(this.street));
+            address.setStreet(this.street);
             address.setNumber(this.number);
             if(this.box.equals(""))
             {
@@ -396,12 +390,15 @@ public class UserBean implements Serializable
               address.setBox(this.box);
             }
 
-            address.setEnable(true);
             address.setTypeAddress(TypeAddress.FACTURATION);
+            address.setEnable(true);
 
             try
             {
-                transaction.begin();
+                transactionUser.begin();
+                transactionCity.begin();
+                transactionAddress.begin();
+                transactionRole.begin();
 
                 //Call of the service that will use the NamedQuery of the "role" entity
                 role = roleService.findRoleByRoleName("Client");
@@ -409,34 +406,46 @@ public class UserBean implements Serializable
                 user.setIdRole(role);
 
                 //Call of the service that will use the NamedQuery of the "user" entity
-                userService.addUser(user);
+                user = userService.addUser(user);
 
                 //Call of the service that will use the NamedQuery of the "city" entity
                 city = cityService.findCityById(Integer.parseInt(this.city));
 
                 address.setIdCity(city);
                 address.setIdUser(user);
-
+                UtilityProcessing.debug(address.getIdCity()+", "+address.getIdUser()+", "+address.getStreet()+", "+ address.getNumber()+", "+address.getBox()+", "+address.getTypeAddress());
                 //Call of the service that will use the NamedQuery of the "address" entity
                 addressService.addAddress(address);
 
-                transaction.commit();
+                transactionCity.commit();
+                transactionRole.commit();
+                transactionUser.commit();
+                transactionAddress.commit();
             }
             catch(Exception e)
             {
                 //UtilityProcessing.debug("Je suis dans le catch de l'ajout d'un user : " + e);
-                if(transaction.isActive())
-                    transaction.rollback();
+                if(transactionAddress.isActive()||
+                transactionCity.isActive()||
+                transactionUser.isActive()||
+                transactionRole.isActive())
+                {
+                    transactionAddress.rollback();
+                    transactionCity.rollback();
+                    transactionUser.rollback();
+                    transactionRole.rollback();
+                }
             }
             finally
             {
                 userService.close();
+                roleService.close();
+                cityService.close();
+                addressService.close();
             }
 
 
-            // type address à "FACTURATION"
-            //return "/accueil";
-            return "";
+            return "/accueil";
         }
         else
         {

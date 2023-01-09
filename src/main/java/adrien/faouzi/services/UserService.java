@@ -21,9 +21,11 @@ public class UserService extends EMF
     /**
      * Add user in DB method
      */
-    public void addUser(User user)
+    public User addUser(User user)
     {
         em.persist(user);
+        em.flush();
+        return user;
     }
 
 }

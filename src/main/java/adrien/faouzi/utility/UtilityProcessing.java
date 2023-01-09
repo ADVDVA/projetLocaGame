@@ -1,5 +1,6 @@
 package adrien.faouzi.utility;
 
+import adrien.faouzi.entities.User;
 import adrien.faouzi.managedBeans.I18nBean;
 import adrien.faouzi.managedBeans.StoreBean;
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -95,6 +96,16 @@ public class UtilityProcessing {
         return outStr.substring(0, outStr.length()-4)+"."+outStr.substring(outStr.length()-4, outStr.length()-2);
     }
 
+    /**
+     * Verification password method
+     * @param password
+     * @return
+     */
+    public static boolean checkPassword (String password, User user){
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
+        return result.verified;
+    }
+
 
     /**
      * Crypt Password method
@@ -103,15 +114,5 @@ public class UtilityProcessing {
      */
     public static String cryptPassword(String password){
         return BCrypt.withDefaults().hashToString(10,password.toCharArray());
-    }
-
-    /**
-     * Method to take into account special characters and accent
-     * @param text
-     * @return
-     */
-    public static String addAccentCharacter(String text)
-    {
-        return  new String(text.getBytes(), StandardCharsets.UTF_8);
     }
 }
