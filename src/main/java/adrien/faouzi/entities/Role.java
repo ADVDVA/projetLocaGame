@@ -5,6 +5,11 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name = "Role.SelectRoleByRoleName", query = "SELECT r from Role r " +
+                "where r.roleName = :roleName")
+})
+
 @Entity
 @Table(name = "role", indexes = {
         @Index(name = "roleName", columnList = "roleName", unique = true)

@@ -7,7 +7,8 @@ import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(name = "City.SelectCityByPostalCode", query = "SELECT c from City c " +
-                "where c.postalCode = :postalCode")
+                "where c.postalCode = :postalCode"),
+        @NamedQuery(name = "City.SelectCityById", query= "SELECT c from City c where c.id = :id")
 })
 
 

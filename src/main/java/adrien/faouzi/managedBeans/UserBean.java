@@ -1,12 +1,9 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.entities.City;
-import adrien.faouzi.entities.Country;
-import adrien.faouzi.entities.User;
+import adrien.faouzi.entities.*;
 
-import adrien.faouzi.services.CityService;
-import adrien.faouzi.services.CountryService;
-import adrien.faouzi.services.UserService;
+import adrien.faouzi.enumeration.TypeAddress;
+import adrien.faouzi.services.*;
 import adrien.faouzi.utility.UtilityProcessing;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -15,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.mail.search.AddressStringTerm;
 import javax.persistence.EntityTransaction;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -23,10 +21,10 @@ import java.io.Serializable;
 import adrien.faouzi.exeption.ConnexionUserExecption;
 import org.primefaces.PrimeFaces;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Named
 @SessionScoped
@@ -37,11 +35,11 @@ public class UserBean implements Serializable
      */
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Zéèà -]{1,60}$")
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z ]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Zéèà -]{1,60}$")
     private String firstName;
 
     @NotNull
@@ -59,15 +57,14 @@ public class UserBean implements Serializable
     private String messageErrorPassword = "hidden";
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z ]{1,}$")
+    @Pattern(regexp = "^[a-zA-Z0-9éèàçù' ]{1,}$")
     private String street;
 
     @NotNull
     @Min(1)
     private int number;
 
-    @NotNull
-    @Pattern(regexp= "^[a-zA-Z1-9]{1,20}")
+    @Pattern(regexp= "^[a-zA-Z1-9]{0,20}$")
     private String box;
 
     @NotNull
@@ -76,11 +73,11 @@ public class UserBean implements Serializable
 
     @NotNull
     private String city;
-    private HashMap<String, String> cities ;
+    private HashMap<String, String> citiesMap ;
 
     @NotNull
     private String country;
-    private List<String> countryList;
+    private HashMap<String, String> countryMap;
 
     @NotNull
     private Date dateOfBirth;
@@ -111,7 +108,7 @@ public class UserBean implements Serializable
         //initialize.
         CountryService countryService = new CountryService();
         EntityTransaction transaction = countryService.getTransaction();
-        this.countryList = new ArrayList<>();
+        this.countryMap = new HashMap<>();
         List <Country> countryListRequest;
         try
         {
@@ -120,7 +117,7 @@ public class UserBean implements Serializable
             countryListRequest = countryService.findCountryAll();
             for(Country countryL : countryListRequest)
             {
-                this.countryList.add(countryL.getCountryName());
+                this.countryMap.put(countryL.getCountryName(), String.valueOf(countryL.getId()));
             }
             transaction.commit();
         }
@@ -197,6 +194,7 @@ public class UserBean implements Serializable
         }
     }
 
+
     /**
      * Verification connection method
      */
@@ -235,7 +233,7 @@ public class UserBean implements Serializable
     }
 
     /**
-     * distroy session connected method
+     * destroy session connected method
      */
     public String destroySession()
     {
@@ -298,43 +296,6 @@ public class UserBean implements Serializable
     }
 
     /**
-     * Verification Sign up method
-     * @return
-     */
-    public String lastVerificationSignUp()
-    {
-
-        //Verification password with passwordVerify
-        checkPasswordVerify();
-
-        //Verification mail
-        checkMail();
-
-        //last check before adding it to DB
-        if(this.messageErrorPassword.equals("hidden") && this.messageErrorMail.equals("hidden"))
-        {
-
-            UtilityProcessing.debug(this.lastName + ", " + this.firstName+
-                    ", " + this.dateOfBirth + ", " +this.mail + ", " +
-                    this.phone +", "+ this.password +", "+this.street+
-                    ","+ this.number+ ", " + this.box + ", " + this.country +","+ this.postalCode+
-                    "," + this.city);
-
-            // faire couvertire le champs date en LocalDateTime (private LocalDateTime dateOfBirth;)
-            //ajouter idRole à 3
-            // type address à "FACTURATION"
-            //crypter le mot de passe
-            // user.enable à 1
-            //return "/accueil";
-            return "";
-        }
-        else
-        {
-            return "";
-        }
-    }
-
-    /**
      * update field city
      */
     public void updatePostalCodeWithCity ()
@@ -345,7 +306,7 @@ public class UserBean implements Serializable
             CityService cityService = new CityService();
             EntityTransaction transaction = cityService.getTransaction();
             List<City> cityList;
-            this.cities = new HashMap<>();
+            this.citiesMap = new HashMap<>();
             try
             {
                 transaction.begin();
@@ -353,7 +314,7 @@ public class UserBean implements Serializable
                 cityList = cityService.findCityByPostalCode(Integer.parseInt(this.postalCode));
                 for (City cityL: cityList)
                 {
-                    cities.put(cityL.getCityName(),String.valueOf(cityL.getId()));
+                    citiesMap.put(cityL.getCityName(),String.valueOf(cityL.getId()));
                 }
                 
                 //UtilityProcessing.debug("" + cities.size());
@@ -372,7 +333,114 @@ public class UserBean implements Serializable
         }
         else
         {
-            cities = new HashMap<>();
+            citiesMap = new HashMap<>();
+        }
+    }
+
+    /**
+     * Verification Sign up method
+     * @return
+     */
+    public String lastVerificationSignUp()
+    {
+
+        //Verification password with passwordVerify
+        checkPasswordVerify();
+
+        //Verification mail
+        checkMail();
+
+        //last check before adding it to DB
+        if(this.messageErrorPassword.equals("hidden") && this.messageErrorMail.equals("hidden"))
+        {
+
+
+//            UtilityProcessing.debug(UtilityProcessing.addAccentCharacter(this.lastName) + ", " + UtilityProcessing.addAccentCharacter(this.firstName)+
+//                    ", " + this.dateOfBirth + ", " +this.mail + ", " +
+//                    this.phone +", "+ this.password +", "+UtilityProcessing.addAccentCharacter(this.street) +
+//                    ","+ this.number+ ", " + this.box+ ", " + this.country +","+ this.postalCode+
+//                    "," + this.city);
+//            UtilityProcessing.debug(""+ UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
+
+
+            //For input user
+            //initialize.
+            UserService userService = new UserService();
+            RoleService roleService = new RoleService();
+              AddressService addressService = new AddressService();
+              CityService cityService = new CityService();
+            EntityTransaction transaction = userService.getTransaction();
+
+            Role role;
+            User user = new User();
+              Address address = new Address();
+              City city = new City();
+
+            user.setLastName(this.lastName);
+            user.setFirstName(this.firstName);
+            user.setDateOfBirth(UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
+            user.setPhone(this.phone);
+            user.setMail(this.mail);
+            user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
+            user.setPassword(UtilityProcessing.cryptPassword(this.password));
+            user.setEnable(true);
+
+            address.setStreet(UtilityProcessing.addAccentCharacter(this.street));
+            address.setNumber(this.number);
+            if(this.box.equals(""))
+            {
+               address.setBox(null);
+            }
+            else
+            {
+              address.setBox(this.box);
+            }
+
+            address.setEnable(true);
+            address.setTypeAddress(TypeAddress.FACTURATION);
+
+            try
+            {
+                transaction.begin();
+
+                //Call of the service that will use the NamedQuery of the "role" entity
+                role = roleService.findRoleByRoleName("Client");
+
+                user.setIdRole(role);
+
+                //Call of the service that will use the NamedQuery of the "user" entity
+                userService.addUser(user);
+
+                //Call of the service that will use the NamedQuery of the "city" entity
+                city = cityService.findCityById(Integer.parseInt(this.city));
+
+                address.setIdCity(city);
+                address.setIdUser(user);
+
+                //Call of the service that will use the NamedQuery of the "address" entity
+                addressService.addAddress(address);
+
+                transaction.commit();
+            }
+            catch(Exception e)
+            {
+                //UtilityProcessing.debug("Je suis dans le catch de l'ajout d'un user : " + e);
+                if(transaction.isActive())
+                    transaction.rollback();
+            }
+            finally
+            {
+                userService.close();
+            }
+
+
+            // type address à "FACTURATION"
+            //return "/accueil";
+            return "";
+        }
+        else
+        {
+            return "";
         }
     }
 
@@ -388,13 +456,13 @@ public class UserBean implements Serializable
         this.emailConnexion = emailConnexion;
     }
 
-    public List<String> getCountryList() {
+    public HashMap<String, String> getCountryMap() {
 
-        return countryList;
+        return countryMap;
     }
 
-    public void setCountryList(List<String> countryList) {
-        this.countryList = countryList;
+    public void setCountryMap(HashMap<String, String> countryMap) {
+        this.countryMap = countryMap;
     }
 
     public String getMessageErrorMail() {
@@ -517,13 +585,13 @@ public class UserBean implements Serializable
         return box;
     }
 
-    public HashMap<String,String> getCities() {
+    public HashMap<String,String> getCitiesMap() {
 
-        return cities;
+        return citiesMap;
     }
 
-    public void setCities(HashMap<String,String> cities) {
-        this.cities = cities;
+    public void setCitiesMap(HashMap<String,String> citiesMap) {
+        this.citiesMap = citiesMap;
     }
 
     public void setBox(String box) {

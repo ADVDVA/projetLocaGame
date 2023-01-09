@@ -49,7 +49,7 @@
                         <p:datePicker id="minmax" value="#{userBean.dateOfBirth}" mindate="#{userBean.minDate}"
                               placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
                               maxdate="#{userBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true"
-                              pattern="dd.MM.yyyy"
+                              pattern="dd/MMyyyy"
                               validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}">
                         <p:ajax update="messageDateOfBirth" event="keyup"/>
                         </p:datePicker>
@@ -185,7 +185,7 @@
                         <p:selectOneMenu id="input_country_inscription" value="#{userBean.country}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}">
                                 <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="#{null}"/>
-                                <f:selectItems value="#{userBean.countryList}"/>
+                                <f:selectItems value="#{userBean.countryMap}"/>
                         </p:selectOneMenu>
                     </span>
                     <p:message for="@previous"/>
@@ -210,7 +210,7 @@
                         <p:selectOneMenu id="input_city_inscription" value="#{userBean.city}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}">
                             <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}"/>
-                            <f:selectItems value="#{userBean.cities}"/>
+                            <f:selectItems value="#{userBean.citiesMap}"/>
                         </p:selectOneMenu>
                     </span>
                     <p:message for="@previous"/>

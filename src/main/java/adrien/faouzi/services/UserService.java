@@ -17,4 +17,13 @@ public class UserService extends EMF
                 .getSingleResult();
     }
 
+
+    /**
+     * Add user in DB method
+     */
+    public void addUser(User user)
+    {
+        em.persist(user);
+    }
+
 }
