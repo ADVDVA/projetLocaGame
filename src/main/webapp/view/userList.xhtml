@@ -13,7 +13,13 @@
         #{I18N['application.header.menulistusers']}
     </ui:define>
     <ui:define name="content">
-        <div id="catalogue">
+
+        <!-- save historic. -->
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/userList')}"/>
+        </f:metadata>
+
+        <div id="userList">
 
             <div>
                 <h2>
@@ -25,7 +31,7 @@
 
                 <!-- reload SQL request. -->
                 <f:metadata>
-                    <f:event type="preRenderView" listener="#{userListBean.initialiseUserFiltered}"/>
+                    <f:event type="preRenderView" listener="#{userListBean.initialiseUserFiltered()}"/>
                 </f:metadata>
 
                 <p:dataTable
@@ -48,7 +54,7 @@
                                 <p:commandButton type="hidden" update="@form"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
-                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"/>
+                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning" icon="pi pi-plus" iconPos="right"/>
                             </div>
                         </div>
 
@@ -75,13 +81,13 @@
                             </div>
 
                             <div class="flexGrowOne">
-                                <!-- no filter for button (details/edit). -->
+                                <!-- no filter for button (edit). -->
                                 <i class="pi pi-circle-off visibilityHidden" />
 
 
                             </div>
                             <div class="flexGrowOne">
-                                <!-- no filter for button (basket). -->
+                                <!-- no filter for button (details). -->
                                 <i class="pi pi-circle-off visibilityHidden" />
 
                             </div>
@@ -90,24 +96,24 @@
 
                     </f:facet>
 
-                    <p:column headerText="#{I18N['application.userlistpage.headerlistlastname']}">
+                    <p:column headerText="#{I18N['application.userlistpage.headerlistlastname']}" class="columnTableListResearchWord">
                         <h:outputText value="#{user.lastName}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.userlistpage.headerlistphone']}">
+                    <p:column headerText="#{I18N['application.userlistpage.headerlistphone']}" class="columnTableListResearchWord">
                         <h:outputText value="#{user.phone}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.userlistpage.headerlistmail']}">
+                    <p:column headerText="#{I18N['application.userlistpage.headerlistmail']}" class="columnTableListResearchWord">
                         <h:outputText value="#{user.mail}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.userlistpage.headerlistidRole']}">
+                    <p:column headerText="#{I18N['application.userlistpage.headerlistidRole']}" class="columnTableListResearchWord">
                         <h:outputText value="#{user.idRole.roleName}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.userlistpage.headerlistidenable']}">
-                        <h:outputText value="#{user.enable}"/>
+                        <h:outputText value="#{user.getEnableFormatStr()}" class="#{user.enableClassColor}"/>
                     </p:column>
 
                     <!-- button column -->
@@ -124,6 +130,12 @@
 
                 </p:dataTable>
             </h:form>
+
+            <!-- when table was full load, call work Research class. -->
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{userListBean.applyResearchWordClass()}"/>
+            </f:metadata>
+
 
         </div>
     </ui:define>

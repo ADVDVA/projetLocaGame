@@ -1,11 +1,13 @@
 package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.User;
+import adrien.faouzi.services.UserService;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.persistence.EntityTransaction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 @SessionScoped
 public class UserListBean extends TableFilter implements Serializable {
 
-    //all users filtered by user, session scope.
+    //all users filtered by user.
     private List<User> userFiltered;
 
 
@@ -23,21 +25,48 @@ public class UserListBean extends TableFilter implements Serializable {
      */
     public void initialiseUserFiltered(){
         userFiltered = new ArrayList<>();
-        /* mettre le service*/;
-        UtilityProcessing.debug("actualiseResearch");
 
-        //SQL.
-        //select * from *Product*
-        //where (
-        // *all param == this.filter*
-        //)
-        //order by this.order (orderAsc? "asc": "desc")
+        UserService userService = new UserService();
+        EntityTransaction transactionUser = userService.getTransaction();
+        boolean orderby = this.orderAsc;
+        try
+        {
+            transactionUser.begin();
+
+            if(this.order.equals("enable"))
+            {
+                orderby = !orderby;
+            }
+            if(orderby)
+            {
+                this.userFiltered = userService.findUserByFilterAsc(this.filter, this.order);
+            }
+            else
+            {
+                this.userFiltered = userService.findUserByFilterDesc(this.filter, this.order);
+            }
+            transactionUser.commit();
+        }catch(Exception e)
+        {
+            UtilityProcessing.debug("Je suis dans le catch de la recherche par utilisateur : " +e);
+            if(transactionUser.isActive())
+            {
+                transactionUser.rollback();
+            }
+        }finally {
+            userService.close();
+        }
     }
+
+
 
     /**
      * getter method
-     * @return
      */
+
+    public void setUserFiltered(List<User> userFiltered) {
+        this.userFiltered = userFiltered;
+    }
 
     public List<User> getUserFiltered() {
         return userFiltered;

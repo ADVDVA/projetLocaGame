@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
-import javax.inject.Inject;
+import adrien.faouzi.utility.UtilityProcessing;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -8,7 +9,33 @@ import java.util.Objects;
 import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(name = "User.SelectUserConnexion", query = "SELECT u from User u " +
-                "where u.mail = :mail")
+                "where u.mail = :mail"),
+        @NamedQuery(name = "User.SelectUserByFilterAsc", query = "SELECT u from User u " +
+                " where ((lower(u.lastName )like concat('%', :resseachWord, '%')) or" +
+                " (lower(u.phone )like concat('%', :resseachWord, '%')) or " +
+                " (lower(u.mail )like concat('%', :resseachWord, '%')) or" +
+                " (lower(u.idRole.roleName) like concat('%', :resseachWord, '%'))) " +
+                " order by case " +
+                " when (:orderBy like 'lastName') then u.lastName " +
+                " when (:orderBy like 'phone') then u.phone " +
+                " when (:orderBy like 'mail') then u.mail " +
+                " when (:orderBy like 'roleNome') then u.idRole.roleName " +
+                " when (:orderBy like 'enable') then u.enable " +
+                " else u.id " +
+                " end asc "),
+        @NamedQuery(name = "User.SelectUserByFilterDesc", query = "SELECT u from User u " +
+                " where ((lower(u.lastName )like concat('%', :resseachWord, '%')) or" +
+                " (lower(u.phone )like concat('%', :resseachWord, '%')) or " +
+                " (lower(u.mail )like concat('%', :resseachWord, '%')) or" +
+                " (lower(u.idRole.roleName) like concat('%', :resseachWord, '%'))) " +
+                " order by case " +
+                " when (:orderBy like 'lastName') then u.lastName " +
+                " when (:orderBy like 'phone') then u.phone " +
+                " when (:orderBy like 'mail') then u.mail " +
+                " when (:orderBy like 'roleNome') then u.idRole.roleName " +
+                " when (:orderBy like 'enable') then u.enable " +
+                " else u.id " +
+                " end desc ")
 })
 
 @Entity
@@ -163,4 +190,12 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getEnableFormatStr(){
+        return ((this.enable)? "Actif": "Inactif");
+    }
+    public String getEnableClassColor(){
+        return ((this.enable)? "colorGreen": "colorRed");
+    }
+
 }
