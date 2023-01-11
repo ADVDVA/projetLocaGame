@@ -2,15 +2,11 @@ package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.*;
 import adrien.faouzi.enumeration.TypeAddress;
-import adrien.faouzi.exeption.ConnectionUserExecption;
 import adrien.faouzi.services.*;
-import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
-import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityTransaction;
 import javax.validation.constraints.Min;
@@ -20,10 +16,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 @Named
 @RequestScoped
-public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
+public class AddUpdateDeleteUserBean implements Serializable
 {
     /**
      * Fields
@@ -49,6 +44,7 @@ public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     private String password ="";
     private String passwordVerify= "";
+   // private boolean numberPassage = true;
     private String messageErrorPassword = "hidden";
 
     @NotNull
@@ -82,6 +78,8 @@ public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
     private Date dateOfBirth;
     private Date minDate;
     private Date maxDate;
+
+
     /**
      * Post construtor for input date
      */
@@ -125,7 +123,7 @@ public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
             roleListRequest = roleService.findRoleAll();
             for(Role roleL : roleListRequest)
             {
-                this.countryMap.put(roleL.getRoleName(), String.valueOf(roleL.getId()));
+                this.roleMap.put(roleL.getRoleName(), String.valueOf(roleL.getId()));
             }
 
             transactionRole.commit();
@@ -199,14 +197,24 @@ public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
      */
     public void checkPasswordVerify()
     {
-        if(this.passwordVerify.equals(this.password))
-        {
-            this.messageErrorPassword = "hidden";
-        }
-        else
-        {
-            this.messageErrorPassword = "";
-        }
+        UtilityProcessing.debug("passwordVerify : " + this.passwordVerify);
+//        UtilityProcessing.debug("numberPassage: " + this.numberPassage);
+//        if (!(this.passwordVerify.equals("")))    || this.numberPassage)
+//        {
+//            this.numberPassage = false;
+            if(this.passwordVerify.equals(this.password))      //&& !(this.passwordVerify.equals(""))
+            {
+                this.messageErrorPassword = "hidden";
+            }
+            else
+            {
+                this.messageErrorPassword = "";
+            }
+//        }
+//        else
+//        {
+//            this.messageErrorPassword ="";
+//        }
     }
 
     /**
@@ -275,95 +283,95 @@ public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
         //last check before adding it to DB
         if(this.messageErrorPassword.equals("hidden") && this.messageErrorMail.equals("hidden"))
         {
-            //For user
-            //initialize.
-            UserService userService = new UserService();
-            RoleService roleService = new RoleService();
-            AddressService addressService = new AddressService();
-            CityService cityService = new CityService();
-            EntityTransaction transactionUser = userService.getTransaction();
-            EntityTransaction transactionAddress = addressService.getTransaction();
-            EntityTransaction transactionCity = cityService.getTransaction();
-            EntityTransaction transactionRole = roleService.getTransaction();
-
-            Role role;
-            City city;
-            User user = new User();
-            Address address = new Address();
-
-
-            user.setLastName(this.lastName);
-            user.setFirstName(this.firstName);
-            user.setDateOfBirth(UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
-            user.setPhone(this.phone);
-            user.setMail(this.mail);
-            user.setPassword(UtilityProcessing.cryptPassword(this.password));
-            user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
-            user.setEnable(true);
-
-            address.setStreet(this.street);
-            address.setNumber(this.number);
-            if(this.box.equals(""))
-            {
-                address.setBox(null);
-            }
-            else
-            {
-                address.setBox(this.box);
-            }
-
-            address.setTypeAddress(TypeAddress.FACTURATION);
-            address.setEnable(true);
-
-            try
-            {
-                transactionUser.begin();
-                transactionCity.begin();
-                transactionAddress.begin();
-                transactionRole.begin();
-
-                //Call of the service that will use the NamedQuery of the "role" entity
-                role = roleService.findRoleByRoleName("Client");
-
-                user.setIdRole(role);
-
-                //Call of the service that will use the NamedQuery of the "user" entity
-                user = userService.addUser(user);
-
-                //Call of the service that will use the NamedQuery of the "city" entity
-                city = cityService.findCityById(Integer.parseInt(this.city));
-
-                address.setIdCity(city);
-                address.setIdUser(user);
-                //Call of the service that will use the NamedQuery of the "address" entity
-                addressService.addAddress(address);
-
-                transactionCity.commit();
-                transactionRole.commit();
-                transactionUser.commit();
-                transactionAddress.commit();
-            }
-            catch(Exception e)
-            {
-                //UtilityProcessing.debug("Je suis dans le catch de l'ajout d'un user : " + e);
-                if(transactionAddress.isActive()||
-                        transactionCity.isActive()||
-                        transactionUser.isActive()||
-                        transactionRole.isActive())
-                {
-                    transactionAddress.rollback();
-                    transactionCity.rollback();
-                    transactionUser.rollback();
-                    transactionRole.rollback();
-                }
-            }
-            finally
-            {
-                userService.close();
-                roleService.close();
-                cityService.close();
-                addressService.close();
-            }
+//            //For user
+//            //initialize.
+//            UserService userService = new UserService();
+//            RoleService roleService = new RoleService();
+//            AddressService addressService = new AddressService();
+//            CityService cityService = new CityService();
+//            EntityTransaction transactionUser = userService.getTransaction();
+//            EntityTransaction transactionAddress = addressService.getTransaction();
+//            EntityTransaction transactionCity = cityService.getTransaction();
+//            EntityTransaction transactionRole = roleService.getTransaction();
+//
+//            Role role;
+//            City city;
+//            User user = new User();
+//            Address address = new Address();
+//
+//
+//            user.setLastName(this.lastName);
+//            user.setFirstName(this.firstName);
+//            user.setDateOfBirth(UtilityProcessing.castDateToLocalDateTime(this.dateOfBirth));
+//            user.setPhone(this.phone);
+//            user.setMail(this.mail);
+//            user.setPassword(UtilityProcessing.cryptPassword(this.password));
+//            user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
+//            user.setEnable(true);
+//
+//            address.setStreet(this.street);
+//            address.setNumber(this.number);
+//            if(this.box.equals(""))
+//            {
+//                address.setBox(null);
+//            }
+//            else
+//            {
+//                address.setBox(this.box);
+//            }
+//
+//            address.setTypeAddress(TypeAddress.FACTURATION);
+//            address.setEnable(true);
+//
+//            try
+//            {
+//                transactionUser.begin();
+//                transactionCity.begin();
+//                transactionAddress.begin();
+//                transactionRole.begin();
+//
+//                //Call of the service that will use the NamedQuery of the "role" entity
+//                role = roleService.findRoleByRoleName("Client");
+//
+//                user.setIdRole(role);
+//
+//                //Call of the service that will use the NamedQuery of the "user" entity
+//                user = userService.addUser(user);
+//
+//                //Call of the service that will use the NamedQuery of the "city" entity
+//                city = cityService.findCityById(Integer.parseInt(this.city));
+//
+//                address.setIdCity(city);
+//                address.setIdUser(user);
+//                //Call of the service that will use the NamedQuery of the "address" entity
+//                addressService.addAddress(address);
+//
+//                transactionCity.commit();
+//                transactionRole.commit();
+//                transactionUser.commit();
+//                transactionAddress.commit();
+//            }
+//            catch(Exception e)
+//            {
+//                //UtilityProcessing.debug("Je suis dans le catch de l'ajout d'un user : " + e);
+//                if(transactionAddress.isActive()||
+//                        transactionCity.isActive()||
+//                        transactionUser.isActive()||
+//                        transactionRole.isActive())
+//                {
+//                    transactionAddress.rollback();
+//                    transactionCity.rollback();
+//                    transactionUser.rollback();
+//                    transactionRole.rollback();
+//                }
+//            }
+//            finally
+//            {
+//                userService.close();
+//                roleService.close();
+//                cityService.close();
+//                addressService.close();
+//            }
 
 
             return "/view/userList";
