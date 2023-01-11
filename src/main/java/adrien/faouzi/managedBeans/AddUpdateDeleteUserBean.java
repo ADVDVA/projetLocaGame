@@ -1,15 +1,15 @@
 package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.*;
-
 import adrien.faouzi.enumeration.TypeAddress;
+import adrien.faouzi.exeption.ConnectionUserExecption;
 import adrien.faouzi.services.*;
+import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
-import at.favre.lib.crypto.bcrypt.BCrypt;
+import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
-
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityTransaction;
@@ -17,17 +17,13 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import adrien.faouzi.exeption.ConnectionUserExecption;
-import org.primefaces.PrimeFaces;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 @Named
-@SessionScoped
-public class UserBean implements Serializable
+@RequestScoped
+public class AddUpdateDeleteUserBean extends TableFilter implements Serializable
 {
     /**
      * Fields
@@ -79,18 +75,13 @@ public class UserBean implements Serializable
     private HashMap<String, String> countryMap;
 
     @NotNull
+    private String role;
+    private HashMap<String, String> roleMap;
+
+    @NotNull
     private Date dateOfBirth;
     private Date minDate;
     private Date maxDate;
-
-    private String messageErrorConnection ="hidden";
-
-
-
-    private String emailConnection;
-    private  String passwordConnection;
-    private User user;
-
     /**
      * Post construtor for input date
      */
@@ -103,32 +94,57 @@ public class UserBean implements Serializable
         minDate = new Date(today.getTime()- (365 * oneDay) * 100 - ((100/4) * oneDay));
         maxDate = new Date(today.getTime()- (365  * oneDay) * 18 -( 4 * oneDay) );// *18 pour 18 ans
 
-        //For input country
+        //For country and role
         //initialize.
         CountryService countryService = new CountryService();
-        EntityTransaction transaction = countryService.getTransaction();
+        RoleService roleService = new RoleService();
+        EntityTransaction transactionCountry = countryService.getTransaction();
+        EntityTransaction transactionRole = roleService.getTransaction();
+
         this.countryMap = new HashMap<>();
-        List <Country> countryListRequest;
+        List<Country> countryListRequest;
+
+        this.roleMap = new HashMap<>();
+        List<Role> roleListRequest;
+
         try
         {
-            transaction.begin();
+            transactionCountry.begin();
+
             //Call of the service that will use the NamedQuery of the "County" entity
             countryListRequest = countryService.findCountryAll();
             for(Country countryL : countryListRequest)
             {
                 this.countryMap.put(countryL.getCountryName(), String.valueOf(countryL.getId()));
             }
-            transaction.commit();
+            transactionCountry.commit();
+
+            transactionRole.begin();
+
+            //Call of the service that will use the NamedQuery of the "role" entity
+            roleListRequest = roleService.findRoleAll();
+            for(Role roleL : roleListRequest)
+            {
+                this.countryMap.put(roleL.getRoleName(), String.valueOf(roleL.getId()));
+            }
+
+            transactionRole.commit();
         }
         catch(Exception e)
         {
             //UtilityProcessing.debug("Je suis dans le catch de country : " + e);
-            if(transaction.isActive())
-                transaction.rollback();
+            if(transactionCountry.isActive() ||
+                transactionRole.isActive())
+            {
+                transactionCountry.rollback();
+                transactionRole.rollback();
+            }
+
         }
         finally
         {
             countryService.close();
+            roleService.close();
         }
     }
 
@@ -193,95 +209,12 @@ public class UserBean implements Serializable
         }
     }
 
-
     /**
-     * Verification connection method
-     */
-    public String lastVerificationSignIn()
-    {
-        //initialize.
-        UserService userService = new UserService();
-        EntityTransaction transaction = userService.getTransaction();
-        String redirect;
-
-        try
-        {
-            transaction.begin();
-            //Call of the service that will use the NamedQuery of the "User" entity
-             this.user = userService.findUserByMail(this.emailConnection);
-             checkUserConnection(this.user, this.passwordConnection, this.emailConnection);
-            this.messageErrorConnection = "hidden";
-             redirect = "/accueil";
-            transaction.commit();
-        }
-        catch(Exception e)
-        {
-            //UtilityProcessing.debug(" je suis dans le catch de la connexion : " + e);
-            /* déclancher un message d'erreur*/
-            this.messageErrorConnection = "";
-            redirect = "/view/connection";
-            if(transaction.isActive())
-                transaction.rollback();
-        }
-        finally
-        {
-            userService.close();
-        }
-
-        return redirect;
-    }
-
-    /**
-     * destroy session connected method
-     */
-    public String destroySession()
-    {
-//        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        facesContext.getExternalContext().getSessionMap().put("userBean", null);
-
-//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-//        sessionMap.remove();
-        this.user = null;
-      //  UtilityProcessing.debug( FacesContext.getCurrentInstance().getViewRoot().getViewId());
-        if("/accueil.xhtml".equals( FacesContext.getCurrentInstance().getViewRoot().getViewId()))
-        {
-            // managed bean go to js
-            PrimeFaces.current().executeScript("submitLanguageForm(\"headerLanguageButtonContainer\")");
-            return "";
-        }
-        else
-        {
-            return "/accueil";
-        }
-    }
-
-    /**
-     * Redirection go to connection page
+     * Redirection go to userlist page
      * @return
      */
-    public String goToPageConnection()
-    {
-        return "/view/connection";
-
-    }
-
-    /**
-     * Redirection go to home page
-     * @return
-     */
-    public String goToPageAccueil(){
-        return "/accueil";
-    }
-
-    /**
-     * User processing method
-     */
-    public void checkUserConnection (User user, String password, String mail) throws ConnectionUserExecption
-    {
-        if (!(user.getMail().equals(mail) && UtilityProcessing.checkPassword(password,user) && user.getEnable()))
-        {
-            throw new ConnectionUserExecption();
-        }
+    public String goToPageUserList(){
+        return "/view/userList";
     }
 
     /**
@@ -305,7 +238,7 @@ public class UserBean implements Serializable
                 {
                     citiesMap.put(cityL.getCityName(),String.valueOf(cityL.getId()));
                 }
-                
+
                 //UtilityProcessing.debug("" + cities.size());
                 transaction.commit();
             }
@@ -327,10 +260,10 @@ public class UserBean implements Serializable
     }
 
     /**
-     * Verification Sign up method
+     * Account verification method
      * @return
      */
-    public String lastVerificationSignUp()
+    public String lastVerificationAccount()
     {
 
         //Verification password with passwordVerify
@@ -372,11 +305,11 @@ public class UserBean implements Serializable
             address.setNumber(this.number);
             if(this.box.equals(""))
             {
-               address.setBox(null);
+                address.setBox(null);
             }
             else
             {
-              address.setBox(this.box);
+                address.setBox(this.box);
             }
 
             address.setTypeAddress(TypeAddress.FACTURATION);
@@ -395,13 +328,13 @@ public class UserBean implements Serializable
                 user.setIdRole(role);
 
                 //Call of the service that will use the NamedQuery of the "user" entity
-                this.user = userService.addUser(user);
+                user = userService.addUser(user);
 
                 //Call of the service that will use the NamedQuery of the "city" entity
                 city = cityService.findCityById(Integer.parseInt(this.city));
 
                 address.setIdCity(city);
-                address.setIdUser(this.user);
+                address.setIdUser(user);
                 //Call of the service that will use the NamedQuery of the "address" entity
                 addressService.addAddress(address);
 
@@ -414,9 +347,9 @@ public class UserBean implements Serializable
             {
                 //UtilityProcessing.debug("Je suis dans le catch de l'ajout d'un user : " + e);
                 if(transactionAddress.isActive()||
-                transactionCity.isActive()||
-                transactionUser.isActive()||
-                transactionRole.isActive())
+                        transactionCity.isActive()||
+                        transactionUser.isActive()||
+                        transactionRole.isActive())
                 {
                     transactionAddress.rollback();
                     transactionCity.rollback();
@@ -433,7 +366,7 @@ public class UserBean implements Serializable
             }
 
 
-            return "/accueil";
+            return "/view/userList";
         }
         else
         {
@@ -444,14 +377,6 @@ public class UserBean implements Serializable
     /**
      * Getter and setter method
      */
-
-    public String getEmailConnection() {
-    return emailConnection;
-}
-
-    public void setEmailConnection(String emailConnection) {
-        this.emailConnection = emailConnection;
-    }
 
     public HashMap<String, String> getCountryMap() {
 
@@ -470,32 +395,6 @@ public class UserBean implements Serializable
 
     public void setMessageErrorMail(String messageErrorMail) {
         this.messageErrorMail = messageErrorMail;
-    }
-
-    public String getPasswordConnection() {
-        return passwordConnection;
-    }
-
-    public void setPasswordConnection(String passwordConnection) {
-        this.passwordConnection = passwordConnection;
-    }
-
-    public String getMessageErrorConnection() {
-        String message = this.messageErrorConnection;
-        this.messageErrorConnection = "hidden";
-        return message;
-    }
-
-    public void setMessageErrorConnection(String messageErrorConnection) {
-        this.messageErrorConnection = messageErrorConnection;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getCity() {
@@ -631,6 +530,21 @@ public class UserBean implements Serializable
         this.messageErrorPassword = messageErrorPassword;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public HashMap<String, String> getRoleMap() {
+        return roleMap;
+    }
+
+    public void setRoleMap(HashMap<String, String> roleMap) {
+        this.roleMap = roleMap;
+    }
 
     public Date getMaxDate() {
         return maxDate;

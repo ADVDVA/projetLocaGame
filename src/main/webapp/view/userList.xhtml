@@ -55,7 +55,9 @@
                                 <p:commandButton type="hidden" update="@form"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
-                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning" icon="pi pi-plus" iconPos="right"/>
+                                <p:commandButton value="#{I18N['application.listpage.addelementbutton']}" class="ui-button-warning"
+                                                 action="#{userListBean.redirectPageWidthId('/view/addUser', 0, 'c')}"
+                                                 icon="pi pi-plus" iconPos="right"/>
                             </div>
                         </div>
 

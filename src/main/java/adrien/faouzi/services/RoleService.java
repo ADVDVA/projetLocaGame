@@ -1,8 +1,9 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.Role;
-import adrien.faouzi.entities.User;
 import adrien.faouzi.projetlocagame.connexion.EMF;
+
+import java.util.List;
 
 public class RoleService extends EMF
 {
@@ -16,5 +17,14 @@ public class RoleService extends EMF
         return em.createNamedQuery("Role.SelectRoleByRoleName", Role.class)
                 .setParameter("roleName", roleName)
                 .getSingleResult();
+    }
+
+    /**
+     * Role request method for all
+     */
+    public List<Role> findRoleAll ()
+    {
+        return em.createNamedQuery("Role.SelectRoleAll", Role.class)
+                .getResultList();
     }
 }

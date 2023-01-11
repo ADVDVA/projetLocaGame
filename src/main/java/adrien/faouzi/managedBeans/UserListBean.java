@@ -5,7 +5,7 @@ import adrien.faouzi.services.UserService;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.EntityTransaction;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class UserListBean extends TableFilter implements Serializable {
 
     //all users filtered by user.

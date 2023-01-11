@@ -7,7 +7,8 @@ import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(name = "Role.SelectRoleByRoleName", query = "SELECT r from Role r " +
-                "where r.roleName = :roleName")
+                "where r.roleName = :roleName"),
+        @NamedQuery(name="Role.SelectRoleAll", query ="SELECT r from Role r")
 })
 
 @Entity

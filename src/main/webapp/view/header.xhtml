@@ -31,7 +31,7 @@
     <div id="headerLoginBlock">
 
         <span>
-            <p:commandButton value="#{I18N['application.header.connectionmessage']} #{userBean.user.lastName} " action="#{userBean.destroySession}" class="ui-button-warning " icon="pi pi-sign-out" rendered="#{userBean.user != null}" iconPos="right"/>
+            <p:commandButton value="#{I18N['application.header.connectionmessage']} #{userBean.user.firstName} #{userBean.user.lastName} " action="#{userBean.destroySession}" class="ui-button-warning " icon="pi pi-sign-out" rendered="#{userBean.user != null}" iconPos="right"/>
         </span>
 
         <p:commandButton value="#{I18N['application.header.loginbutton']}" action="#{userBean.goToPageConnection}" icon="pi pi-sign-in" class="ui-button-warning" rendered="#{userBean.user == null}" iconPos="right"/>
