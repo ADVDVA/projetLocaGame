@@ -17,17 +17,17 @@ public class EMF {
 	private static EntityManagerFactory emfInstance =
 	        Persistence.createEntityManagerFactory("locagame");
 
-    public EMF(){
-        this.em = EMF.getEM();
-    }
+//    //public EMF(){
+//        this.em = EMF.getEM();
+//    }
 
-    public void close(){
-        this.em.close();
-    }
+//    public void close(){
+//        this.em.close();
+//    }
 
-    public EntityTransaction getTransaction(){
-        return this.em.getTransaction();
-    }
+//    public EntityTransaction getTransaction(){
+//        return this.em.getTransaction();
+//    }
 
     public static EntityManagerFactory getEMF() {
         return emfInstance;

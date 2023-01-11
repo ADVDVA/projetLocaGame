@@ -3,16 +3,17 @@ package adrien.faouzi.services;
 import adrien.faouzi.entities.City;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public class CityService extends EMF {
+public class CityService {
 
     /**
      *  City request method by Postal Code
      * @param postalCode
      * @return
      */
-    public List<City> findCityByPostalCode(int postalCode)
+    public List<City> findCityByPostalCode(int postalCode, EntityManager em)
     {
         return em.createNamedQuery("City.SelectCityByPostalCode", City.class)
                 .setParameter("postalCode", postalCode)
@@ -22,7 +23,7 @@ public class CityService extends EMF {
     /**
      * City request method by id
      */
-    public City findCityById (int id)
+    public City findCityById (int id, EntityManager em)
     {
         return em.createNamedQuery("City.SelectCityById", City.class)
                 .setParameter("id", id)

@@ -3,6 +3,9 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumeration.TypeAddress;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,21 +26,26 @@ public class Address {
     @JoinColumn(name = "idCity", nullable = false)
     private City idCity;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9 ]{1,}$")
     @Column(name = "street", nullable = false)
     private String street;
 
+    @NotNull
+    @Min(1)
     @Column(name = "number", nullable = false)
     private int number;
 
+    @Pattern(regexp= "^[a-zA-Z1-9]{0,20}$")
     @Column(name = "box", length = 20)
     private String box;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "typeAddress", nullable = false)
-    private TypeAddress typeAddress;
+    private TypeAddress typeAddress = TypeAddress.FACTURATION;
 
     @Column(name = "enable", nullable = false)
-    private boolean enable = false;
+    private boolean enable = true;
 
     @OneToMany(mappedBy = "idAddress")
     private Set<Addressorder> addressorders = new LinkedHashSet<>();

@@ -5,12 +5,12 @@ import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
 
-public class StoreService extends EMF
+public class StoreService
 {
     /**
      * Store recovery method
      */
-    public Store findStoreByIdStore(int id)
+    public Store findStoreByIdStore(int id, EntityManager em)
     {
         return em.createNamedQuery("Store.SelectStoreByIdStore", Store.class)
                 .setParameter("idStore", id)

@@ -4,6 +4,7 @@ import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Editor;
 import adrien.faouzi.entities.Priceplatform;
 import adrien.faouzi.entities.Product;
+import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.services.EditorService;
 import adrien.faouzi.services.PricePlatformService;
@@ -16,6 +17,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -70,23 +72,25 @@ public class PricePlatformBean implements Serializable {
         //set selected option (based on db import).
         editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
 
+        EntityManager em = EMF.getEM();
         PricePlatformService pricePlatformService = new PricePlatformService();
-        EntityTransaction transaction = pricePlatformService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
 
         try{
             transaction.begin();
             this.pricePlatformSelected = pricePlatformService.findPricePlatformById(
-                    pricePlatformListBean.getIdRedirection()
+                    pricePlatformListBean.getIdRedirection(), em
             );
             this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.pricePlatformSelected = null;
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            pricePlatformService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
 
     }
@@ -126,22 +130,24 @@ public class PricePlatformBean implements Serializable {
             return;
         }
         //reload product from db into price platform selected.
+        EntityManager em = EMF.getEM();
         ProductService productService = new ProductService();
-        EntityTransaction transaction = productService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try{
             transaction.begin();
             this.pricePlatformSelected.setIdProduct(
-                    productService.selectProductByIdProduct(this.productSelectedId)
+                    productService.selectProductByIdProduct(this.productSelectedId, em)
             );
             editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
             this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            productService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
     }
 
@@ -153,19 +159,21 @@ public class PricePlatformBean implements Serializable {
         return this.allProduct;
     }
     public void initAllProduct(){
+        EntityManager em = EMF.getEM();
         ProductService productService = new ProductService();
-        EntityTransaction transaction = productService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try{
             transaction.begin();
-            this.allProduct = productService.selectProductAll();
+            this.allProduct = productService.selectProductAll(em);
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.allProduct = new ArrayList<>();
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            productService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
     }
 
@@ -177,19 +185,20 @@ public class PricePlatformBean implements Serializable {
         return this.allEditor;
     }
     public void initAllEditor(){
+        EntityManager em = EMF.getEM();
         EditorService editorService = new EditorService();
-        EntityTransaction transaction = editorService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try{
             transaction.begin();
-            this.allEditor = editorService.selectEditorAll();
+            this.allEditor = editorService.selectEditorAll(em);
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.allEditor = new ArrayList<>();
-            if(transaction.isActive())
-                transaction.rollback();
         }finally{
-            editorService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
     }
     public boolean isPricePlatformSelectedHasEditorValid(){
@@ -215,20 +224,22 @@ public class PricePlatformBean implements Serializable {
             return;
         }
         //reload product from db into price platform selected.
+        EntityManager em = EMF.getEM();
         EditorService editorService = new EditorService();
-        EntityTransaction transaction = editorService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try{
             transaction.begin();
             this.pricePlatformSelected.getIdProduct().setIdEditor(
-                    editorService.selectEditorByIdEditor(this.editorSelectedId)
+                    editorService.selectEditorByIdEditor(this.editorSelectedId, em)
             );
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            editorService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
     }
 
@@ -249,36 +260,40 @@ public class PricePlatformBean implements Serializable {
         return this.allCategory;
     }
     public void initAllCategory(){
+        EntityManager em = EMF.getEM();
         CategoryService categoryService = new CategoryService();
-        EntityTransaction transaction = categoryService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try{
             transaction.begin();
-            this.allCategory = categoryService.selectCategoryAll();
+            this.allCategory = categoryService.selectCategoryAll(em);
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.allCategory = new ArrayList<>();
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            categoryService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
     }
     //when user select category for crud.
     public void selectCategory(int idCategory){
+        EntityManager em = EMF.getEM();
         CategoryService categoryService = new CategoryService();
-        EntityTransaction transaction = categoryService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         try{
             transaction.begin();
-            this.categorySelected = categoryService.selectCategoryByIdCategory(idCategory);
+            this.categorySelected = categoryService.selectCategoryByIdCategory(idCategory, em);
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.categorySelected = null;
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            categoryService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
     }
     //get set list category into product into price platform selected.

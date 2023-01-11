@@ -31,10 +31,10 @@
     <div id="headerLoginBlock">
 
         <span>
-            <p:commandButton value="#{I18N['application.header.connectionmessage']} #{userBean.user.firstName} #{userBean.user.lastName} " action="#{userBean.destroySession}" class="ui-button-warning " icon="pi pi-sign-out" rendered="#{userBean.user != null}" iconPos="right"/>
+            <p:commandButton value="#{I18N['application.header.connectionmessage']} #{connectionBean.user.firstName} #{connectionBean.user.lastName}" action="#{connectionBean.destroySession}" class="ui-button-warning " icon="pi pi-sign-out" rendered="#{connectionBean.user != null}" iconPos="right"/>
         </span>
 
-        <p:commandButton value="#{I18N['application.header.loginbutton']}" action="#{userBean.goToPageConnection}" icon="pi pi-sign-in" class="ui-button-warning" rendered="#{userBean.user == null}" iconPos="right"/>
+        <p:commandButton value="#{I18N['application.header.loginbutton']}" action="#{connectionBean.goToPageConnection}" icon="pi pi-sign-in" class="ui-button-warning" rendered="#{connectionBean.user == null}" iconPos="right"/>
 
         <h:form id="headerLanguageButtonContainer">
             <p:menuButton value="#{I18N['application.header.language']}" class="headerLanguageButton ui-button-warning" iconPos="right">

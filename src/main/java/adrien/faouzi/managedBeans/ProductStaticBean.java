@@ -2,6 +2,7 @@ package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.Platform;
 import adrien.faouzi.entities.Product;
+import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.services.LanguageGameService;
 import adrien.faouzi.utility.UtilityProcessing;
@@ -9,6 +10,7 @@ import sun.plugin.services.PlatformService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 
@@ -18,22 +20,24 @@ public class ProductStaticBean {
 
     public static void initListCategory(Product product){
 
+        EntityManager em = EMF.getEM();
         CategoryService categoryService = new CategoryService();
-        EntityTransaction transaction = categoryService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
 
         try{
             transaction.begin();
             product.setListCategory(
-                    categoryService.findCategoryByIdProduct(product.getId())
+                    categoryService.findCategoryByIdProduct(product.getId(),em)
             );
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
             product.setListCategory(new ArrayList<>());
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            categoryService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
 
     }
@@ -41,22 +45,24 @@ public class ProductStaticBean {
 
     public static void initListLanguageGame(Product product){
 
+        EntityManager em = EMF.getEM();
         LanguageGameService languageGameService = new LanguageGameService();
-        EntityTransaction transaction = languageGameService.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
 
         try{
             transaction.begin();
             product.setListLanguageGame(
-                    languageGameService.findLanguageGameByIdProduct(product.getId())
+                    languageGameService.findLanguageGameByIdProduct(product.getId(), em)
             );
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
             product.setListCategory(new ArrayList<>());
-            if(transaction.isActive())
-                transaction.rollback();
+
         }finally{
-            languageGameService.close();
+            if(transaction.isActive())
+            transaction.rollback();
+            em.close();
         }
 
     }

@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,6 +20,7 @@ public class Country {
     @Column(name = "idCountry", nullable = false)
     private int id;
 
+    @NotNull
     @Column(name = "countryName", nullable = false, length = 60)
     private String countryName;
 

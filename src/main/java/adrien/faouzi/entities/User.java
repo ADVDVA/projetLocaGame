@@ -3,6 +3,8 @@ package adrien.faouzi.entities;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -52,21 +54,30 @@ public class User {
     @JoinColumn(name = "idRole", nullable = false)
     private Role idRole;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     @Column(name = "lastName", nullable = false, length = 60)
     private String lastName;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z -]{1,60}$")
     @Column(name = "firstName", nullable = false, length = 60)
     private String firstName;
 
+    @NotNull
     @Column(name = "dateOfBirth", nullable = false)
     private LocalDateTime dateOfBirth;
 
+    @NotNull
+    @Pattern(regexp = "^[+][0-9]{1,4}[ ]{1}[0-9]{2,4}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}$")
     @Column(name = "phone", length = 45)
     private String phone;
 
     @Column(name = "mail", nullable = false)
     private String mail;
 
+    @NotNull
+    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -74,7 +85,7 @@ public class User {
     private LocalDateTime registrationDate;
 
     @Column(name = "enable", nullable = false)
-    private boolean enable = false;
+    private boolean enable = true;
 
     @OneToMany(mappedBy = "idUser")
     private Set<Order> orders = new LinkedHashSet<>();
@@ -197,5 +208,4 @@ public class User {
     public String getEnableClassColor(){
         return ((this.enable)? "colorGreen": "colorRed");
     }
-
 }

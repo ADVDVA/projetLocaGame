@@ -1,6 +1,8 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -26,9 +28,12 @@ public class City {
     @JoinColumn(name = "idCountry", nullable = false)
     private Country idCountry;
 
+    @NotNull
+    @Pattern(regexp = "^[0-9]{1,}$")
     @Column(name = "postalCode", nullable = false)
     private int postalCode;
 
+    @NotNull
     @Column(name = "cityName", nullable = false, length = 60)
     private String cityName;
 

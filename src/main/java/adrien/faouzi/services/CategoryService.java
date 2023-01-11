@@ -4,14 +4,15 @@ import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Store;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public class CategoryService extends EMF {
+public class CategoryService {
 
     /**
      * get all category assign to an id product.
      */
-    public List<Category> findCategoryByIdProduct(int idProduct)
+    public List<Category> findCategoryByIdProduct(int idProduct, EntityManager em)
     {
         return em.createNamedQuery("Category.SelectCategoryByIdProduct", Category.class)
                 .setParameter("idProduct", idProduct)
@@ -22,7 +23,7 @@ public class CategoryService extends EMF {
     /**
      * get all category from db.
      */
-    public List<Category> selectCategoryAll()
+    public List<Category> selectCategoryAll(EntityManager em)
     {
         return em.createNamedQuery("Category.SelectCategoryAll", Category.class)
                 .getResultList();
@@ -32,7 +33,7 @@ public class CategoryService extends EMF {
     /**
      * get category selected by id.
      */
-    public Category selectCategoryByIdCategory(int idCategory)
+    public Category selectCategoryByIdCategory(int idCategory, EntityManager em)
     {
         return em.createNamedQuery("Category.SelectCategoryByIdCategory", Category.class)
                 .setParameter("idCategory", idCategory)

@@ -40,12 +40,13 @@ public class StoreBean implements Serializable {
     {
         //initialize.
         //EntityManager em = EMF.getEM(); //--> in parent service.
+        EntityManager em = EMF.getEM();
         StoreService storeService = new StoreService();
 
         try
         {
             //Call of the service that will use the NamedQuery of the "Store" entity
-             this.store = storeService.findStoreByIdStore(1);
+             this.store = storeService.findStoreByIdStore(1, em);
         }
         catch(Exception e)
         {
@@ -54,7 +55,7 @@ public class StoreBean implements Serializable {
         finally
         {
             //em.close(); //--> in parent service. warning, close all services instanciated.
-            storeService.close();
+            em.close();
         }
     }
 }

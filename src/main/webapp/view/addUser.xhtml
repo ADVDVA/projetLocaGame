@@ -1,264 +1,245 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
-<ui:composition template="/WEB-INF/templates/simple.xhtml">
-    <ui:define name="title">
-        #{I18N['application.addupdatedeleteuserpage.title']}
-    </ui:define>
-    <ui:define name="content">
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"-->
+<!--        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:h="http://xmlns.jcp.org/jsf/html"-->
+<!--      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"-->
+<!--      xmlns:f="http://xmlns.jcp.org/jsf/core"-->
+<!--      xmlns:c="http://java.sun.com/jsp/jstl/core"-->
+<!--      xmlns:p="http://primefaces.org/ui">-->
+<!--<ui:composition template="/WEB-INF/templates/simple.xhtml">-->
+<!--    <ui:define name="title">-->
+<!--        #{I18N['application.addupdatedeleteuserpage.title']}-->
+<!--    </ui:define>-->
+<!--    <ui:define name="content">-->
 
-        <!-- save historic. -->
-        <f:metadata>
-            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/addUser')}"/>
-        </f:metadata>
-
-
-        <div class ="containers">
-            <h2>
-                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.title']}"/>
-            </h2>
-            <h:form class="responsiveForm">
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_lastname_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.lastnametitle']}"/>
-                        <p:inputText id="input_lastname_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.lastName}"
-                                     placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"
-                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}">
-                            <p:ajax update="messageLastName" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                    <p:message id="messageLastName" for="@previous"/>
-                </span>
+<!--        &lt;!&ndash; save historic. &ndash;&gt;-->
+<!--        <f:metadata>-->
+<!--            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/addUser')}"/>-->
+<!--        </f:metadata>-->
 
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_firstame_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.firstnametitle']}"/>
-                        <p:inputText id="input_firstame_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.firstName}"
-                                     placeholder="#{I18N['application.inscriptionpage.firstnameplaceholder']}"
-                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}">
-                            <p:ajax update="messageFirstName" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                    <p:message id="messageFirstName" for="@previous"/>
-                </span>
-
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="minmax" value="#{I18N['application.inscriptionpage.dayofbirthtitle']}"/>
-                        <p:datePicker id="minmax" value="#{addUpdateDeleteUserBean.dateOfBirth}" mindate="#{addUpdateDeleteUserBean.minDate}"
-                                      placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
-                                      maxdate="#{addUpdateDeleteUserBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true"
-                                      pattern="dd/MM/yyyy"
-                                      validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}">
-                        <p:ajax update="messageDateOfBirth" event="keyup"/>
-                        </p:datePicker>
-                    </span>
-                    <p:message id="messageDateOfBirth" for="@previous"/>
-                </span>
-
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_phone_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.phonetitle']}"/>
-                        <p:inputText id="input_phone_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.phone}"
-                                     placeholder="#{I18N['application.inscriptionpage.phoneplaceholder']}"
-                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}">
-                            <p:ajax update="messagePhone" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                    <p:message id="messagePhone" for="@previous"/>
-                </span>
-
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_mail_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.mailtitle']}"/>
-                        <p:inputText id="input_mail_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.mail}"
-                                     placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}">
-                            <p:ajax update="messageErrorMail" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                </span>
-                <span class="responsiveInput">
-                    <span> </span>
-                    <span>
-                         <span class="placeMessageErrorCustomParent">
-                            <p:outputPanel id="messageErrorMail">
-                                    <f:metadata>
-                                        <f:event type="preRenderView" listener="#{addUpdateDeleteUserBean.checkMail()}"/>
-                                    </f:metadata>
-                                <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{addUpdateDeleteUserBean.messageErrorMail}">
-                                    <div class="placeMessageErrorCustomChild">
-                                        <span class="ui-message-error-icon"> </span>
-                                        <span class="ui-message-error-detail" id="messageMail_error_detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrormail']}"/></span>
-                                    </div>
-                                </div>
-                            </p:outputPanel>
-                        </span>
-                    </span>
-                </span>
+<!--        <div class ="containers">-->
+<!--            <h2>-->
+<!--                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.title']}"/>-->
+<!--            </h2>-->
+<!--            <h:form class="responsiveForm">-->
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_lastname_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.lastnametitle']}"/>-->
+<!--                        <p:inputText id="input_lastname_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.lastName}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"-->
+<!--                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}">-->
+<!--                            <p:ajax update="messageLastName" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageLastName" for="@previous"/>-->
+<!--                </span>-->
 
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_password_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.passwordtitle']}"/>
-                        <p:password id="input_password_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.password}" toggleMask="true"
-                                    redisplay="true"
-                                    placeholder="#{I18N['application.inscriptionpage.passwordplaceholder']}"
-                                    validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}">
-                            <p:ajax update="messagePassword" event="keyup"/>
-                        </p:password>
-                    </span>
-                    <p:message id="messagePassword" for="@previous"/>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_firstame_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.firstnametitle']}"/>-->
+<!--                        <p:inputText id="input_firstame_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.firstName}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.firstnameplaceholder']}"-->
+<!--                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}">-->
+<!--                            <p:ajax update="messageFirstName" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageFirstName" for="@previous"/>-->
+<!--                </span>-->
+
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="minmax" value="#{I18N['application.inscriptionpage.dayofbirthtitle']}"/>-->
+<!--                        <p:datePicker id="minmax" value="#{addUpdateDeleteUserBean.dateOfBirth}" mindate="#{addUpdateDeleteUserBean.minDate}"-->
+<!--                                      placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"-->
+<!--                                      maxdate="#{addUpdateDeleteUserBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true"-->
+<!--                                      pattern="dd/MM/yyyy"-->
+<!--                                      validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}">-->
+<!--                        <p:ajax update="messageDateOfBirth" event="keyup"/>-->
+<!--                        </p:datePicker>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageDateOfBirth" for="@previous"/>-->
+<!--                </span>-->
+
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_phone_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.phonetitle']}"/>-->
+<!--                        <p:inputText id="input_phone_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.phone}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.phoneplaceholder']}"-->
+<!--                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}">-->
+<!--                            <p:ajax update="messagePhone" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                    <p:message id="messagePhone" for="@previous"/>-->
+<!--                </span>-->
+
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_mail_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.mailtitle']}"/>-->
+<!--                        <p:inputText id="input_mail_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.mail}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}">-->
+<!--                            <p:ajax update="messageErrorMail" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                </span>-->
+<!--                <span class="responsiveInput">-->
+<!--                    <span> </span>-->
+<!--                    <span>-->
+<!--                         <span class="placeMessageErrorCustomParent">-->
+<!--                            <p:outputPanel id="messageErrorMail">-->
+<!--                                    <f:metadata>-->
+<!--                                        <f:event type="preRenderView" listener="#{addUpdateDeleteUserBean.checkMail()}"/>-->
+<!--                                    </f:metadata>-->
+<!--                                <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{addUpdateDeleteUserBean.messageErrorMail}">-->
+<!--                                    <div class="placeMessageErrorCustomChild">-->
+<!--                                        <span class="ui-message-error-icon"> </span>-->
+<!--                                        <span class="ui-message-error-detail" id="messageMail_error_detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrormail']}"/></span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </p:outputPanel>-->
+<!--                        </span>-->
+<!--                    </span>-->
+<!--                </span>-->
 
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_passwordverification_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.passwordverificationtitle']}"/>
-                        <p:password id="input_passwordverification_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.passwordVerify}" toggleMask="true"
-                                    redisplay="true"
-                                    placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}">
-                            <p:ajax update="messagePasswordVerification" event="keyup"/>
-                        </p:password>
-                    </span>
-                </span>
-                <span class="responsiveInput">
-                    <span> </span>
-                    <span>
-                         <span class="placeMessageErrorCustomParent">
-                            <p:outputPanel id="messagePasswordVerification">
-                                    <f:metadata>
-                                        <f:event type="preRenderView" listener="#{addUpdateDeleteUserBean.checkPasswordVerify()}"/>
-                                    </f:metadata>
-                                <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{addUpdateDeleteUserBean.messageErrorPassword}">
-                                    <div class="placeMessageErrorCustomChild">
-                                        <span class="ui-message-error-icon"> </span>
-                                        <span class="ui-message-error-detail" id="messagePasswordVerification_error_detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"/></span>
-                                    </div>
-                                </div>
-                            </p:outputPanel>
-                        </span>
-                    </span>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_password_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.passwordtitle']}"/>-->
+<!--                        <p:password id="input_password_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.password}" toggleMask="true"-->
+<!--                                    redisplay="true"-->
+<!--                                    placeholder="#{I18N['application.inscriptionpage.passwordplaceholder']}"-->
+<!--                                    validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}">-->
+<!--                            <p:ajax update="messagePassword" event="keyup"/>-->
+<!--                        </p:password>-->
+<!--                    </span>-->
+<!--                    <p:message id="messagePassword" for="@previous"/>-->
+<!--                </span>-->
 
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_street_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.streettitle']}"/>
-                        <p:inputText id="input_street_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.street}"
-                                     placeholder="#{I18N['application.inscriptionpage.streetplaceholder']}"
-                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}">
-                            <p:ajax update="messageStreet" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                    <p:message id="messageStreet" for="@previous"/>
-                </span>
-
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_number_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.numbertitle']}"/>
-                        <p:inputNumber id="input_number_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.number}"
-                                       placeholder="#{I18N['application.inscriptionpage.numberplaceholder']}"
-                                       validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}">
-                            <p:ajax update="messageNumber" event="keyup"/>
-                        </p:inputNumber>
-                    </span>
-                    <p:message id="messageNumber" for="@previous"/>
-                </span>
-
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_box_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.boxtitle']}"/>
-                        <p:inputText id="input_box_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.box}"
-                                     placeholder="#{I18N['application.inscriptionpage.boxplaceholder']}"
-                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorbox']}">
-                            <p:ajax update="messageBox" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                    <p:message id="messageBox" for="@previous"/>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_passwordverification_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.passwordverificationtitle']}"/>-->
+<!--                        <p:password id="input_passwordverification_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.passwordVerify}" toggleMask="true"-->
+<!--                                    redisplay="true"-->
+<!--                                    placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}">-->
+<!--                            <p:ajax update="messagePasswordVerification" event="keyup"/>-->
+<!--                        </p:password>-->
+<!--                    </span>-->
+<!--                </span>-->
+<!--                <span class="responsiveInput">-->
+<!--                    <span> </span>-->
+<!--                    <span>-->
+<!--                         <span class="placeMessageErrorCustomParent">-->
+<!--                            <p:outputPanel id="messagePasswordVerification">-->
+<!--                                    <f:metadata>-->
+<!--                                        <f:event type="preRenderView" listener="#{addUpdateDeleteUserBean.checkPasswordVerify()}"/>-->
+<!--                                    </f:metadata>-->
+<!--                                <div class="ui-message ui-message-error ui-widget ui-corner-all placeMessageErrorCustomChild #{addUpdateDeleteUserBean.messageErrorPassword}">-->
+<!--                                    <div class="placeMessageErrorCustomChild">-->
+<!--                                        <span class="ui-message-error-icon"> </span>-->
+<!--                                        <span class="ui-message-error-detail" id="messagePasswordVerification_error_detail"><h:outputText value="#{I18N['application.inscriptionpage.messageerrorpasswordverification']}"/></span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </p:outputPanel>-->
+<!--                        </span>-->
+<!--                    </span>-->
+<!--                </span>-->
 
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_country_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.countrytitle']}"/>
-                        <p:selectOneMenu id="input_country_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.country}"
-                                         validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}">
-                                <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="#{null}"/>
-                                <f:selectItems value="#{addUpdateDeleteUserBean.countryMap}"/>
-                        </p:selectOneMenu>
-                    </span>
-                    <p:message for="@previous"/>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_street_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.streettitle']}"/>-->
+<!--                        <p:inputText id="input_street_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.street}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.streetplaceholder']}"-->
+<!--                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}">-->
+<!--                            <p:ajax update="messageStreet" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageStreet" for="@previous"/>-->
+<!--                </span>-->
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_postalcode_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.postalcodetitle']}"/>
-                        <p:inputText id="input_postalcode_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.postalCode}"
-                                     placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"
-                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}">
-                             <p:ajax listener="#{addUpdateDeleteUserBean.updatePostalCodeWithCity}" update="input_city_addUpadateDeleteUser"/>
-                             <p:ajax update="messageErrorPostalCode" event="keyup"/>
-                        </p:inputText>
-                    </span>
-                    <p:message id="messageErrorPostalCode" for="@previous"/>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_number_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.numbertitle']}"/>-->
+<!--                        <p:inputNumber id="input_number_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.number}"-->
+<!--                                       placeholder="#{I18N['application.inscriptionpage.numberplaceholder']}"-->
+<!--                                       validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}">-->
+<!--                            <p:ajax update="messageNumber" event="keyup"/>-->
+<!--                        </p:inputNumber>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageNumber" for="@previous"/>-->
+<!--                </span>-->
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_city_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.citytitle']}"/>
-                        <p:selectOneMenu id="input_city_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.city}"
-                                         validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}">
-                            <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}"/>
-                            <f:selectItems value="#{addUpdateDeleteUserBean.citiesMap}"/>
-                        </p:selectOneMenu>
-                    </span>
-                    <p:message for="@previous"/>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_box_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.boxtitle']}"/>-->
+<!--                        <p:inputText id="input_box_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.box}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.boxplaceholder']}"-->
+<!--                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorbox']}">-->
+<!--                            <p:ajax update="messageBox" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageBox" for="@previous"/>-->
+<!--                </span>-->
 
-                <span class="responsiveInput">
-                    <span>
-                        <p:outputLabel for="input_role_addUpadateDeleteUser" value="#{I18N['application.addupdatedeleteuserpage.roletitle']}"/>
-                        <p:selectOneMenu id="input_role_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.role}"
-                                         validatorMessage="#{I18N['application.addupdatedeleteuserpage.messageerrorrole']}">
-                                <f:selectItem itemLabel="#{I18N['application.addupdatedeleteuserpage.roleplaceholder']}" itemValue="#{null}"/>
-                                <f:selectItems value="#{addUpdateDeleteUserBean.roleMap}"/>
-                        </p:selectOneMenu>
-                    </span>
-                        <span class="crudButtonContainer">
-                            <span>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-minus"/>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil"/>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-plus"/>
-                            </span>
-                        </span>
-                    <p:message for="@previous"/>
-                </span>
 
-                <span class="responsiveSubmit">
-                    <p:commandButton value="#{I18N['application.inscriptionpage.buttonsubmit']}" ajax="false"
-                                     validateClient="true"
-                                     class="ui-button-success"
-                                     action="#{addUpdateDeleteUserBean.lastVerificationAccount}"/>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_country_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.countrytitle']}"/>-->
+<!--                        <p:selectOneMenu id="input_country_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.country}"-->
+<!--                                         validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}">-->
+<!--                                <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="#{null}"/>-->
+<!--                                <f:selectItems value="#{addUpdateDeleteUserBean.countryMap}"/>-->
+<!--                        </p:selectOneMenu>-->
+<!--                    </span>-->
+<!--                    <p:message for="@previous"/>-->
+<!--                </span>-->
 
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_postalcode_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.postalcodetitle']}"/>-->
+<!--                        <p:inputText id="input_postalcode_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.postalCode}"-->
+<!--                                     placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"-->
+<!--                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}">-->
+<!--                             <p:ajax listener="#{addUpdateDeleteUserBean.updatePostalCodeWithCity}" update="input_city_addUpadateDeleteUser"/>-->
+<!--                             <p:ajax update="messageErrorPostalCode" event="keyup"/>-->
+<!--                        </p:inputText>-->
+<!--                    </span>-->
+<!--                    <p:message id="messageErrorPostalCode" for="@previous"/>-->
+<!--                </span>-->
 
-            </h:form>
-            <div class="responsiveForm positionCancel">
-                <span class="responsiveSubmit">
-                    <span class="flexGrowOne"> </span>
-                        <p:commandButton value="#{I18N['application.inscriptionpage.buttonreturn']}" action="#{addUpdateDeleteUserBean.goToPageUserList}"
-                                         class="ui-button-danger" id="cancelButtonAddUser"/>
-                </span>
+<!--                <span class="responsiveInput">-->
+<!--                    <span>-->
+<!--                        <p:outputLabel for="input_city_addUpadateDeleteUser" value="#{I18N['application.inscriptionpage.citytitle']}"/>-->
+<!--                        <p:selectOneMenu id="input_city_addUpadateDeleteUser" value="#{addUpdateDeleteUserBean.city}"-->
+<!--                                         validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}">-->
+<!--                            <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}"/>-->
+<!--                            <f:selectItems value="#{addUpdateDeleteUserBean.citiesMap}"/>-->
+<!--                        </p:selectOneMenu>-->
+<!--                    </span>-->
+<!--                    <p:message for="@previous"/>-->
+<!--                </span>-->
 
-            </div>
-        </div>
-    </ui:define>
-</ui:composition>
-</html>
+<!--                <span class="responsiveSubmit">-->
+<!--                    <p:commandButton value="#{I18N['application.inscriptionpage.buttonsubmit']}" ajax="false"-->
+<!--                                     validateClient="true"-->
+<!--                                     class="ui-button-success"-->
+<!--                                     action="#{addUpdateDeleteUserBean.lastVerificationAccount}"/>-->
+
+<!--                </span>-->
+
+<!--            </h:form>-->
+<!--            <div class="responsiveForm positionCancel">-->
+<!--                <span class="responsiveSubmit">-->
+<!--                    <span class="flexGrowOne"> </span>-->
+<!--                        <p:commandButton value="#{I18N['application.inscriptionpage.buttonreturn']}" action="#{addUpdateDeleteUserBean.goToPageUserList}"-->
+<!--                                         class="ui-button-danger" id="cancelButtonAddUser"/>-->
+<!--                </span>-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </ui:define>-->
+<!--</ui:composition>-->
+<!--</html>-->

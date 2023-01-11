@@ -4,15 +4,16 @@ import adrien.faouzi.entities.Priceplatform;
 import adrien.faouzi.entities.Store;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-public class PricePlatformService extends EMF
+public class PricePlatformService
 {
 
     /**
      * PricePlatform make research catalog.
      */
-    public List<Priceplatform> findPricePlatformByFilter(String researchWord, String orderBy, boolean asc)
+    public List<Priceplatform> findPricePlatformByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
         if(orderBy.equals("pegi") || orderBy.equals("enable"))
             asc = !asc;
@@ -36,7 +37,7 @@ public class PricePlatformService extends EMF
     /**
      * PricePlatform make research catalog.
      */
-    public Priceplatform findPricePlatformById(int idPricePlatform){
+    public Priceplatform findPricePlatformById(int idPricePlatform, EntityManager em){
         return em.createNamedQuery("PricePlatform.SelectPricePlatformById", Priceplatform.class)
                 .setParameter("idPricePlatform", idPricePlatform)
                 .getSingleResult();
