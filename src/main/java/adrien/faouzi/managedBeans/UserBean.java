@@ -231,6 +231,7 @@ public class UserBean implements Serializable
         return redirect;
     }
 
+
     /**
      * destroy session connected method
      */
