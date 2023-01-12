@@ -67,6 +67,10 @@
                                 <p:commandButton type="hidden" action="#{userListBean.editOrderTable('lastName')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
+                                <i class="#{userListBean.getOrderIcon('firstName')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{userListBean.editOrderTable('firstName')}" update="@form"/>
+                            </div>
+                            <div class="flexGrowOne">
                                 <i class="#{userListBean.getOrderIcon('phone')}" onclick="clickNext(this)"/>
                                 <p:commandButton type="hidden" action="#{userListBean.editOrderTable('phone')}" update="@form"/>
                             </div>
@@ -101,6 +105,10 @@
 
                     <p:column headerText="#{I18N['application.userlistpage.headerlistlastname']}" class="columnTableListResearchWord">
                         <h:outputText value="#{user.lastName}"/>
+                    </p:column>
+
+                    <p:column headerText="#{I18N['application.userlistpage.headerlistfirstname']}" class="columnTableListResearchWord">
+                        <h:outputText value="#{user.firstName}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.userlistpage.headerlistphone']}" class="columnTableListResearchWord">

@@ -14,11 +14,13 @@ import java.util.Set;
                 "where u.mail = :mail"),
         @NamedQuery(name = "User.SelectUserByFilterAsc", query = "SELECT u from User u " +
                 " where ((lower(u.lastName )like concat('%', :resseachWord, '%')) or" +
+                " (lower(u.firstName )like concat('%', :resseachWord, '%')) or " +
                 " (lower(u.phone )like concat('%', :resseachWord, '%')) or " +
                 " (lower(u.mail )like concat('%', :resseachWord, '%')) or" +
                 " (lower(u.idRole.roleName) like concat('%', :resseachWord, '%'))) " +
                 " order by case " +
                 " when (:orderBy like 'lastName') then u.lastName " +
+                " when (:orderBy like 'firstName') then u.lastName " +
                 " when (:orderBy like 'phone') then u.phone " +
                 " when (:orderBy like 'mail') then u.mail " +
                 " when (:orderBy like 'roleNome') then u.idRole.roleName " +
@@ -27,11 +29,13 @@ import java.util.Set;
                 " end asc "),
         @NamedQuery(name = "User.SelectUserByFilterDesc", query = "SELECT u from User u " +
                 " where ((lower(u.lastName )like concat('%', :resseachWord, '%')) or" +
+                " (lower(u.firstName )like concat('%', :resseachWord, '%')) or " +
                 " (lower(u.phone )like concat('%', :resseachWord, '%')) or " +
                 " (lower(u.mail )like concat('%', :resseachWord, '%')) or" +
                 " (lower(u.idRole.roleName) like concat('%', :resseachWord, '%'))) " +
                 " order by case " +
                 " when (:orderBy like 'lastName') then u.lastName " +
+                " when (:orderBy like 'firstName') then u.lastName " +
                 " when (:orderBy like 'phone') then u.phone " +
                 " when (:orderBy like 'mail') then u.mail " +
                 " when (:orderBy like 'roleNome') then u.idRole.roleName " +

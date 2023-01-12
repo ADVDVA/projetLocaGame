@@ -34,10 +34,9 @@ function clickNext(target){
 //function for research in table before manny character.
 function researchTable(target){
     let valueInput = target.value;
-    if(valueInput.length >= 3){
-        //clickId(idClickFunction);
-        clickNext(target);
-    }
+    if(valueInput.length < 3 && valueInput.length > 0)
+        return;
+    clickNext(target);
 }
 
 
