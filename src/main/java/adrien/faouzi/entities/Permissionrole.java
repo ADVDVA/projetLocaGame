@@ -2,6 +2,11 @@ package adrien.faouzi.entities;
 
 import javax.persistence.*;
 import java.util.Objects;
+@NamedQueries(value = {
+        @NamedQuery(name = "Permissionrole.selectPermissionRoleByIdRole", query = "SELECT pr from Permissionrole pr " +
+                "where pr.idRole.id = :idRole")
+})
+
 
 @Entity
 @Table(name = "permissionrole")

@@ -20,7 +20,6 @@ public class Country {
     @Column(name = "idCountry", nullable = false)
     private int id;
 
-    @NotNull
     @Column(name = "countryName", nullable = false, length = 60)
     private String countryName;
 

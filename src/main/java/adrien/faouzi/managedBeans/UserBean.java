@@ -8,6 +8,7 @@ import adrien.faouzi.utility.UtilityProcessing;
 import javax.annotation.PostConstruct;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -20,7 +21,7 @@ import java.util.List;
 
 
 @Named
-@RequestScoped
+@SessionScoped
 public class UserBean implements Serializable
 {
     /**
@@ -31,8 +32,7 @@ public class UserBean implements Serializable
     private String messageErrorMail ="hidden";
 
 
-    private String password ="";
-    private String passwordVerify= "";
+    private String passwordVerify = "";
     private String messageErrorPassword = "hidden";
 
     private City city;
@@ -62,6 +62,12 @@ public class UserBean implements Serializable
         long oneDay = 24 * 60 * 60 * 1000;
         minDate = new Date(today.getTime()- (365 * oneDay) * 100 - ((100/4) * oneDay));
         maxDate = new Date(today.getTime()- (365  * oneDay) * 18 -( 4 * oneDay) );// *18 pour 18 ans
+
+        country = new Country();
+        city = new City();
+        role = new Role();
+        address = new Address();
+        user  = new User();
 
         //For input country
         //initialize.
@@ -111,7 +117,7 @@ public class UserBean implements Serializable
         catch(Exception e)
         {
             UtilityProcessing.debug("Je suis dans le catch de mail : " + e);
-            if(this.user.getMail() == null)
+            if(this.user == null || this.user.getMail() == null)
             {
                 messageErrorMail = "hidden";
             }
@@ -141,14 +147,16 @@ public class UserBean implements Serializable
      */
     public void checkPasswordVerify()
     {
-        if(this.passwordVerify.equals(this.user.getPassword()))
-        {
-            this.messageErrorPassword = "hidden";
-        }
-        else
-        {
-            this.messageErrorPassword = "";
-        }
+        UtilityProcessing.debug("password : "+ this.user.getPassword());
+        UtilityProcessing.debug("password Verify : "+ this.passwordVerify);
+        if(this.user.getPassword() == null || this.passwordVerify.equals(this.user.getPassword()))
+            {
+                this.messageErrorPassword = "hidden";
+            }
+            else
+            {
+                this.messageErrorPassword = "";
+            }
     }
 
     /**
@@ -191,12 +199,12 @@ public class UserBean implements Serializable
 
     /**
      * Verification Sign up method
-     * Le mettrer dans un request et puis il se connecte via la connexion
+     *
      * @return
      */
-    public String lastVerificationSignUp()
+    public String lastVerificationSubmit()
     {
-
+        //------------------------Le mettrer dans un request et puis il se connecte via la connexion--------------------
         //Verification password with passwordVerify
         checkPasswordVerify();
 
@@ -332,14 +340,6 @@ public class UserBean implements Serializable
 
     public void setMail(String mail) {
         this.mail = mail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 

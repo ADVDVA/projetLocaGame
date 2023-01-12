@@ -1,14 +1,16 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.managedBeans.ConnectionBean;
+import adrien.faouzi.managedBeans.ProductStaticBean;
+import adrien.faouzi.managedBeans.UserBean;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
 @NamedQueries(value = {
         @NamedQuery(name = "User.SelectUserConnexion", query = "SELECT u from User u " +
                 "where u.mail = :mail"),
@@ -211,5 +213,29 @@ public class User {
     }
     public String getEnableClassColor(){
         return ((this.enable)? "colorGreen": "colorRed");
+    }
+
+    /**
+     * field permissionrole
+     */
+
+    @Transient
+    public List<Permissionrole> listPermissionRole;
+
+    public List<Permissionrole> getListPermissionRole() {
+        if (this.listPermissionRole == null)
+            ConnectionBean.initListPermissionRole(this);
+        return this.listPermissionRole;
+    }
+
+    /**
+     * Method to verify user access
+     * @param permissionName
+     * @return
+     */
+    public boolean verifyPermission(String permissionName)
+    {
+        return this.listPermissionRole.stream().filter(pr -> pr.getIdPermission().getPermissionName().equals(permissionName)).findFirst()
+                .orElse(null) != null;
     }
 }

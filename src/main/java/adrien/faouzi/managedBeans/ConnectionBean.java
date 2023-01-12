@@ -3,6 +3,7 @@ package adrien.faouzi.managedBeans;
 import adrien.faouzi.entities.User;
 import adrien.faouzi.exeption.ConnectionUserExecption;
 import adrien.faouzi.projetlocagame.connexion.EMF;
+import adrien.faouzi.services.PermissionroleService;
 import adrien.faouzi.services.UserService;
 import adrien.faouzi.utility.UtilityProcessing;
 import org.primefaces.PrimeFaces;
@@ -42,8 +43,9 @@ public class ConnectionBean implements Serializable
         {
             transaction.begin();
             //Call of the service that will use the NamedQuery of the "User" entity
-            this.user = userService.findUserByMail(this.userForm.getMail(), em);
-            checkUserConnection(this.user, this.userForm, this.password);
+            this.userForm = userService.findUserByMail(this.userForm.getMail(), em);
+            checkUserConnection(this.userForm, this.password);
+            this.user = userForm;
             this.messageErrorConnection = "hidden";
             redirect = "/accueil";
             transaction.commit();
@@ -91,14 +93,45 @@ public class ConnectionBean implements Serializable
     /**
      * User processing method
      */
-    public void checkUserConnection (User userRequest, User userForm, String password) throws ConnectionUserExecption
+    public void checkUserConnection (User userRequest, String password) throws ConnectionUserExecption
     {
-        if (!(userRequest.getMail().equals(userForm.getMail()) && UtilityProcessing.checkPassword(password,userRequest)
+        if (! (UtilityProcessing.checkPassword(password,userRequest)
                 && userRequest.getEnable()))
         {
             throw new ConnectionUserExecption();
         }
     }
+
+    /**
+     * Initialize list Permissionrole
+     */
+    public static void initListPermissionRole(User user)
+    {
+        EntityManager em = EMF.getEM();
+        PermissionroleService permissionroleService = new PermissionroleService();
+        EntityTransaction transaction = em.getTransaction();
+        try
+        {
+            transaction.begin();
+            //Call of the service that will use the NamedQuery of the "Permissionrole" entity
+            user.listPermissionRole = permissionroleService.findPermissionRoleByIdRole(user.getIdRole().getId(), em);
+            transaction.commit();
+        }
+        catch(Exception e)
+        {
+            UtilityProcessing.debug(" je suis dans le catch de l'initialization du Permissionrole : " + e);
+        }
+        finally
+        {
+            if(transaction.isActive())
+                transaction.rollback();
+            em.close();
+        }
+
+    }
+
+
+
 
     /**
      * Redirection go to connection page
@@ -115,6 +148,10 @@ public class ConnectionBean implements Serializable
      * @return
      */
     public String goToPageAccueil(){
+
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        PrimeFaces.current().executeScript("submitLanguageForm(\"headerLanguageButtonContainer\")");
+
         return "/accueil";
     }
 

@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
@@ -19,6 +20,8 @@ import java.util.Set;
         @Index(name = "fk_idCountry", columnList = "idCountry")
 })
 public class City {
+
+    @Min(1)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCity", nullable = false)
@@ -29,7 +32,7 @@ public class City {
     private Country idCountry;
 
     @NotNull
-    @Pattern(regexp = "^[0-9]{1,}$")
+    @Min(1)
     @Column(name = "postalCode", nullable = false)
     private int postalCode;
 

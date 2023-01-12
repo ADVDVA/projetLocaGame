@@ -188,9 +188,9 @@
                 <span class="responsiveInput">
                     <span>
                         <p:outputLabel for="input_country_inscription" value="#{I18N['application.inscriptionpage.countrytitle']}"/>
-                        <p:selectOneMenu id="input_country_inscription" value="#{userBean.country.countryName}"
+                        <p:selectOneMenu id="input_country_inscription" value="#{userBean.country.id}"
                                  validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}">
-                                <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="#{null}"/>
+                                <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="0"/>
                             <f:selectItems value="#{userBean.countryList}" var="country" itemLabel="#{country.countryName}" itemValue="#{country.id}"/>
                         </p:selectOneMenu>
                     </span>
@@ -202,7 +202,8 @@
                         <p:outputLabel for="input_postalcode_inscription" value="#{I18N['application.inscriptionpage.postalcodetitle']}"/>
                         <p:inputNumber id="input_postalcode_inscription" value="#{userBean.city.postalCode}"
                                 placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}">
+                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}"
+                                decimalPlaces="0">
                              <p:ajax listener="#{userBean.updatePostalCodeWithCity}" update="input_city_inscription"/>
                              <p:ajax update="messageErrorPostalCode" event="keyup"/>
                         </p:inputNumber>
@@ -213,41 +214,40 @@
                 <span class="responsiveInput">
                     <span>
                         <p:outputLabel for="input_city_inscription" value="#{I18N['application.inscriptionpage.citytitle']}"/>
-                        <p:selectOneMenu id="input_city_inscription" value="#{userBean.address.idCity}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}"
-                                    converter="">
-                            <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="#{null}"/>
+                        <p:selectOneMenu id="input_city_inscription" value="#{userBean.city.id}"
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}">
+                            <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="0"/>
                             <f:selectItems value="#{userBean.cityList}" var="city" itemLabel="#{city.cityName}" itemValue="#{city.id}"/>
                         </p:selectOneMenu>
                     </span>
                     <p:message for="@previous"/>
                 </span>
 
-<!--                <span class="responsiveInput">-->
-<!--                    <span>-->
-<!--                        <p:outputLabel for="input_role_addUpadateDeleteUser" value="#{I18N['application.addupdatedeleteuserpage.roletitle']}"/>-->
-<!--                        <p:selectOneMenu id="input_role_addUpadateDeleteUser" value="#{userBean.role.id}"-->
-<!--                                         validatorMessage="#{I18N['application.addupdatedeleteuserpage.messageerrorrole']}">-->
-<!--                                <f:selectItem itemLabel="#{I18N['application.addupdatedeleteuserpage.roleplaceholder']}" itemValue="#{null}"/>-->
-<!--                                <f:selectItems value="#{userBean.roleList}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.id}"/>-->
-<!--                        </p:selectOneMenu>-->
-<!--                    </span>-->
-<!--                        <span class="crudButtonContainer">-->
-<!--                            <span>-->
-<!--                                <p:commandButton class="ui-button-warning" icon="pi pi-minus"/>-->
-<!--                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil"/>-->
-<!--                                <p:commandButton class="ui-button-warning" icon="pi pi-plus"/>-->
-<!--                            </span>-->
-<!--                        </span>-->
-<!--                    <p:message for="@previous"/>-->
-<!--                </span>-->
+                <p:outputPanel class="responsiveInput" rendered="#{connectionBean.user.verifyPermission('user:add')}">
+                    <span>
+                        <p:outputLabel for="input_role_addUpadateDeleteUser" value="#{I18N['application.addupdatedeleteuserpage.roletitle']}"/>
+                        <p:selectOneMenu id="input_role_addUpadateDeleteUser" value="#{userBean.role.id}"
+                                         validatorMessage="#{I18N['application.addupdatedeleteuserpage.messageerrorrole']}">
+                                <f:selectItem itemLabel="#{I18N['application.addupdatedeleteuserpage.roleplaceholder']}" itemValue="0"/>
+                                <f:selectItems value="#{userBean.roleList}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.id}"/>
+                        </p:selectOneMenu>
+                    </span>
+                        <span class="crudButtonContainer">
+                            <span>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-minus"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-plus"/>
+                            </span>
+                        </span>
+                    <p:message for="@previous"/>
+                </p:outputPanel>
 
 
                 <span class="responsiveSubmit">
                     <p:commandButton value="#{I18N['application.inscriptionpage.buttonsubmit']}" ajax="false"
                                  validateClient="true"
                                  class="ui-button-success"
-                                 action="#{userBean.lastVerificationSignUp}"/>
+                                 action="#{userBean.lastVerificationSubmit}"/>
                 </span>
             </h:form>
             <div class="responsiveForm positionCancel">
