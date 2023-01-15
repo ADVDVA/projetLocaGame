@@ -79,10 +79,13 @@
                     <span>
                         <p:outputLabel for="input_mail_inscription" value="#{I18N['application.inscriptionpage.mailtitle']}"/>
                         <p:inputText id="input_mail_inscription" value="#{userBean.user.mail}"
-                                 placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}">
+                                 placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}"
+                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}">
                             <p:ajax update="messageErrorMail" event="keyup"/>
+                            <p:ajax update="messageNotNullMail" event="keyup"/>
                         </p:inputText>
                     </span>
+                    <p:message id="messageNotNullMail" for="@previous"/>
                 </span>
                 <span class="responsiveInput">
                     <span> </span>
@@ -247,7 +250,7 @@
                     <p:commandButton value="#{I18N['application.inscriptionpage.buttonsubmit']}" ajax="false"
                                  validateClient="true"
                                  class="ui-button-success"
-                                 action="#{userBean.lastVerificationSubmit}"/>
+                                 action="#{userBean.lastVerificationSubmit()}"/>
                 </span>
             </h:form>
             <div class="responsiveForm positionCancel">

@@ -1,6 +1,7 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Set;
 @Entity
 @Table(name = "country")
 public class Country {
+    @Min(1)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCountry", nullable = false)

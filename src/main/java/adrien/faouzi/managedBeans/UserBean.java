@@ -7,11 +7,11 @@ import adrien.faouzi.services.*;
 import adrien.faouzi.utility.UtilityProcessing;
 import javax.annotation.PostConstruct;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
@@ -28,10 +28,11 @@ public class UserBean implements Serializable
      * Fields
      */
 
-    private String mail= null;
     private String messageErrorMail ="hidden";
 
+    private String password="";
 
+    @NotNull
     private String passwordVerify = "";
     private String messageErrorPassword = "hidden";
 
@@ -68,6 +69,10 @@ public class UserBean implements Serializable
         role = new Role();
         address = new Address();
         user  = new User();
+
+        //initialize for add user
+        address.setNumber(1);
+        city.setPostalCode(1000);
 
         //For input country
         //initialize.
@@ -111,12 +116,12 @@ public class UserBean implements Serializable
             transaction.begin();
             //Call of the service that will use the NamedQuery of the "User" entity
             userRequest = userService.findUserByMail(this.user.getMail(), em);
-            this.messageErrorMail ="";
+            this.messageErrorMail = "";
             transaction.commit();
         }
         catch(Exception e)
         {
-            UtilityProcessing.debug("Je suis dans le catch de mail : " + e);
+            UtilityProcessing.debug("Je suis dans le catch du mail et il y a aucune correspondance : " + e);
             if(this.user == null || this.user.getMail() == null)
             {
                 messageErrorMail = "hidden";
@@ -141,6 +146,25 @@ public class UserBean implements Serializable
             em.close();
         }
     }
+
+//    /**
+//     *
+//     */
+//    public void transactionPassword()
+//    {
+//        this.user.setPassword(this.password);
+//        UtilityProcessing.debug("transactionPassword");
+//    }
+//
+//    /**
+//     *
+//     */
+//    public void transactionPasswordVerify()
+//    {
+//        this.user.setPasswordVerify(this.passwordVerify);
+//        UtilityProcessing.debug("transactionPasswordVerify");
+//    }
+
 
     /**
      * Verification input passwordVerify method
@@ -205,6 +229,9 @@ public class UserBean implements Serializable
     public String lastVerificationSubmit()
     {
         //------------------------Le mettrer dans un request et puis il se connecte via la connexion--------------------
+
+        UtilityProcessing.debug("" + user.getMail() +", " +", ");
+
         //Verification password with passwordVerify
         checkPasswordVerify();
 
@@ -234,19 +261,37 @@ public class UserBean implements Serializable
 
                 //Call of the service that will use the NamedQuery of the "role" entity
                 this.role = roleService.findRoleByRoleName("Client", em);
+                UtilityProcessing.debug("A");
 
-                user.setIdRole(this.role);
+                this.user.setIdRole(this.role);
+                UtilityProcessing.debug("AB");
+
+
+                UtilityProcessing.debug(""+ this.user.getMail());
+                UtilityProcessing.debug(""+ this.user.getIdRole().getId());
+                UtilityProcessing.debug(""+ this.user.getPassword());
+                UtilityProcessing.debug(""+ this.user.getRegistrationDate());
+                UtilityProcessing.debug(""+ this.user.getDateOfBirth());
+                UtilityProcessing.debug("" + this.user.getEnable());
+                UtilityProcessing.debug("" + this.user.getPhone());
+                UtilityProcessing.debug("" + this.user.getLastName());
+                UtilityProcessing.debug("" + this.user.getFirstName());
+                UtilityProcessing.debug("" + this.user.getId());
 
                 //Call of the service that will use the NamedQuery of the "user" entity
-                this.user = userService.addUser(user, em);
+                this.user = userService.addUser(this.user, em);
+                UtilityProcessing.debug("AC");
 
                 //Call of the service that will use the NamedQuery of the "city" entity
                 this.address.setIdCity(cityService.findCityById(this.address.getIdCity().getId(), em));
+                UtilityProcessing.debug("AD");
 
                 address.setIdUser(this.user);
+                UtilityProcessing.debug("AG");
 
                 //Call of the service that will use the NamedQuery of the "address" entity
                 addressService.addAddress(address,em);
+                UtilityProcessing.debug("AH");
 
                 transaction.commit();
 
@@ -333,16 +378,6 @@ public class UserBean implements Serializable
         this.passwordVerify = passwordVerify;
     }
 
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-
     public List<City> getCityList() {
         return cityList;
     }
@@ -399,5 +434,14 @@ public class UserBean implements Serializable
 
     public void setMaxDate(Date maxDate) {
         this.maxDate = maxDate;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

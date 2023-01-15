@@ -1,9 +1,7 @@
 package adrien.faouzi.entities;
 
 import adrien.faouzi.managedBeans.ConnectionBean;
-import adrien.faouzi.managedBeans.ProductStaticBean;
-import adrien.faouzi.managedBeans.UserBean;
-import adrien.faouzi.utility.UtilityProcessing;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -76,9 +74,10 @@ public class User {
 
     @NotNull
     @Pattern(regexp = "^[+][0-9]{1,4}[ ]{1}[0-9]{2,4}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}[ ]{1}[0-9]{2}$")
-    @Column(name = "phone", length = 45)
+    @Column(name = "phone", length = 16)
     private String phone;
 
+    @NotNull
     @Column(name = "mail", nullable = false)
     private String mail;
 
@@ -222,6 +221,7 @@ public class User {
     @Transient
     public List<Permissionrole> listPermissionRole;
 
+    @Transient
     public List<Permissionrole> getListPermissionRole() {
         if (this.listPermissionRole == null)
             ConnectionBean.initListPermissionRole(this);
@@ -233,6 +233,7 @@ public class User {
      * @param permissionName
      * @return
      */
+    @Transient
     public boolean verifyPermission(String permissionName)
     {
         return this.listPermissionRole.stream().filter(pr -> pr.getIdPermission().getPermissionName().equals(permissionName)).findFirst()
