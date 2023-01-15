@@ -308,6 +308,7 @@ public class UserBean implements Serializable
                 }
                 em.close();
             }
+
             return "/accueil";
         }
         else
