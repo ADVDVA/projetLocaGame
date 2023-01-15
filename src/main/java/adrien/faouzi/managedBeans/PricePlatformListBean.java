@@ -43,10 +43,9 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
             pricePlatformFiltered = new ArrayList<>();
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
 

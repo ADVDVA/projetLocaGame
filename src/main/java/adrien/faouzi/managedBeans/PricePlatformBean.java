@@ -11,14 +11,11 @@ import adrien.faouzi.services.PricePlatformService;
 import adrien.faouzi.services.ProductService;
 import adrien.faouzi.utility.UtilityProcessing;
 
-import javax.annotation.ManagedBean;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.annotation.ManagedProperty;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.rmi.CORBA.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +23,6 @@ import java.util.List;
 @Named
 @SessionScoped
 public class PricePlatformBean implements Serializable {
-
 
     //object price platform load from other page.
     private Priceplatform pricePlatformSelected;
@@ -55,14 +51,17 @@ public class PricePlatformBean implements Serializable {
             return; //do not reload entity from db.
         }
 
+        //init.
         this.categorySelected = null;
         this.listCategoryApply = null;
+        this.productSelectedId = 0;
+        this.noInputEdited = true;
+        this.reloadFormWithProductSelector = false;
 
         this.modeSelected = pricePlatformListBean.getModeRedirection();
         if(modeSelected == 'c') {
             this.pricePlatformSelected = new Priceplatform();
             this.pricePlatformSelected.setIdProduct(new Product());
-            productSelectedId = 0;
             this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
             editorSelectedId = 0;
             this.listCategoryApply = new ArrayList<>();
@@ -86,10 +85,9 @@ public class PricePlatformBean implements Serializable {
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.pricePlatformSelected = null;
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
 
@@ -98,7 +96,7 @@ public class PricePlatformBean implements Serializable {
 
 
     //submit form (c,u).
-    public String submitForm(String urlRedirectIfSucces){
+    public String submitForm(HistoricalBean historicalBean){
         //do Create or Update.
         //if error, return null for stay in page.
 
@@ -106,7 +104,11 @@ public class PricePlatformBean implements Serializable {
 
         //create or update, need to comparate listCategoryApply width list category into product.
 
-        return urlRedirectIfSucces;
+        if(true){ //submit make with no error.
+            return historicalBean.backLastPageHistoric();
+        }else{ //error in submit.
+            return null; //stay in page.
+        }
     }
 
 
@@ -119,16 +121,32 @@ public class PricePlatformBean implements Serializable {
     public void setProductSelectedId(int productSelectedId){
         this.productSelectedId = productSelectedId;
     }
-    public boolean renderSelectProduct(){
-        return (this.isModeSelected('c') && this.productSelectedId == 0);
+    private boolean noInputEdited = true;
+    private boolean reloadFormWithProductSelector = false;
+    public void setInputEdited(){
+        if(!reloadFormWithProductSelector)
+            this.noInputEdited = false;
+    }
+    public boolean getReloadFormWithProductSelector(){
+        return this.reloadFormWithProductSelector;
+    }
+    public void setReloadFormWithProductSelector(boolean reloadFormWithProductSelector){
+        this.reloadFormWithProductSelector = reloadFormWithProductSelector;
+    }
+    public boolean disableSelectProduct(){
+        return (this.productSelectedId != 0 || !this.noInputEdited);
     }
     public void inputProductSelectorOnChange(){
+
+        UtilityProcessing.debug("selector change");
+        UtilityProcessing.debug("selector id "+productSelectedId);
+
         if(this.productSelectedId == 0){
-            //this.pricePlatformSelected.setIdProduct(new Product());
-            //this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
-            //editorSelectedId = 0;
             return;
         }
+
+        this.reloadFormWithProductSelector = true;
+
         //reload product from db into price platform selected.
         EntityManager em = EMF.getEM();
         ProductService productService = new ProductService();
@@ -138,15 +156,14 @@ public class PricePlatformBean implements Serializable {
             this.pricePlatformSelected.setIdProduct(
                     productService.selectProductByIdProduct(this.productSelectedId, em)
             );
-            editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
+            this.editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
             this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
     }
@@ -169,10 +186,9 @@ public class PricePlatformBean implements Serializable {
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.allProduct = new ArrayList<>();
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
     }
@@ -197,7 +213,7 @@ public class PricePlatformBean implements Serializable {
             this.allEditor = new ArrayList<>();
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
     }
@@ -219,6 +235,11 @@ public class PricePlatformBean implements Serializable {
         this.editorSelectedId = editorSelectedId;
     }
     public void inputProductEditorOnChange(){
+
+        UtilityProcessing.debug("editor change");
+
+        setInputEdited();
+
         if(this.editorSelectedId == 0){
             this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
             return;
@@ -235,10 +256,9 @@ public class PricePlatformBean implements Serializable {
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
     }
@@ -270,10 +290,9 @@ public class PricePlatformBean implements Serializable {
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.allCategory = new ArrayList<>();
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
     }
@@ -289,10 +308,9 @@ public class PricePlatformBean implements Serializable {
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
             this.categorySelected = null;
-
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
     }

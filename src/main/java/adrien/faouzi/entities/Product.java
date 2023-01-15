@@ -6,6 +6,8 @@ import adrien.faouzi.managedBeans.ProductStaticBean;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,6 +28,8 @@ public class Product {
     @JoinColumn(name = "idEditor", nullable = false)
     private Editor idEditor;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9 -]{1,60}$")
     @Column(name = "productName", nullable = false, length = 60)
     private String productName;
 
