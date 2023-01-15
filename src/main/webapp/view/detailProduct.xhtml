@@ -87,10 +87,10 @@
                             <p:inputText id="inputProductName"
                                          required="true"
                                          value="#{pricePlatformBean.pricePlatformSelected.idProduct.productName}"
-                                         disabled="#{(pricePlatformBean.isModeSelected('r') || pricePlatformBean.reloadFormWithProductSelector)}"
+                                         disabled="#{pricePlatformBean.inputProductDisabled()}"
                                          placeholder="#{I18N['application.detailproductpage.placeholderproductname']}"
                                          validatorMessage="#{I18N['application.detailproductpage.messageerrorproductname']}">
-                                <p:ajax event="keyup" action="#{pricePlatformBean.setInputEdited()}" update="messageProductName inputProductSelector"/>
+                                <p:ajax event="keyup" action="#{pricePlatformBean.setEditModeForProductInput()}" update="messageProductName inputProductSelector"/>
                             </p:inputText>
                         </span>
                         <p:message id="messageProductName" for="@previous"/>
@@ -101,7 +101,7 @@
                             <p:outputLabel for="inputProductEditor" value="#{I18N['application.detailproductpage.labelproducteditor']}"/>
                             <p:selectOneMenu id="inputProductEditor"
                                              value="#{pricePlatformBean.editorSelectedId}"
-                                             disabled="#{pricePlatformBean.isModeSelected('r')}"
+                                             disabled="#{pricePlatformBean.inputProductDisabled()}"
                                              validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}">
                                 <!-- reload list editor from db.
                                              onchange="clickId('inputProductEditorOnChange');" -->
@@ -109,14 +109,13 @@
                                     <f:event type="preRenderView" listener="#{pricePlatformBean.initAllEditor()}"/>
                                 </f:metadata>
                                 <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproducteditor']}"
-                                              itemValue="#{0}"
-                                              rendered="#{(pricePlatformBean.editorSelectedId == 0)}"/>
+                                              itemValue="#{0}"/>
                                 <f:selectItems value="#{pricePlatformBean.allEditor}"
                                                var="editor"
                                                itemLabel="#{editor.editorName}"
                                                itemValue="#{editor.id}"/>
 
-                                <!--<p:ajax event="change" action="#{pricePlatformBean.inputProductEditorOnChange()}" update="@this inputProductSelector"/>-->
+                                <p:ajax event="change" action="#{pricePlatformBean.inputProductEditorOnChange()}" update="messageProductEditor inputProductSelector"/>
 
                             </p:selectOneMenu>
                         </span>

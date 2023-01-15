@@ -55,8 +55,7 @@ public class PricePlatformBean implements Serializable {
         this.categorySelected = null;
         this.listCategoryApply = null;
         this.productSelectedId = 0;
-        this.noInputEdited = true;
-        this.reloadFormWithProductSelector = false;
+        this.editModeForProduct = 0;
 
         this.modeSelected = pricePlatformListBean.getModeRedirection();
         if(modeSelected == 'c') {
@@ -121,31 +120,34 @@ public class PricePlatformBean implements Serializable {
     public void setProductSelectedId(int productSelectedId){
         this.productSelectedId = productSelectedId;
     }
-    private boolean noInputEdited = true;
-    private boolean reloadFormWithProductSelector = false;
-    public void setInputEdited(){
-        if(!reloadFormWithProductSelector)
-            this.noInputEdited = false;
+    private int editModeForProduct = 0;
+    public void setEditModeForProductSelector(){
+        if(this.editModeForProduct != 2)
+            this.editModeForProduct = 1;
     }
-    public boolean getReloadFormWithProductSelector(){
-        return this.reloadFormWithProductSelector;
+    public void setEditModeForProductInput(){
+        if(this.editModeForProduct != 1)
+            this.editModeForProduct = 2;
     }
-    public void setReloadFormWithProductSelector(boolean reloadFormWithProductSelector){
-        this.reloadFormWithProductSelector = reloadFormWithProductSelector;
+    public boolean getEditModeForProductSelector(){ return editModeForProduct==1; }
+    public boolean getEditModeForProductInput(){ return editModeForProduct==2; }
+    public boolean inputProductDisabled(){
+        return (isModeSelected('r') || getEditModeForProductSelector());
     }
     public boolean disableSelectProduct(){
-        return (this.productSelectedId != 0 || !this.noInputEdited);
+        return (this.productSelectedId != 0 || getEditModeForProductInput());
     }
     public void inputProductSelectorOnChange(){
 
-        UtilityProcessing.debug("selector change");
-        UtilityProcessing.debug("selector id "+productSelectedId);
+        //UtilityProcessing.debug("A "+productSelectedId);
 
         if(this.productSelectedId == 0){
             return;
         }
 
-        this.reloadFormWithProductSelector = true;
+        //UtilityProcessing.debug("B "+productSelectedId);
+
+        setEditModeForProductSelector();
 
         //reload product from db into price platform selected.
         EntityManager em = EMF.getEM();
@@ -236,14 +238,21 @@ public class PricePlatformBean implements Serializable {
     }
     public void inputProductEditorOnChange(){
 
-        UtilityProcessing.debug("editor change");
-
-        setInputEdited();
+        //UtilityProcessing.debug("C "+this.editorSelectedId);
 
         if(this.editorSelectedId == 0){
             this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
             return;
         }
+
+        //UtilityProcessing.debug("D "+this.editorSelectedId);
+
+        if(getEditModeForProductSelector())
+            return;
+        setEditModeForProductInput();
+
+        //UtilityProcessing.debug("E "+this.editModeForProduct);
+
         //reload product from db into price platform selected.
         EntityManager em = EMF.getEM();
         EditorService editorService = new EditorService();
