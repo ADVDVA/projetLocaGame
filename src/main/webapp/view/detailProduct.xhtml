@@ -11,7 +11,9 @@
 
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        #{I18N['application.header.detailProduct']}
+        <h:outputText value="#{I18N['application.header.createProduct']}" rendered="#{pricePlatformBean.isModeSelected('c')}"/>
+        <h:outputText value="#{I18N['application.header.detailProduct']}" rendered="#{pricePlatformBean.isModeSelected('r')}"/>
+        <h:outputText value="#{I18N['application.header.editProduct']}" rendered="#{pricePlatformBean.isModeSelected('u')}"/>
     </ui:define>
     <ui:define name="content">
 
@@ -54,15 +56,40 @@
                         </h3>
                     </div>
 
-                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.isModeSelected('c')}">
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.getEditModeForProductNeutral()}">
+                        <span>
+                            <p:outputLabel for="inputIsProdcutSelectorModeSelector" value="#{I18N['application.detailproductpage.labelproductselectormode']}"/>
+                        </span>
+                    </p:outputPanel>
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.getEditModeForProductNeutral()}">
+                        <span>
+                            <span class="buttonProductMode">
+                                <p:commandButton id="inputIsProdcutSelectorModeSelector"
+                                                 value="#{I18N['application.detailproductpage.buttonselectormodeselector']}"
+                                                 action="#{pricePlatformBean.editProductSelector()}"
+                                                 update="@form"
+                                                 class="ui-button-success"
+                                                 immediate="true"/>
+                            </span>
+                            <span class="buttonProductMode">
+                                <p:commandButton id="inputIsProdcutSelectorModeInput"
+                                                 value="#{I18N['application.detailproductpage.buttonselectormodeinput']}"
+                                                 action="#{pricePlatformBean.editProductInput()}"
+                                                 update="@form"
+                                                 class="ui-button-danger"
+                                                 immediate="true"/>
+                            </span>
+                        </span>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderProductSelector()}">
                         <span>
                             <p:outputLabel for="inputProductSelector" value="#{I18N['application.detailproductpage.labelproductselector']}"/>
                             <p:selectOneMenu id="inputProductSelector"
                                              value="#{pricePlatformBean.productSelectedId}"
                                              disabled="#{(pricePlatformBean.disableSelectProduct())}"
                                              immediate="true">
-                                <!-- reload list editor from db.
-                                             onchange="clickId('inputProductSelectorOnChange')"-->
+                                <!-- reload list editor from db. -->
                                 <f:metadata>
                                     <f:event type="preRenderView" listener="#{pricePlatformBean.initAllProduct()}"/>
                                 </f:metadata>
@@ -77,11 +104,10 @@
 
                             </p:selectOneMenu>
                         </span>
-                        <p:message id="messageProductSelector" for="@previous"/>
+                        <p:message id="messageProductSelector" for="inputProductSelector"/>
                     </p:outputPanel>
-                    <!--<p:commandButton type="hidden" id="inputProductSelectorOnChange" action="#{pricePlatformBean.inputProductSelectorOnChange()}" update="@form"/>-->
 
-                    <span class="responsiveInput">
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderProductInput()}">
                         <span>
                             <p:outputLabel for="inputProductName" value="#{I18N['application.detailproductpage.labelproductname']}"/>
                             <p:inputText id="inputProductName"
@@ -90,21 +116,23 @@
                                          disabled="#{pricePlatformBean.inputProductDisabled()}"
                                          placeholder="#{I18N['application.detailproductpage.placeholderproductname']}"
                                          validatorMessage="#{I18N['application.detailproductpage.messageerrorproductname']}">
-                                <p:ajax event="keyup" action="#{pricePlatformBean.setEditModeForProductInput()}" update="messageProductName inputProductSelector"/>
+
+                                <p:ajax event="keyup" update="messageProductName"/>
+
                             </p:inputText>
                         </span>
-                        <p:message id="messageProductName" for="@previous"/>
-                    </span>
+                        <p:message id="messageProductName" for="inputProductName"/>
+                    </p:outputPanel>
 
-                    <span class="responsiveInput">
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderProductInput()}">
                         <span>
                             <p:outputLabel for="inputProductEditor" value="#{I18N['application.detailproductpage.labelproducteditor']}"/>
                             <p:selectOneMenu id="inputProductEditor"
                                              value="#{pricePlatformBean.editorSelectedId}"
                                              disabled="#{pricePlatformBean.inputProductDisabled()}"
-                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}">
-                                <!-- reload list editor from db.
-                                             onchange="clickId('inputProductEditorOnChange');" -->
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}"
+                                             >
+                                <!-- reload list editor from db. -->
                                 <f:metadata>
                                     <f:event type="preRenderView" listener="#{pricePlatformBean.initAllEditor()}"/>
                                 </f:metadata>
@@ -121,16 +149,15 @@
                         </span>
                         <span class="crudButtonContainer">
                             <span>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-minus" disabled="true" immediate="true"/>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil" disabled="true" immediate="true"/>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-plus" disabled="true" immediate="true"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-minus" disabled="true" immediate="true" rendered="#{pricePlatformBean.isNotModeSelected('r')}"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil" disabled="true" immediate="true" rendered="#{pricePlatformBean.isNotModeSelected('r')}"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-plus" disabled="true" immediate="true" rendered="#{pricePlatformBean.isNotModeSelected('r')}"/>
                             </span>
                         </span>
-                        <p:message id="messageProductEditor" for="@previous"/>
-                    </span>
-                    <!--<p:commandButton type="hidden" id="inputProductEditorOnChange" action="#{pricePlatformBean.inputProductEditorOnChange()}" update="@form"/>-->
+                        <p:message id="messageProductEditor" for="inputProductEditor"/>
+                    </p:outputPanel>
 
-                    <span class="responsiveInput">
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderInputCategory()}">
                         <span>
                             <p:outputLabel for="inputProductCategory" value="#{I18N['application.detailproductpage.labelproductcategory']}"/>
                             <p:inputText id="inputProductCategory"
@@ -146,10 +173,11 @@
                                 <p:commandButton class="ui-button-warning" icon="pi pi-plus" immediate="true"/>
                             </span>
                         </span>
-                        <p:message id="messageProductCategory" for="@previous"/>
-                    </span>
-                    <p:outputPanel class="responsiveManyToMany">
-                        <div>
+                        <p:message id="messageProductCategory" for="inputProductCategory"/>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveManyToMany" rendered="#{pricePlatformBean.renderManyToManyCategory()}">
+                        <p:outputPanel rendered="#{pricePlatformBean.isNotModeSelected('r')}">
                             <h4>
                                 <h:outputText value="#{I18N['application.detailproductpage.titlecategoryenable']}"/>
                             </h4>
@@ -176,8 +204,8 @@
                                     </p:outputPanel>
                                 </ui:repeat>
                             </p:scrollPanel>
-                        </div>
-                        <div>
+                        </p:outputPanel>
+                        <p:outputPanel>
                             <h4>
                                 <h:outputText value="#{I18N['application.detailproductpage.titlecategoryapply']}"/>
                             </h4>
@@ -194,12 +222,17 @@
                                             <h:outputText value="#{category.categoryName}"/>
                                         </div>
                                         <div>
-                                            <p:commandButton class="ui-button-warning" icon="pi pi-minus" action="#{pricePlatformBean.deleteCategoryApply(category.id)}" update="@form" immediate="true"/>
+                                            <p:commandButton class="ui-button-warning"
+                                                             icon="pi pi-minus"
+                                                             action="#{pricePlatformBean.deleteCategoryApply(category.id)}"
+                                                             update="@form"
+                                                             immediate="true"
+                                                             rendered="#{pricePlatformBean.isNotModeSelected('r')}"/>
                                         </div>
                                     </p:outputPanel>
                                 </ui:repeat>
                             </p:scrollPanel>
-                        </div>
+                        </p:outputPanel>
                     </p:outputPanel>
 
 

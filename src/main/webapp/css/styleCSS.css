@@ -357,3 +357,8 @@ button[type="hidden"] > *{
 .crudButtonContainer > span > *:nth-child(1n+2){
     margin-left: 5px;
 }
+
+.buttonProductMode > *{
+    width: 50% !important;
+    margin: 15px 25% !important;
+}
