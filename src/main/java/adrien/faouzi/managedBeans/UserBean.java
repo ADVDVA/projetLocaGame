@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import java.io.Serializable;
 
@@ -30,6 +31,8 @@ public class UserBean implements Serializable
 
     private String messageErrorMail ="hidden";
 
+    @NotNull
+    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     private String password="";
 
     @NotNull
@@ -49,6 +52,11 @@ public class UserBean implements Serializable
 
     private Date minDate;
     private Date maxDate;
+
+    private boolean loadMail;
+    private boolean loadPassword;
+
+    private char modeSelected = 'r';
 
     private User user;
 
@@ -70,9 +78,12 @@ public class UserBean implements Serializable
         address = new Address();
         user  = new User();
 
+        this.loadPassword = true;
+        this.loadMail = true;
+
         //initialize for add user
         address.setNumber(1);
-        city.setPostalCode(1000);
+        city.setPostalCode(1);
 
         //For input country
         //initialize.
@@ -99,6 +110,30 @@ public class UserBean implements Serializable
         }
     }
 
+    /**
+     * char for type of page generate (c,r,u,d)
+     * @param modeAsk
+     * @return
+     */
+    public boolean isModeSelected(char modeAsk){
+        return (this.modeSelected == modeAsk);
+    }
+
+    /**
+     * Load user selected in previous page
+     * @param userListBean
+     */
+    public void loadUserSelected (UserListBean userListBean)
+    {
+        boolean isNewRedirect = userListBean.getNewRedirect();
+        if(!isNewRedirect){ //reload form from same page.
+            return; //do not reload entity from db.
+        }
+
+        this.modeSelected = userListBean.getModeRedirection();
+    }
+
+
 
     /**
      * Verification input mail method
@@ -122,22 +157,32 @@ public class UserBean implements Serializable
         catch(Exception e)
         {
             UtilityProcessing.debug("Je suis dans le catch du mail et il y a aucune correspondance : " + e);
-            if(this.user == null || this.user.getMail() == null)
+
+            //when loading page
+            if(this.loadMail)
             {
-                messageErrorMail = "hidden";
+                this.loadMail = false;
+                this.messageErrorMail = "hidden";
             }
             else
             {
-                if(UtilityProcessing.checKDataWithRegex(this.user.getMail(), "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$"))
+                //if there is anything
+                if(this.user.getMail() != null)
                 {
-                    this.messageErrorMail="hidden";
+                    if(UtilityProcessing.checKDataWithRegex(this.user.getMail(), "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+[.]+[a-zA-Z.]{2,15}$"))
+                    {
+                        this.messageErrorMail="hidden";
+                    }
+                    else
+                    {
+                        this.messageErrorMail="";
+                    }
                 }
                 else
                 {
                     this.messageErrorMail="";
                 }
             }
-
         }
         finally
         {
@@ -147,33 +192,22 @@ public class UserBean implements Serializable
         }
     }
 
-//    /**
-//     *
-//     */
-//    public void transactionPassword()
-//    {
-//        this.user.setPassword(this.password);
-//        UtilityProcessing.debug("transactionPassword");
-//    }
-//
-//    /**
-//     *
-//     */
-//    public void transactionPasswordVerify()
-//    {
-//        this.user.setPasswordVerify(this.passwordVerify);
-//        UtilityProcessing.debug("transactionPasswordVerify");
-//    }
-
 
     /**
      * Verification input passwordVerify method
      */
     public void checkPasswordVerify()
     {
-        UtilityProcessing.debug("password : "+ this.user.getPassword());
-        UtilityProcessing.debug("password Verify : "+ this.passwordVerify);
-        if(this.user.getPassword() == null || this.passwordVerify.equals(this.user.getPassword()))
+        //when loading page
+        if(this.loadPassword)
+        {
+            this.loadPassword = false;
+            this.messageErrorPassword = "hidden";
+        }
+        else
+        {
+            //if there is anything
+            if(!(this.passwordVerify.equals("")) && this.passwordVerify.equals(this.password))
             {
                 this.messageErrorPassword = "hidden";
             }
@@ -181,6 +215,10 @@ public class UserBean implements Serializable
             {
                 this.messageErrorPassword = "";
             }
+        }
+
+
+
     }
 
     /**
@@ -230,13 +268,12 @@ public class UserBean implements Serializable
     {
         //------------------------Le mettrer dans un request et puis il se connecte via la connexion--------------------
 
-        UtilityProcessing.debug("" + user.getMail() +", " +", ");
-
-        //Verification password with passwordVerify
-        checkPasswordVerify();
 
         //Verification mail
         checkMail();
+
+        //Verification password with passwordVerify
+        checkPasswordVerify();
 
         //last check before adding it to DB
         if(this.messageErrorPassword.equals("hidden") && this.messageErrorMail.equals("hidden"))
@@ -252,7 +289,7 @@ public class UserBean implements Serializable
 
             // mettre directement dans le user
 
-            this.user.setPassword(UtilityProcessing.cryptPassword(this.user.getPassword()));
+            this.user.setPassword(UtilityProcessing.cryptPassword(this.password));
             this.user.setRegistrationDate(UtilityProcessing.getDateTimeNow());
 
             try
@@ -261,40 +298,21 @@ public class UserBean implements Serializable
 
                 //Call of the service that will use the NamedQuery of the "role" entity
                 this.role = roleService.findRoleByRoleName("Client", em);
-                UtilityProcessing.debug("A");
 
                 this.user.setIdRole(this.role);
-                UtilityProcessing.debug("AB");
-
-
-                UtilityProcessing.debug(""+ this.user.getMail());
-                UtilityProcessing.debug(""+ this.user.getIdRole().getId());
-                UtilityProcessing.debug(""+ this.user.getPassword());
-                UtilityProcessing.debug(""+ this.user.getRegistrationDate());
-                UtilityProcessing.debug(""+ this.user.getDateOfBirth());
-                UtilityProcessing.debug("" + this.user.getEnable());
-                UtilityProcessing.debug("" + this.user.getPhone());
-                UtilityProcessing.debug("" + this.user.getLastName());
-                UtilityProcessing.debug("" + this.user.getFirstName());
-                UtilityProcessing.debug("" + this.user.getId());
 
                 //Call of the service that will use the NamedQuery of the "user" entity
                 this.user = userService.addUser(this.user, em);
-                UtilityProcessing.debug("AC");
 
                 //Call of the service that will use the NamedQuery of the "city" entity
-                this.address.setIdCity(cityService.findCityById(this.address.getIdCity().getId(), em));
-                UtilityProcessing.debug("AD");
+                this.address.setIdCity(cityService.findCityById(this.city.getId(), em));
 
                 address.setIdUser(this.user);
-                UtilityProcessing.debug("AG");
 
                 //Call of the service that will use the NamedQuery of the "address" entity
                 addressService.addAddress(address,em);
-                UtilityProcessing.debug("AH");
 
                 transaction.commit();
-
             }
             catch(Exception e)
             {
@@ -307,6 +325,7 @@ public class UserBean implements Serializable
                     transaction.rollback();
                 }
                 em.close();
+//                destroySessionBean();
             }
 
             return "/accueil";
@@ -318,13 +337,21 @@ public class UserBean implements Serializable
     }
 
     /**
-     * Redirection go to userlist page
-     * @return
+     * Redirection go to a nother page
      */
-    public String goToOrderPage(String redirection){
-        return "/view/userList";
+    public String goToAnOrderPage(String page)
+    {
+        return page;
     }
 
+//    /**
+//     * Destroy session bean
+//     */
+//    public void destroySessionBean()
+//    {
+//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        PrimeFaces.current().executeScript("submitLanguageForm(\"headerLanguageButtonContainer\")");
+//    }
 
     /**
      * Getter and setter method

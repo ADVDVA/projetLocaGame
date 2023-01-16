@@ -1,8 +1,6 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.City;
-import adrien.faouzi.projetlocagame.connexion.EMF;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
