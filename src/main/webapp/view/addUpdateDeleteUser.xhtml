@@ -9,27 +9,32 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        #{I18N['application.inscriptionpage.title']}
+        <h:outputText value="#{I18N['application.addupdatedeleteuserpage.createusertitle']}" rendered="#{userBean.isModeSelected('c')}"/>
+        <h:outputText value="#{I18N['application.addupdatedeleteuserpage.updateusertitle']}" rendered="#{userBean.isModeSelected('u')}"/>
+        <h:outputText value="#{I18N['application.addupdatedeleteuserpage.deleteusertitle']}" rendered="#{userBean.isModeSelected('r')}"/>
     </ui:define>
     <ui:define name="content">
 
         <!-- save historic. -->
         <f:metadata>
+            <f:event type="preRenderView" listener="#{userBean.loadUserSelected(userListBean)}"/>
             <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/registration')}"/>
         </f:metadata>
 
 
         <div class ="containers">
             <h2>
-                <h:outputText value="#{I18N['application.inscriptionpage.title']}"/>
+                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.createusertitle']}" rendered="#{userBean.isModeSelected('c')}"/>
+                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.updateusertitle']}" rendered="#{userBean.isModeSelected('u')}"/>
+                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.deleteusertitle']}" rendered="#{userBean.isModeSelected('r')}"/>
             </h2>
             <h:form class="responsiveForm">
                 <span class="responsiveInput">
                     <span>
                         <p:outputLabel for="input_lastname_inscription" value="#{I18N['application.inscriptionpage.lastnametitle']}"/>
                         <p:inputText id="input_lastname_inscription" value="#{userBean.user.lastName}"
-                                placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}">
+                                     placeholder="#{I18N['application.inscriptionpage.lastnameplaceholder']}"
+                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorlastname']}">
                             <p:ajax update="messageLastName" event="keyup"/>
                         </p:inputText>
                     </span>
@@ -41,8 +46,8 @@
                     <span>
                         <p:outputLabel for="input_firstame_inscription" value="#{I18N['application.inscriptionpage.firstnametitle']}"/>
                         <p:inputText id="input_firstame_inscription" value="#{userBean.user.firstName}"
-                                 placeholder="#{I18N['application.inscriptionpage.firstnameplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}">
+                                     placeholder="#{I18N['application.inscriptionpage.firstnameplaceholder']}"
+                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorfirstname']}">
                             <p:ajax update="messageFirstName" event="keyup"/>
                         </p:inputText>
                     </span>
@@ -53,11 +58,11 @@
                     <span>
                         <p:outputLabel for="minmax" value="#{I18N['application.inscriptionpage.dayofbirthtitle']}"/>
                         <p:datePicker id="minmax" value="#{userBean.user.dateOfBirth}" mindate="#{userBean.minDate}"
-                              placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
-                              maxdate="#{userBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true"
-                              pattern="dd/MM/yyyy"
-                              validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}">
-                        <p:ajax update="messageDateOfBirth" event="keyup"/>
+                                      placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
+                                      maxdate="#{userBean.maxDate}" monthNavigator="true" yearNavigator="true" readonlyInput="true"
+                                      pattern="dd/MM/yyyy"
+                                      validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}">
+                        <p:ajax update="messageDateOfBirth" event="change"/>
                         </p:datePicker>
                     </span>
                     <p:message id="messageDateOfBirth" for="@previous"/>
@@ -67,8 +72,8 @@
                     <span>
                         <p:outputLabel for="input_phone_inscription" value="#{I18N['application.inscriptionpage.phonetitle']}"/>
                         <p:inputText id="input_phone_inscription" value="#{userBean.user.phone}"
-                                 placeholder="#{I18N['application.inscriptionpage.phoneplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}">
+                                     placeholder="#{I18N['application.inscriptionpage.phoneplaceholder']}"
+                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorphone']}">
                             <p:ajax update="messagePhone" event="keyup"/>
                         </p:inputText>
                     </span>
@@ -79,13 +84,11 @@
                     <span>
                         <p:outputLabel for="input_mail_inscription" value="#{I18N['application.inscriptionpage.mailtitle']}"/>
                         <p:inputText id="input_mail_inscription" value="#{userBean.user.mail}"
-                                 placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}">
+                                     placeholder="#{I18N['application.inscriptionpage.mailplaceholder']}"
+                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrormail']}">
                             <p:ajax update="messageErrorMail" event="keyup"/>
-                            <p:ajax update="messageNotNullMail" event="keyup"/>
                         </p:inputText>
                     </span>
-                    <p:message id="messageNotNullMail" for="@previous"/>
                 </span>
                 <span class="responsiveInput">
                     <span> </span>
@@ -110,10 +113,10 @@
                 <span class="responsiveInput">
                     <span>
                         <p:outputLabel for="input_password_inscription" value="#{I18N['application.inscriptionpage.passwordtitle']}"/>
-                        <p:password id="input_password_inscription" value="#{userBean.user.password}" toggleMask="true"
-                                redisplay="true"
-                                placeholder="#{I18N['application.inscriptionpage.passwordplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}">
+                        <p:password id="input_password_inscription" value="#{userBean.password}" toggleMask="true"
+                                    redisplay="true"
+                                    placeholder="#{I18N['application.inscriptionpage.passwordplaceholder']}"
+                                    validatorMessage="#{I18N['application.inscriptionpage.messageerrorpassword']}">
                             <p:ajax update="messagePassword" event="keyup"/>
                         </p:password>
                     </span>
@@ -125,8 +128,8 @@
                     <span>
                         <p:outputLabel for="input_passwordverification_inscription" value="#{I18N['application.inscriptionpage.passwordverificationtitle']}"/>
                         <p:password id="input_passwordverification_inscription" value="#{userBean.passwordVerify}" toggleMask="true"
-                                redisplay="true"
-                                placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}">
+                                    redisplay="true"
+                                    placeholder="#{I18N['application.inscriptionpage.passwordverificationplaceholder']}">
                             <p:ajax update="messagePasswordVerification" event="keyup"/>
                         </p:password>
                     </span>
@@ -155,8 +158,8 @@
                     <span>
                         <p:outputLabel for="input_street_inscription" value="#{I18N['application.inscriptionpage.streettitle']}"/>
                         <p:inputText id="input_street_inscription" value="#{userBean.address.street}"
-                                    placeholder="#{I18N['application.inscriptionpage.streetplaceholder']}"
-                                    validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}">
+                                     placeholder="#{I18N['application.inscriptionpage.streetplaceholder']}"
+                                     validatorMessage="#{I18N['application.inscriptionpage.messageerrorstreet']}">
                             <p:ajax update="messageStreet" event="keyup"/>
                         </p:inputText>
                     </span>
@@ -167,8 +170,8 @@
                     <span>
                         <p:outputLabel for="input_number_inscription" value="#{I18N['application.inscriptionpage.numbertitle']}"/>
                         <p:inputNumber id="input_number_inscription" value="#{userBean.address.number}"
-                                placeholder="#{I18N['application.inscriptionpage.numberplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}">
+                                       placeholder="#{I18N['application.inscriptionpage.numberplaceholder']}"
+                                       validatorMessage="#{I18N['application.inscriptionpage.messageerrornumber']}">
                             <p:ajax update="messageNumber" event="keyup"/>
                         </p:inputNumber>
                     </span>
@@ -192,21 +195,22 @@
                     <span>
                         <p:outputLabel for="input_country_inscription" value="#{I18N['application.inscriptionpage.countrytitle']}"/>
                         <p:selectOneMenu id="input_country_inscription" value="#{userBean.country.id}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}">
-                                <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="0"/>
+                                         validatorMessage="#{I18N['application.inscriptionpage.messageerrorcountry']}">
+                            <f:selectItem itemLabel="#{I18N['application.inscriptionpage.countryplaceholder']}" itemValue="0"/>
                             <f:selectItems value="#{userBean.countryList}" var="country" itemLabel="#{country.countryName}" itemValue="#{country.id}"/>
+                            <p:ajax update="messageErrorCountry" event="change"/>
                         </p:selectOneMenu>
                     </span>
-                    <p:message for="@previous"/>
+                    <p:message id="messageErrorCountry" for="@previous"/>
                 </span>
 
                 <span class="responsiveInput">
                     <span>
                         <p:outputLabel for="input_postalcode_inscription" value="#{I18N['application.inscriptionpage.postalcodetitle']}"/>
                         <p:inputNumber id="input_postalcode_inscription" value="#{userBean.city.postalCode}"
-                                placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"
-                                validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}"
-                                decimalPlaces="0">
+                                       placeholder="#{I18N['application.inscriptionpage.postalcodeplaceholder']}"
+                                       validatorMessage="#{I18N['application.inscriptionpage.messageerrorpostalcode']}"
+                                       decimalPlaces="0">
                              <p:ajax listener="#{userBean.updatePostalCodeWithCity}" update="input_city_inscription"/>
                              <p:ajax update="messageErrorPostalCode" event="keyup"/>
                         </p:inputNumber>
@@ -218,12 +222,13 @@
                     <span>
                         <p:outputLabel for="input_city_inscription" value="#{I18N['application.inscriptionpage.citytitle']}"/>
                         <p:selectOneMenu id="input_city_inscription" value="#{userBean.city.id}"
-                                 validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}">
+                                         validatorMessage="#{I18N['application.inscriptionpage.messageerrorcity']}">
                             <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="0"/>
                             <f:selectItems value="#{userBean.cityList}" var="city" itemLabel="#{city.cityName}" itemValue="#{city.id}"/>
+                            <p:ajax update="messageErrorCity" event="change"/>
                         </p:selectOneMenu>
                     </span>
-                    <p:message for="@previous"/>
+                    <p:message id="messageErrorCity" for="@previous"/>
                 </span>
 
                 <p:outputPanel class="responsiveInput" rendered="#{connectionBean.user.verifyPermission('user:add')}">
@@ -235,7 +240,7 @@
                                 <f:selectItems value="#{userBean.roleList}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.id}"/>
                         </p:selectOneMenu>
                     </span>
-                        <span class="crudButtonContainer">
+                    <span class="crudButtonContainer">
                             <span>
                                 <p:commandButton class="ui-button-warning" icon="pi pi-minus"/>
                                 <p:commandButton class="ui-button-warning" icon="pi pi-pencil"/>
@@ -248,16 +253,17 @@
 
                 <span class="responsiveSubmit">
                     <p:commandButton value="#{I18N['application.inscriptionpage.buttonsubmit']}" ajax="false"
-                                 validateClient="true"
-                                 class="ui-button-success"
-                                 action="#{userBean.lastVerificationSubmit()}"/>
+                                     validateClient="true"
+                                     class="ui-button-success"
+                                     update="@form"
+                                     action="#{userBean.lastVerificationSubmit()}"/>
                 </span>
             </h:form>
             <div class="responsiveForm positionCancel">
                 <span class="responsiveSubmit">
                     <span class="flexGrowOne"> </span>
-                        <p:commandButton value="#{I18N['application.inscriptionpage.buttonreturn']}" action="#{connectionBean.goToPageConnection}"
-                                 class="ui-button-danger" id="cancelButtonSignUp"/>
+                        <p:commandButton value="#{I18N['application.inscriptionpage.buttonreturn']}" action="#{userBean.goToAnOrderPage('/view/connectionBean')}"
+                                         class="ui-button-danger" id="cancelButtonSignUp"/>
                 </span>
 
             </div>

@@ -81,8 +81,6 @@ public class User {
     @Column(name = "mail", nullable = false)
     private String mail;
 
-    @NotNull
-    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z0-9]{7,}$")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -217,7 +215,6 @@ public class User {
     /**
      * field permissionrole
      */
-
     @Transient
     public List<Permissionrole> listPermissionRole;
 
