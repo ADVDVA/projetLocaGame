@@ -1,9 +1,6 @@
 package adrien.faouzi.enumeration;
 
-import adrien.faouzi.utility.UtilityProcessing;
-import adrien.faouzi.validator.EnumNotNullValidator;
 
-import javax.validation.Constraint;
 import java.util.Arrays;
 import java.util.List;
 
