@@ -87,7 +87,6 @@
                             <p:outputLabel for="inputProductSelector" value="#{I18N['application.detailproductpage.labelproductselector']}"/>
                             <p:selectOneMenu id="inputProductSelector"
                                              value="#{pricePlatformBean.productSelectedId}"
-                                             disabled="#{(pricePlatformBean.disableSelectProduct())}"
                                              immediate="true">
                                 <!-- reload list editor from db. -->
                                 <f:metadata>
@@ -130,8 +129,7 @@
                             <p:selectOneMenu id="inputProductEditor"
                                              value="#{pricePlatformBean.editorSelectedId}"
                                              disabled="#{pricePlatformBean.inputProductDisabled()}"
-                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}"
-                                             >
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}">
                                 <!-- reload list editor from db. -->
                                 <f:metadata>
                                     <f:event type="preRenderView" listener="#{pricePlatformBean.initAllEditor()}"/>
@@ -199,7 +197,7 @@
                                         </div>
                                         <div>
                                             <p:commandButton class="ui-button-warning" icon="pi pi-angle-up" action="#{pricePlatformBean.selectCategory(category.id)}" update="@form" immediate="true"/>
-                                            <p:commandButton class="ui-button-warning" icon="pi pi-chevron-right" action="#{pricePlatformBean.applyCategory(category.id)}" update="@form" immediate="true"/>
+                                            <p:commandButton class="ui-button-warning" icon="pi pi-chevron-right" action="#{pricePlatformBean.applyCategory(category.id)}" update="@form" immediate="true" disabled="#{pricePlatformBean.isCategoryInCategoryApply(category.id)}"/>
                                         </div>
                                     </p:outputPanel>
                                 </ui:repeat>
@@ -233,6 +231,48 @@
                                 </ui:repeat>
                             </p:scrollPanel>
                         </p:outputPanel>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveInput marginTop40px" rendered="#{pricePlatformBean.renderProductInput()}">
+                        <span>
+                            <p:outputLabel for="inputProductMultyPlayer" value="#{I18N['application.detailproductpage.labelproductmultiplayer']}"/>
+                            <p:selectOneMenu id="inputProductMultyPlayer"
+                                             value="#{pricePlatformBean.pricePlatformSelected.idProduct.multiPlayer}"
+                                             disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproductmultiplayer']}">
+                                <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproductmultiplayer']}"
+                                              itemValue="#{'---'}"/>
+                                <f:selectItems value="#{pricePlatformBean.allMultiPlayer}"
+                                               var="multiPlayer"
+                                               itemLabel="#{multiPlayer.getMultiPlayer()}"
+                                               itemValue="#{multiPlayer.getMultiPlayer()}"/>
+
+                                <p:ajax event="change" update="messageProductMultiPlayer"/>
+
+                            </p:selectOneMenu>
+                        </span>
+                        <p:message id="messageProductMultiPlayer" for="inputProductMultyPlayer"/>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderProductInput()}">
+                        <span>
+                            <p:outputLabel for="inputProductPegi" value="#{I18N['application.detailproductpage.labelproductpegi']}"/>
+                            <p:selectOneMenu id="inputProductPegi"
+                                             value="#{pricePlatformBean.pricePlatformSelected.idProduct.pegiFormatStr}"
+                                             disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproductpegi']}">
+                                <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproductpegi']}"
+                                              itemValue="0"/>
+                                <f:selectItems value="#{pricePlatformBean.allPegi}"
+                                               var="pegi"
+                                               itemLabel="#{pegi.getPegi()}"
+                                               itemValue="#{pegi.getPegi()}"/>
+
+                                <p:ajax event="change" update="messageProductPegi"/>
+
+                            </p:selectOneMenu>
+                        </span>
+                        <p:message id="messageProductPegi" for="inputProductPegi"/>
                     </p:outputPanel>
 
 

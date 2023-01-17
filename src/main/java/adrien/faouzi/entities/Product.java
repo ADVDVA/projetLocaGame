@@ -3,7 +3,6 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.managedBeans.ProductStaticBean;
-import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,10 +32,12 @@ public class Product {
     @Column(name = "productName", nullable = false, length = 60)
     private String productName;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "pegi", nullable = false)
     private Pegi pegi;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "multiPlayer", nullable = false)
     private MultiPlayer multiPlayer;
@@ -121,6 +122,8 @@ public class Product {
     }
 
     public String getMultiPlayer() {
+        if(multiPlayer==null)
+            return "---";
         return multiPlayer.getMultiPlayer();
     }
 
@@ -128,9 +131,7 @@ public class Product {
         this.multiPlayer = multiPlayer;
     }
 
-    public Pegi getPegi() {
-        return pegi;
-    }
+    public Pegi getPegi() { return pegi; }
 
     public void setPegi(Pegi pegi) {
         this.pegi = pegi;
@@ -162,16 +163,7 @@ public class Product {
 
 
 
-    //get data format.
-    public Date getReleaseDateFormatDate(){
-        return UtilityProcessing.castLocalDateTimeToDate(releaseDate);
-    }
-    public int getPegiFormatInt(){
-        return pegi.getPegiInt();
-    }
-    public String getPegiFormatString() {
-        return pegi.getPegi();
-    }
+    //get pegi format.
     public String getEnableFormatStr(){
         return ((enable)? "indisponible": "disponible");
     }
@@ -199,5 +191,24 @@ public class Product {
     }
     public void setListLanguageGame(List<Languagegame> listLanguageGame){
         this.listLanguageGame = listLanguageGame;
+    }
+
+
+
+    //multiplayer seter string.
+    public void setMultiPlayer(String multiPlayer) {
+        this.multiPlayer = MultiPlayer.strToEnum(multiPlayer);
+    }
+
+
+
+    //pegi format str.
+    public String getPegiFormatStr(){
+        if(pegi==null)
+            return "0";
+        return pegi.getPegi();
+    }
+    public void setPegiFormatStr(String pegi) {
+        this.pegi = Pegi.intToEnum(Integer.parseInt(pegi));
     }
 }

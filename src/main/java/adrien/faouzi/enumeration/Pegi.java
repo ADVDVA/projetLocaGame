@@ -1,5 +1,12 @@
 package adrien.faouzi.enumeration;
 
+import adrien.faouzi.utility.UtilityProcessing;
+import adrien.faouzi.validator.EnumNotNullValidator;
+
+import javax.validation.Constraint;
+import java.util.Arrays;
+import java.util.List;
+
 public enum Pegi
 {
     TROIS ("3"),
@@ -30,5 +37,20 @@ public enum Pegi
 
     public int getPegiInt(){
         return Integer.parseInt(type);
+    }
+
+    public static Pegi intToEnum(int typeNum){
+        if(typeNum==0)
+            return null;
+        String typeStr = String.valueOf(typeNum);
+        return Arrays.stream(Pegi.values())
+                .filter(s->s.getPegi().equals(typeStr))
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    public static List<Pegi> getAllPegi(){
+        return Arrays.asList(Pegi.values());
     }
 }

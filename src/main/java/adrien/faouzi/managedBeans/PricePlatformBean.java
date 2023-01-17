@@ -4,6 +4,8 @@ import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Editor;
 import adrien.faouzi.entities.Priceplatform;
 import adrien.faouzi.entities.Product;
+import adrien.faouzi.enumeration.MultiPlayer;
+import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.services.EditorService;
@@ -16,6 +18,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.rmi.CORBA.Util;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,12 +141,7 @@ public class PricePlatformBean implements Serializable {
     public boolean renderProductInput(){ return (getEditModeForProductInput()); }
     public boolean renderInputCategory(){ return (renderProductInput() && isNotModeSelected('r')); }
     public boolean renderManyToManyCategory(){ return (isModeSelected('r') || isModeSelected('u') || (isModeSelected('c') && getEditModeForProductInput())); }
-    public boolean inputProductDisabled(){
-        return (isModeSelected('r') || getEditModeForProductSelector());
-    }
-    public boolean disableSelectProduct(){
-        return (this.productSelectedId != 0 || getEditModeForProductInput());
-    }
+    public boolean inputProductDisabled(){ return isModeSelected('r'); }
 
     //edit product mode.
     public void editProductInput(){
@@ -160,6 +158,7 @@ public class PricePlatformBean implements Serializable {
 
 
     //when another product was selected in form.
+    @Min(1)
     private int productSelectedId = 0;
     public int getProductSelectedId(){ return this.productSelectedId; }
     public void setProductSelectedId(int productSelectedId){ this.productSelectedId = productSelectedId; }
@@ -340,6 +339,11 @@ public class PricePlatformBean implements Serializable {
     public void setListCategoryApply(List<Category> listCategoryApply){
         this.listCategoryApply = listCategoryApply;
     }
+    public boolean isCategoryInCategoryApply(int idCategoryAsk){
+        return listCategoryApply.stream().filter(c -> c.getId() == idCategoryAsk)
+                .findFirst()
+                .orElse(null) != null;
+    }
     //when user select category for apply to product.
     public void applyCategory(int idCategory){
         listCategoryApply.add(
@@ -356,6 +360,21 @@ public class PricePlatformBean implements Serializable {
                 .orElse(null)
         );
     }
+
+
+
+    //multi player.
+    public List<MultiPlayer> getAllMultiPlayer(){
+        return MultiPlayer.getAllMultiPlayer();
+    }
+
+
+
+    //pegi.
+    public List<Pegi> getAllPegi(){
+        return Pegi.getAllPegi();
+    }
+
 
 
 }

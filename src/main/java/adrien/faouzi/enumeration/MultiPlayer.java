@@ -1,5 +1,9 @@
 package adrien.faouzi.enumeration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public enum MultiPlayer
 {
     SOLO ("solo"),
@@ -24,5 +28,20 @@ public enum MultiPlayer
      */
     public String getMultiPlayer() {
         return type;
+    }
+
+
+
+    public static List<MultiPlayer> getAllMultiPlayer(){
+        return Arrays.asList(MultiPlayer.values());
+    }
+
+    public static MultiPlayer strToEnum(String type){
+        if(type==null)
+            return null;
+        return Arrays.stream(MultiPlayer.values())
+                .filter(mp->mp.getMultiPlayer().equals(type))
+                .findFirst()
+                .orElse(null);
     }
 }
