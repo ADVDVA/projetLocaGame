@@ -4,6 +4,7 @@ import adrien.faouzi.entities.*;
 
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.*;
+import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 import javax.annotation.PostConstruct;
 
@@ -23,12 +24,11 @@ import java.util.List;
 
 @Named
 @SessionScoped
-public class UserBean implements Serializable
+public class UserBean extends TableFilter implements Serializable
 {
     /**
      * Fields
      */
-
     private String messageErrorMail ="hidden";
 
     @NotNull
@@ -305,7 +305,7 @@ public class UserBean implements Serializable
                 this.user = userService.addUser(this.user, em);
 
                 //Call of the service that will use the NamedQuery of the "city" entity
-                this.address.setIdCity(cityService.findCityById(this.city.getId(), em));
+                this.address.setIdCity(this.city);
 
                 address.setIdUser(this.user);
 

@@ -221,6 +221,7 @@
                             <f:selectItem itemLabel="#{I18N['application.inscriptionpage.cityplaceholder']}" itemValue="0"/>
                             <f:selectItems value="#{userBean.cityList}" var="city" itemLabel="#{city.cityName}" itemValue="#{city.id}"/>
                             <p:ajax update="messageErrorCity" event="change"/>
+<!--                            <f:converter converterId="CityConverter" />-->
                         </p:selectOneMenu>
                     </span>
                     <p:message id="messageErrorCity" for="@previous"/>

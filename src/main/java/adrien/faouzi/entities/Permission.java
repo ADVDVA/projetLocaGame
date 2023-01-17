@@ -5,6 +5,11 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name = "Permission.selectPermissionAll", query = "SELECT p from Permission p order by p.id desc")
+})
+
+
 @Entity
 @Table(name = "permission", indexes = {
         @Index(name = "permissionName", columnList = "permissionName", unique = true)

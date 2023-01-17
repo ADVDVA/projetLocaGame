@@ -11,14 +11,14 @@
     <ui:define name="title">
         <h:outputText value="#{I18N['application.addupdatedeleteuserpage.createusertitle']}" rendered="#{userBean.isModeSelected('c')}"/>
         <h:outputText value="#{I18N['application.addupdatedeleteuserpage.updateusertitle']}" rendered="#{userBean.isModeSelected('u')}"/>
-        <h:outputText value="#{I18N['application.addupdatedeleteuserpage.deleteusertitle']}" rendered="#{userBean.isModeSelected('r')}"/>
+        <h:outputText value="#{I18N['application.addupdatedeleteuserpage.readusertitle']}" rendered="#{userBean.isModeSelected('r')}"/>
     </ui:define>
     <ui:define name="content">
 
         <!-- save historic. -->
         <f:metadata>
             <f:event type="preRenderView" listener="#{userBean.loadUserSelected(userListBean)}"/>
-            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/registration')}"/>
+            <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/addUpdateDeleteUser')}"/>
         </f:metadata>
 
 
@@ -26,7 +26,8 @@
             <h2>
                 <h:outputText value="#{I18N['application.addupdatedeleteuserpage.createusertitle']}" rendered="#{userBean.isModeSelected('c')}"/>
                 <h:outputText value="#{I18N['application.addupdatedeleteuserpage.updateusertitle']}" rendered="#{userBean.isModeSelected('u')}"/>
-                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.deleteusertitle']}" rendered="#{userBean.isModeSelected('r')}"/>
+                <h:outputText value="#{I18N['application.addupdatedeleteuserpage.readusertitle']}" rendered="#{userBean.isModeSelected('r')}"/>
+
             </h2>
             <h:form class="responsiveForm">
                 <span class="responsiveInput">
@@ -231,7 +232,8 @@
                     <p:message id="messageErrorCity" for="@previous"/>
                 </span>
 
-                <p:outputPanel class="responsiveInput" rendered="#{connectionBean.user.verifyPermission('user:add')}">
+<!--                <p:outputPanel class="responsiveInput" rendered="#{connectionBean.user.verifyPermission('user:add')}">-->
+                <p:outputPanel class="responsiveInput" rendered="#{userBean.isModeSelected('c')}">
                     <span>
                         <p:outputLabel for="input_role_addUpadateDeleteUser" value="#{I18N['application.addupdatedeleteuserpage.roletitle']}"/>
                         <p:selectOneMenu id="input_role_addUpadateDeleteUser" value="#{userBean.role.id}"
@@ -242,9 +244,10 @@
                     </span>
                     <span class="crudButtonContainer">
                             <span>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-minus"/>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil"/>
-                                <p:commandButton class="ui-button-warning" icon="pi pi-plus"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil"
+                                                 action="#{userListBean.redirectPageWidthId('/view/role', 0, 'u')}"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-plus"
+                                                 action="#{userBean.redirectPageWidthId('/view/role', 0, 'c')}"/>
                             </span>
                         </span>
                     <p:message for="@previous"/>
