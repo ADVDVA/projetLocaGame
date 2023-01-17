@@ -19,6 +19,22 @@ public class RoleService
                 .getSingleResult();
     }
 
+
+    /**
+     * Find role by id of role
+     * @param id
+     * @param em
+     * @return
+     */
+    public Role findRoleById(int id, EntityManager em)
+    {
+        return em.createNamedQuery("Role.SelectRoleById", Role.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
+
+
     /**
      * Role request method for all
      */
