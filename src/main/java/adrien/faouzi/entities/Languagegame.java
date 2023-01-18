@@ -9,7 +9,13 @@ import java.util.Set;
         @NamedQuery(name= "LanguageGame.SelectLanguageGameByIdProduct",
                 query = "select lg from Languageproduct lp " +
                         "join Languagegame lg on (lp.idLanguage.id = lg.id) " +
-                        "where (lp.idProduct.id = :idProduct)")
+                        "where (lp.idProduct.id = :idProduct)"),
+        @NamedQuery(name= "LanguageGame.SelectLanguageGameAll",
+                query = "select lg from Languagegame lg"),
+        @NamedQuery(name= "LanguageGame.SelectLanguageGameByIdLanguage",
+                query = "select lg from Languagegame lg " +
+                        "where (lg.id = :idLanguage)")
+
 })
 @Entity
 @Table(name = "languagegame")

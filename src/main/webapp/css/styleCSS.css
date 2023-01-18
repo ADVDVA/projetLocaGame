@@ -177,6 +177,11 @@
     margin-left: 5px;
 }
 
+.checkBoxForm > * > *{
+    color: black;
+    background-color: #fbc02d !important;
+}
+
 
 /*______ title css ______*/
 

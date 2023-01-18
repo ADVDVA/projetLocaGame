@@ -42,9 +42,11 @@ public class Product {
     @Column(name = "multiPlayer", nullable = false)
     private MultiPlayer multiPlayer;
 
+    @NotNull
     @Column(name = "releaseDate", nullable = false)
     private LocalDateTime releaseDate;
 
+    @Pattern(regexp = "^[a-zA-Z0-9 -]{1,255}$")
     @Column(name = "description")
     private String description;
 

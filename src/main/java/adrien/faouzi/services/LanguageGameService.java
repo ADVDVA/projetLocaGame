@@ -18,4 +18,27 @@ public class LanguageGameService{
                 .setParameter("idProduct", idProduct)
                 .getResultList();
     }
+
+
+    /**
+     * get all language game from db.
+     */
+    public List<Languagegame> selectLanguageGameAll(EntityManager em)
+    {
+        return em.createNamedQuery("LanguageGame.SelectLanguageGameAll", Languagegame.class)
+                .getResultList();
+    }
+
+
+    /**
+     * get a language game from db selected by id language game.
+     */
+    public Languagegame selectLanguageByIdLanguage(int idLanguage, EntityManager em)
+    {
+        return em.createNamedQuery("LanguageGame.SelectLanguageGameByIdLanguage", Languagegame.class)
+                .setParameter("idLanguage", idLanguage)
+                .getSingleResult();
+    }
+
+
 }

@@ -1,16 +1,10 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.entities.Category;
-import adrien.faouzi.entities.Editor;
-import adrien.faouzi.entities.Priceplatform;
-import adrien.faouzi.entities.Product;
+import adrien.faouzi.entities.*;
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.projetlocagame.connexion.EMF;
-import adrien.faouzi.services.CategoryService;
-import adrien.faouzi.services.EditorService;
-import adrien.faouzi.services.PricePlatformService;
-import adrien.faouzi.services.ProductService;
+import adrien.faouzi.services.*;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.enterprise.context.SessionScoped;
@@ -62,8 +56,13 @@ public class PricePlatformBean implements Serializable {
         this.categorySelected = null;
         this.listCategoryApply = null;
         this.productSelectedId = 0;
+        this.languageSelected = null;
+        this.listLanguageApply = null;
+        this.defaultErrorSubmit = false;
+        this.defaultSuccessSubmit = false;
+        this.defaultErrorSubmitMessage = "";
 
-        //when first load form in create. --->
+                //when first load form in create. --->
         this.modeSelected = pricePlatformListBean.getModeRedirection();
         if(modeSelected == 'c') {
             this.pricePlatformSelected = new Priceplatform();
@@ -72,6 +71,7 @@ public class PricePlatformBean implements Serializable {
             this.pricePlatformSelected.getIdProduct().setIdEditor(new Editor());
             this.editorSelectedId = 0;
             this.listCategoryApply = new ArrayList<>();
+            this.listLanguageApply = new ArrayList<>();
             return;
         }
 
@@ -89,6 +89,7 @@ public class PricePlatformBean implements Serializable {
             );
             this.editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
             this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
+            this.listLanguageApply = this.pricePlatformSelected.getIdProduct().getListLanguageGame();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
@@ -104,22 +105,67 @@ public class PricePlatformBean implements Serializable {
 
 
     //submit form (c,r,u).
-    public String submitForm(HistoricalBean historicalBean){
-        //if Reade -> add basket.
-        //return;
+    private boolean defaultErrorSubmit = false;
+    public boolean getDefaultErrorSubmit(){ return defaultErrorSubmit; }
+    private boolean defaultSuccessSubmit = false;
+    public boolean getDefaultSuccessSubmit(){ return defaultSuccessSubmit; }
+    private String defaultErrorSubmitMessage=null;
+    public String getDefaultErrorSubmitMessage(){ return defaultErrorSubmitMessage; }
+    public boolean defaultErrorSubmitMessageIsNull(){ return defaultErrorSubmitMessage==null; }
+    public boolean defaultErrorSubmitMessageIsNotNull(){ return defaultErrorSubmitMessage!=null; }
+    public void eraseMessageDefault(){
+        defaultErrorSubmit=false;
+        defaultSuccessSubmit = false;
+        defaultErrorSubmitMessage=null;
+    }
+    public void submitForm(){
 
-        //do Create or Update.
-        //if error, return null for stay in page.
+        if(isModeSelected('r')){ //if Reade -> add basket.
 
-        //if Create, verify if productSelectedId!=0, if !=0 not insert Product in DB but update.
+            // add basket.
+            defaultSuccessSubmit=true;
 
-        //create or update, need to comparate listCategoryApply width list category into product.
+        }else if((isModeSelected('c') && getEditModeForProductInput()) || isModeSelected('u')){ //if Create (input) or Update.
 
-        if(true){ //submit make with no error.
-            return historicalBean.backLastPageHistoric();
-        }else{ //error in submit.
-            return null; //stay in page.
+            //verification.
+            if(listLanguageApply.size()==0){ //min one language for valid.
+                defaultErrorSubmit=true;
+                defaultErrorSubmitMessage="Aucune langue n'a été selectionnée.";
+            }else if(pricePlatformSelected.getIdProduct().getPegi()==null){
+                defaultErrorSubmit=true;
+                defaultErrorSubmitMessage="Aucune limite d'age n'a été selectionnée.";
+            }else if(pricePlatformSelected.getIdProduct().getMultiPlayer()==null){
+                defaultErrorSubmit=true;
+                defaultErrorSubmitMessage="Le nombre de joueur n'a été selectionnée.";
+            }else if(pricePlatformSelected.getIdProduct().getMultiPlayer()==null){
+                defaultErrorSubmit=true;
+                defaultErrorSubmitMessage="Aucun editeur n'a été selectionnée.";
+            }
+
+            if(isModeSelected('c') && getEditModeForProductInput()) { //if Create (input).
+
+                // do insert product.
+
+                // and do list category insert.
+                // and do list language insert.
+                defaultSuccessSubmit=true;
+
+            }else if(isModeSelected('u')) { //if Update.
+
+                // do update product.
+
+                // and do list category insert/delete.
+                // and do list language insert/delete.
+                defaultSuccessSubmit=true;
+
+            }else{ //default error.
+                defaultErrorSubmit=true;
+            }
+
+        }else{ //default error.
+            defaultErrorSubmit=true;
         }
+
     }
 
 
@@ -142,6 +188,7 @@ public class PricePlatformBean implements Serializable {
     public boolean renderInputCategory(){ return (renderProductInput() && isNotModeSelected('r')); }
     public boolean renderManyToManyCategory(){ return (isModeSelected('r') || isModeSelected('u') || (isModeSelected('c') && getEditModeForProductInput())); }
     public boolean inputProductDisabled(){ return isModeSelected('r'); }
+    public boolean disabledSubmitCreate() { return (getEditModeForProductNeutral() || getEditModeForProductSelector()); }
 
     //edit product mode.
     public void editProductInput(){
@@ -182,6 +229,7 @@ public class PricePlatformBean implements Serializable {
             );
             this.editorSelectedId = this.pricePlatformSelected.getIdProduct().getIdEditor().getId();
             this.listCategoryApply = this.pricePlatformSelected.getIdProduct().getListCategory();
+            this.listLanguageApply = this.pricePlatformSelected.getIdProduct().getListLanguageGame();
             transaction.commit();
         }catch(Exception e){
             UtilityProcessing.debug("error catch : "+e.getMessage());
@@ -375,6 +423,87 @@ public class PricePlatformBean implements Serializable {
         return Pegi.getAllPegi();
     }
 
+
+
+    //language.
+    private Languagegame languageSelected;
+    public Languagegame getLanguageSelected(){
+        return languageSelected;
+    }
+    public String getLanguageSelectedName(){ return ((languageSelected==null)? "": languageSelected.getLanguageName()); }
+    public void setLanguageSelectedName(String categorySelectedName){}
+
+    //list language for select input.
+    private List<Languagegame> allLanguage;
+    public List<Languagegame> getAllLanguage(){
+        return this.allLanguage;
+    }
+    public void initAllLanguage(){
+        EntityManager em = EMF.getEM();
+        LanguageGameService languageGameService = new LanguageGameService();
+        EntityTransaction transaction = em.getTransaction();
+        try{
+            transaction.begin();
+            this.allLanguage = languageGameService.selectLanguageGameAll(em);
+            transaction.commit();
+        }catch(Exception e){
+            UtilityProcessing.debug("error catch : "+e.getMessage());
+            this.allLanguage = new ArrayList<>();
+        }finally{
+            if(transaction.isActive())
+                transaction.rollback();
+            em.close();
+        }
+    }
+
+
+    //when user select language for crud.
+    public void selectLanguage(int idLanguage){
+        EntityManager em = EMF.getEM();
+        LanguageGameService languageGameService = new LanguageGameService();
+        EntityTransaction transaction = em.getTransaction();
+        try{
+            transaction.begin();
+            this.languageSelected = languageGameService.selectLanguageByIdLanguage(idLanguage, em);
+            transaction.commit();
+        }catch(Exception e){
+            UtilityProcessing.debug("error catch : "+e.getMessage());
+            this.categorySelected = null;
+        }finally{
+            if(transaction.isActive())
+                transaction.rollback();
+            em.close();
+        }
+    }
+    //get set list language into product into price platform selected.
+    private List<Languagegame> listLanguageApply;
+    public List<Languagegame> getListLanguageApply(){
+        return this.listLanguageApply;
+    }
+    public void setListLanguageApply(List<Languagegame> listLanguageApply){
+        this.listLanguageApply = listLanguageApply;
+    }
+    public boolean isLanguageInLanguageApply(int idLanguageAsk){
+        return listLanguageApply.stream().filter(c -> c.getId() == idLanguageAsk)
+                .findFirst()
+                .orElse(null) != null;
+    }
+    //when user select category for apply to product.
+    public void applyLanguage(int idLanguage){
+        listLanguageApply.add(
+                allLanguage.stream().filter(c -> c.getId() == idLanguage)
+                        .findFirst()
+                        .orElse(null)
+        );
+    }
+    //when user select category for delete to product.
+    public void deleteLanguageApply(int idLanguage){
+        listLanguageApply.remove(
+                listLanguageApply.stream().filter(c -> c.getId() == idLanguage)
+                        .findFirst()
+                        .orElse(null)
+        );
+    }
 
 
 }

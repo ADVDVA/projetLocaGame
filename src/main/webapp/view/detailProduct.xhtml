@@ -129,6 +129,7 @@
                             <p:selectOneMenu id="inputProductEditor"
                                              value="#{pricePlatformBean.editorSelectedId}"
                                              disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                             required="true"
                                              validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}">
                                 <!-- reload list editor from db. -->
                                 <f:metadata>
@@ -260,6 +261,7 @@
                             <p:selectOneMenu id="inputProductPegi"
                                              value="#{pricePlatformBean.pricePlatformSelected.idProduct.pegiFormatStr}"
                                              disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                             required="true"
                                              validatorMessage="#{I18N['application.detailproductpage.messageerrorproductpegi']}">
                                 <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproductpegi']}"
                                               itemValue="0"/>
@@ -275,29 +277,175 @@
                         <p:message id="messageProductPegi" for="inputProductPegi"/>
                     </p:outputPanel>
 
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderInputCategory()}">
+                        <span>
+                            <p:outputLabel for="inputProductLanguage" value="#{I18N['application.detailproductpage.labelproductlanguage']}"/>
+                            <p:inputText id="inputProductLanguage"
+                                         value="#{pricePlatformBean.languageSelectedName}"
+                                         disabled="true"
+                                         placeholder="#{I18N['application.detailproductpage.placeholderproductlanguage']}"
+                                         validatorMessage="#{I18N['application.detailproductpage.messageerrorproductlanguage']}"/>
+                        </span>
+                        <span class="crudButtonContainer">
+                            <span>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-minus" disabled="true" immediate="true"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-pencil" disabled="true" immediate="true"/>
+                                <p:commandButton class="ui-button-warning" icon="pi pi-plus" disabled="true" immediate="true"/>
+                            </span>
+                        </span>
+                        <p:message id="messageProductLanguage" for="inputProductLanguage"/>
+                    </p:outputPanel>
 
-                    <!-- + bouton retour page (previous historic). -->
-                    <!-- + bouton add panier. -->
+                    <p:outputPanel class="responsiveManyToMany" rendered="#{pricePlatformBean.renderManyToManyCategory()}">
+                        <p:outputPanel rendered="#{pricePlatformBean.isNotModeSelected('r')}">
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlelanguageenable']}"/>
+                            </h4>
+                            <!-- reload list category from db. -->
+                            <f:metadata>
+                                <f:event type="preRenderView" listener="#{pricePlatformBean.initAllLanguage()}"/>
+                            </f:metadata>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{pricePlatformBean.allLanguage.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.languagesnotfound']}"/>
+                                </p:outputPanel>
+                                <!-- c:forEach items -->
+                                <ui:repeat value="${pricePlatformBean.allLanguage}"
+                                           var="language">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{language.languageName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning" icon="pi pi-angle-up" action="#{pricePlatformBean.selectLanguage(language.id)}" update="@form" immediate="true"/>
+                                            <p:commandButton class="ui-button-warning" icon="pi pi-chevron-right" action="#{pricePlatformBean.applyLanguage(language.id)}" update="@form" immediate="true" disabled="#{pricePlatformBean.isLanguageInLanguageApply(language.id)}"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlelanguageapply']}"/>
+                            </h4>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{pricePlatformBean.listLanguageApply.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.languagesnotfound']}"/>
+                                </p:outputPanel>
+                                <!-- c:forEach items -->
+                                <ui:repeat value="${pricePlatformBean.listLanguageApply}"
+                                           var="language">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{language.languageName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning"
+                                                             icon="pi pi-minus"
+                                                             action="#{pricePlatformBean.deleteLanguageApply(language.id)}"
+                                                             update="@form"
+                                                             immediate="true"
+                                                             rendered="#{pricePlatformBean.isNotModeSelected('r')}"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveInput marginTop40px" rendered="#{pricePlatformBean.renderProductInput()}">
+                        <span>
+                            <p:outputLabel for="inputProductDateRelease" value="#{I18N['application.detailproductpage.labelproductdaterelease']}"/>
+                            <p:datePicker id="inputProductDateRelease"
+                                         required="true"
+                                         value="#{pricePlatformBean.pricePlatformSelected.idProduct.releaseDate}"
+                                         disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                         placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
+                                         validatorMessage="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}">
+
+                                <p:ajax event="change" update="messageProductDateRelease"/>
+
+                            </p:datePicker>
+                        </span>
+                        <p:message id="messageProductDateRelease" for="inputProductDateRelease"/>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderProductInput()}">
+                        <span>
+                            <p:outputLabel for="inputProductDescription" value="#{I18N['application.detailproductpage.labelproductdescription']}"/>
+                            <p:inputTextarea rows="6"
+                                             cols="33"
+                                             id="inputProductDescription"
+                                             value="#{pricePlatformBean.pricePlatformSelected.idProduct.description}"
+                                             disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                             placeholder="#{I18N['application.detailproductpage.placeholderproductdescription']}"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproductdescription']}">
+                                <p:ajax event="change" update="messageProductDescription"/>
+                            </p:inputTextarea>
+                        </span>
+                        <p:message id="messageProductDescription" for="inputProductDescription"/>
+                    </p:outputPanel>
+
+                    <p:outputPanel class="responsiveInput" rendered="#{pricePlatformBean.renderInputCategory()}">
+                        <span>
+                            <p:outputLabel for="inputProductEnable" value="#{I18N['application.detailproductpage.labelproductenable']}"/>
+                            <p:selectBooleanCheckbox class="ui-button-warning checkBoxForm"
+                                                     value="#{pricePlatformBean.pricePlatformSelected.idProduct.enable}"
+                                                     id="inputProductEnable"/>
+                        </span>
+                        <p:message id="messageProductEnable" for="inputProductEnable"/>
+                    </p:outputPanel>
+
+                    <!-- End form product. -->
+
+                    <p:outputPanel rendered="#{pricePlatformBean.defaultErrorSubmit}"
+                                   id="defaultErrorSubmit" role="alert" aria-atomic="true"
+                                   aria-live="polite" class="ui-message ui-message-error ui-widget ui-corner-all">
+                        <div>
+                            <i class="pi pi-check-circle"> </i>
+                            <span class="ui-message-error-detail message-succes-detail" id="defaultErrorSubmitMessage">
+                                <h:outputText value="#{I18N['application.detailproductpage.messageerrorsubmit']}" rendered="#{pricePlatformBean.defaultErrorSubmitMessageIsNull()}"/>
+                                <h:outputText value="#{pricePlatformBean.defaultErrorSubmitMessage}" rendered="#{pricePlatformBean.defaultErrorSubmitMessageIsNotNull()}"/>
+                            </span>
+                        </div>
+                    </p:outputPanel>
+                    <p:outputPanel rendered="#{pricePlatformBean.defaultSuccessSubmit}"
+                                   id="defaultSuccessSubmit" role="alert" aria-atomic="true"
+                                   aria-live="polite" class="ui-message ui-message-success ui-widget ui-corner-all">
+                        <div>
+                            <span class="ui-message-success-icon"> </span>
+                            <span class="ui-message-success-detail" id="defaultSuccessSubmitMessage">
+                                <h:outputText value="#{I18N['application.detailproductpage.messagesuccesssubmit']}"/>
+                            </span>
+                        </div>
+                    </p:outputPanel>
+                    <!-- erase message default. -->
+                    <f:metadata>
+                        <f:event type="preRenderView" listener="#{pricePlatformBean.eraseMessageDefault()}"/>
+                    </f:metadata>
 
                     <span class="responsiveSubmit">
                         <p:commandButton value="#{I18N['application.detailproductpage.buttoncreatesubmit']}"
                                          rendered="#{pricePlatformBean.isModeSelected('c')}"
+                                         disabled="#{pricePlatformBean.disabledSubmitCreate()}"
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success"
-                                         action="#{pricePlatformBean.submitForm(historicalBean)}"/>
+                                         action="#{pricePlatformBean.submitForm()}"/>
                         <p:commandButton value="#{I18N['application.detailproductpage.buttonreadsubmit']}"
                                          rendered="#{pricePlatformBean.isModeSelected('r')}"
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success"
-                                         action="#{pricePlatformBean.submitForm(historicalBean)}"/>
+                                         action="#{pricePlatformBean.submitForm()}"/>
                         <p:commandButton value="#{I18N['application.detailproductpage.buttonupdatesubmit']}"
                                          rendered="#{pricePlatformBean.isModeSelected('u')}"
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success"
-                                         action="#{pricePlatformBean.submitForm(historicalBean)}"/>
+                                         action="#{pricePlatformBean.submitForm()}"/>
                     </span>
 
                 </h:form>
