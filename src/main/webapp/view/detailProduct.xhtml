@@ -128,7 +128,7 @@
                             <p:outputLabel for="inputProductEditor" value="#{I18N['application.detailproductpage.labelproducteditor']}"/>
                             <p:selectOneMenu id="inputProductEditor"
                                              value="#{pricePlatformBean.editorSelectedId}"
-                                             disabled="#{pricePlatformBean.inputProductDisabled()}"
+                                             disabled="#{pricePlatformBean.inputProductDisabled}"
                                              required="true"
                                              validatorMessage="#{I18N['application.detailproductpage.messageerrorproducteditor']}">
                                 <!-- reload list editor from db. -->

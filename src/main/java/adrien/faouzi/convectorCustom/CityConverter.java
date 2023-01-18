@@ -24,22 +24,22 @@ public class CityConverter implements Converter
 
         EntityManager em = EMF.getEM();
         CityService cityService = new CityService();
-        EntityTransaction transaction = em.getTransaction();
+        //EntityTransaction transaction = em.getTransaction();
         City city;
         try
         {
-            transaction.begin();
+            //transaction.begin();
             city = cityService.findCityById(Integer.parseInt(value), em);
-            transaction.commit();
+            //transaction.commit();
         }catch (Exception e)
         {
             return null;
         }
         finally {
-            if(transaction.isActive())
-            {
-                transaction.rollback();
-            }
+            //if(transaction.isActive())
+            //{
+            //    transaction.rollback();
+            //}
             em.close();
         }
         return city;
@@ -48,7 +48,11 @@ public class CityConverter implements Converter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value)
     {
-        return "test";
+        City city = (City) value;
+        if(city==null){
+            return "0";
+        }
+        return String.valueOf(city.getId());
     }
 
 }
