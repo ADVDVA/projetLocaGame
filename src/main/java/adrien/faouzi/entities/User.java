@@ -233,7 +233,9 @@ public class User {
     @Transient
     public boolean verifyPermission(String permissionName)
     {
-        return this.listPermissionRole.stream().filter(pr -> pr.getIdPermission().getPermissionName().equals(permissionName)).findFirst()
+        return this.getListPermissionRole().stream()
+                .filter(pr -> pr.getIdPermission().getPermissionName().equals(permissionName))
+                .findFirst()
                 .orElse(null) != null;
     }
 }

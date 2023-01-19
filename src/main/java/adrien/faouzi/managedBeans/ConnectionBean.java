@@ -192,4 +192,14 @@ public class ConnectionBean implements Serializable
     public void setPassword(String password) {
         this.password = password;
     }
+
+
+
+
+    //ask is user log has permissions send.
+    public boolean verifyPermissionUser(String permissionName){
+        if(this.user == null || this.user.getId()==0)
+            return false;
+        return this.user.verifyPermission(permissionName);
+    }
 }

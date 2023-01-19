@@ -3,6 +3,7 @@ package adrien.faouzi.entities;
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.managedBeans.ProductStaticBean;
+import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,62 @@ import java.util.*;
 
 @NamedQueries(value = {
         @NamedQuery(name= "Product.SelectProductAll", query = "select p from Product p"),
-        @NamedQuery(name= "Product.SelectProductByIdProduct", query = "select p from Product p where (p.id = :idProduct)")
+        @NamedQuery(name= "Product.SelectProductByIdProduct", query = "select p from Product p where (p.id = :idProduct)"),
+
+        @NamedQuery(name= "Product.SelectProductByFilterAsc",
+                query = "select p from Product p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
+                        "where ( " +
+                        "  ((lower(p.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(p.idEditor.editorName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  ((lower(p.multiPlayer) like concat('%', :researchWord, '%'))) or " +
+                        "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'productname') then p.productName " +
+                        "  when (:orderBy like 'editor') then p.idEditor.editorName " +
+                        "  when (:orderBy like 'multiplayer') then p.multiPlayer " +
+                        "  when (:orderBy like 'pegi') then p.pegi "+
+                        "  when (:orderBy like 'daterelease') then p.releaseDate "+
+                        "  when (:orderBy like 'enable') then p.enable "+
+                        "  else p.id " +
+                        "end asc" //+
+                //"* case " +
+                //"  when (:ascOrDesc like 'asc') then 1 " +
+                //"  else -1 " +
+                //"end"
+        ),
+        @NamedQuery(name= "Product.SelectProductByFilterDesc",
+                query = "select p from Product p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
+                        "where ( " +
+                        "  ((lower(p.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(p.idEditor.editorName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  ((lower(p.multiPlayer) like concat('%', :researchWord, '%'))) or " +
+                        "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'productname') then p.productName " +
+                        "  when (:orderBy like 'editor') then p.idEditor.editorName " +
+                        "  when (:orderBy like 'multyplayer') then p.multiPlayer " +
+                        "  when (:orderBy like 'pegi') then p.pegi "+
+                        "  when (:orderBy like 'daterelease') then p.releaseDate "+
+                        "  when (:orderBy like 'enable') then p.enable "+
+                        "  else p.id " +
+                        "end desc" //+
+                //"* case " +
+                //"  when (:ascOrDesc like 'asc') then 1 " +
+                //"  else -1 " +
+                //"end"
+        ),
 
 })
 @Entity
@@ -212,5 +268,16 @@ public class Product {
     }
     public void setPegiFormatStr(String pegi) {
         this.pegi = Pegi.intToEnum(Integer.parseInt(pegi));
+    }
+
+
+    //date str.
+    public String getReleaseDateFormatStr(){
+        return UtilityProcessing.localdatetimeInPattern(this.releaseDate);
+    }
+
+    //enable class.
+    public String getEnableClassColor(){
+        return ((this.enable)? "colorGreen": "colorRed");
     }
 }

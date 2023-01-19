@@ -15,7 +15,7 @@ public class PricePlatformService
      */
     public List<Priceplatform> findPricePlatformByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
-        if(orderBy.equals("pegi") || orderBy.equals("enable"))
+        if(orderBy.equals("editor") || orderBy.equals("pegi") || orderBy.equals("enable"))
             asc = !asc;
 
         if(asc){

@@ -62,7 +62,7 @@ public class PricePlatformBean implements Serializable {
         this.defaultSuccessSubmit = false;
         this.defaultErrorSubmitMessage = "";
 
-                //when first load form in create. --->
+        //when first load form in create. --->
         this.modeSelected = pricePlatformListBean.getModeRedirection();
         if(modeSelected == 'c') {
             this.pricePlatformSelected = new Priceplatform();
