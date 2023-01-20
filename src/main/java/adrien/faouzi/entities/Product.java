@@ -79,6 +79,7 @@ public class Product {
     @Column(name = "idProduct", nullable = false)
     private int id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idEditor", nullable = false)
     private Editor idEditor;

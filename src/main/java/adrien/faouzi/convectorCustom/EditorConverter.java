@@ -1,10 +1,8 @@
 package adrien.faouzi.convectorCustom;
 
 import adrien.faouzi.entities.Editor;
-import adrien.faouzi.entities.Product;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.EditorService;
-import adrien.faouzi.services.ProductService;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

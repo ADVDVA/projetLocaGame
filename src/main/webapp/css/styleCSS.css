@@ -371,3 +371,8 @@ button[type="hidden"] > *{
     width: 50% !important;
     margin: 15px 25% !important;
 }
+
+.manyToManyError{
+    width: 100%;
+    margin: 5px 0 5px 0 !important;
+}

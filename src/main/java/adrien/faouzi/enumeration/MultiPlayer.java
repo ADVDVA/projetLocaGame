@@ -8,7 +8,7 @@ public enum MultiPlayer
 {
     SOLO ("solo"),
     MULTI ("multi"),
-    SOLOMULTI ("solo multi");
+    SOLOMULTI ("solo-multi");
 
     /**
      * field

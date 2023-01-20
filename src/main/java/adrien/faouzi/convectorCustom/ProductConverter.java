@@ -56,10 +56,10 @@ public class ProductConverter implements Converter {
 
     public String getAsStringStatic(Object value)
     {
-        Product product = (Product) value;
-        if(product==null){
+        if(value==null){
             return "0";
         }
+        Product product = (Product) value;
         return String.valueOf(product.getId());
     }
 }

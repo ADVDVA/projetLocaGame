@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- Main form start ________________________________________________________________ -->
-                <h:form class="responsiveForm">
+                <h:form class="responsiveForm" id="formCrudProduct">
 
                     <div>
                         <h3 class="titreSectionH3">
@@ -96,6 +96,198 @@
                             </p:selectOneMenu>
                         </span>
                         <p:message id="messageProductEditor" for="inputProductEditor"/>
+                    </p:outputPanel>
+
+                    <!-- Category -->
+                    <p:outputPanel class="responsiveManyToMany" id="manyToManyCategoryPanel">
+                        <p:outputPanel rendered="#{productBean.isNotModeSelected('r')}">
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlecategoryenable']}"/>
+                            </h4>
+                            <!-- reload list category from db. -->
+                            <f:metadata>
+                                <f:event type="preRenderView" listener="#{productBean.initAllCategory()}"/>
+                            </f:metadata>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{productBean.allCategory.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.categoriesnotfound']}"/>
+                                </p:outputPanel>
+                                <ui:repeat value="${productBean.allCategory}"
+                                           var="category">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{category.categoryName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning"
+                                                             icon="pi pi-plus"
+                                                             action="#{productBean.applyCategory(category.id)}"
+                                                             update=":formCrudProduct:manyToManyCategoryPanel :formCrudProduct:categoryError"
+                                                             immediate="true"
+                                                             disabled="#{productBean.isCategoryInCategoryApply(category.id)}"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlecategoryapply']}"/>
+                            </h4>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{productBean.listCategoryApply.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.categoriesnotfound']}"/>
+                                </p:outputPanel>
+                                <ui:repeat value="${productBean.listCategoryApply}"
+                                           var="category">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{category.categoryName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning"
+                                                             icon="pi pi-minus"
+                                                             action="#{productBean.deleteCategoryApply(category.id)}"
+                                                             update=":formCrudProduct:manyToManyCategoryPanel :formCrudProduct:categoryError"
+                                                             immediate="true"
+                                                             rendered="#{productBean.isNotModeSelected('r')}"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <p:outputPanel id="categoryError">
+                        <p:outputPanel rendered="#{productBean.isCategoryApplyError()}"
+                                       class="ui-message ui-message-error ui-widget ui-corner-all manyToManyError"
+                                       role="alert" aria-atomic="true" aria-live="polite">
+                            <div>
+                                <span class="ui-message-error-icon"> </span>
+                                <span id="categoryErrorMessage"
+                                      class="ui-message-error-detail message-succes-detail" >
+                                    <h:outputText value="#{I18N['application.crudproductpage.messageerrorproductcategory']}"/>
+                                </span>
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+
+                    <!-- Multyplayer -->
+                    <p:outputPanel class="responsiveInput #{((productBean.isCategoryApplyError())? '': 'marginTop40px')}">
+                        <span>
+                            <p:outputLabel for="inputProductMultyPlayer" value="#{I18N['application.detailproductpage.labelproductmultiplayer']}"/>
+                            <p:selectOneMenu id="inputProductMultyPlayer"
+                                             value="#{productBean.elementCrudSelected.multiPlayer}"
+                                             disabled="#{productBean.isModeSelected('r')}"
+                                             converter="MultyPlayerConverter"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproductmultiplayer']}">
+                                <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproductmultiplayer']}"
+                                              itemValue="#{null}"/>
+                                <f:selectItems value="#{productBean.allMultiPlayer}"
+                                               var="multiPlayer"
+                                               itemLabel="#{multiPlayer.getMultiPlayer()}"
+                                               itemValue="#{multiPlayer}"/>
+                                <p:ajax event="change" update="messageProductMultiPlayer"/>
+                            </p:selectOneMenu>
+                        </span>
+                        <p:message id="messageProductMultiPlayer" for="inputProductMultyPlayer"/>
+                    </p:outputPanel>
+
+                    <!-- Pegi -->
+                    <p:outputPanel class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputProductPegi" value="#{I18N['application.detailproductpage.labelproductpegi']}"/>
+                            <p:selectOneMenu id="inputProductPegi"
+                                             value="#{productBean.elementCrudSelected.pegi}"
+                                             disabled="#{productBean.isModeSelected('r')}"
+                                             converter="PegiConverter"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproductpegi']}">
+                                <f:selectItem itemLabel="#{I18N['application.detailproductpage.placeholderproductpegi']}"
+                                              itemValue="#{null}"/>
+                                <f:selectItems value="#{productBean.allPegi}"
+                                               var="pegi"
+                                               itemLabel="#{pegi.getPegi()}"
+                                               itemValue="#{pegi}"/>
+                                <p:ajax event="change" update="messageProductPegi"/>
+                            </p:selectOneMenu>
+                        </span>
+                        <p:message id="messageProductPegi" for="inputProductPegi"/>
+                    </p:outputPanel>
+
+                    <!-- Language -->
+                    <p:outputPanel class="responsiveManyToMany" id="manyToManyLanguagePanel">
+                        <p:outputPanel rendered="#{productBean.isNotModeSelected('r')}">
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlelanguageenable']}"/>
+                            </h4>
+                            <!-- reload list language from db. -->
+                            <f:metadata>
+                                <f:event type="preRenderView" listener="#{productBean.initAllLanguage()}"/>
+                            </f:metadata>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{productBean.allLanguage.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.languagesnotfound']}"/>
+                                </p:outputPanel>
+                                <ui:repeat value="${productBean.allLanguage}"
+                                           var="language">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{language.languageName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning"
+                                                             icon="pi pi-plus"
+                                                             action="#{productBean.applyLanguage(language.id)}"
+                                                             update=":formCrudProduct:manyToManyLanguagePanel :formCrudProduct:languageError"
+                                                             immediate="true"
+                                                             disabled="#{productBean.isLanguageInLanguageApply(language.id)}"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <h4>
+                                <h:outputText value="#{I18N['application.detailproductpage.titlelanguageapply']}"/>
+                            </h4>
+                            <p:scrollPanel class="scrollPanelManyToMany">
+                                <p:outputPanel class="manyToManyRow manyToManyNotFoundMessage"
+                                               rendered="#{productBean.listLanguageApply.size() == 0}">
+                                    <h:outputText value="#{I18N['application.detailproductpage.languagesnotfound']}"/>
+                                </p:outputPanel>
+                                <ui:repeat value="${productBean.listLanguageApply}"
+                                           var="language">
+                                    <p:outputPanel class="manyToManyRow">
+                                        <div>
+                                            <h:outputText value="#{language.languageName}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton class="ui-button-warning"
+                                                             icon="pi pi-minus"
+                                                             action="#{productBean.deleteLanguageApply(language.id)}"
+                                                             update=":formCrudProduct:manyToManyLanguagePanel :formCrudProduct:languageError"
+                                                             immediate="true"
+                                                             rendered="#{productBean.isNotModeSelected('r')}"/>
+                                        </div>
+                                    </p:outputPanel>
+                                </ui:repeat>
+                            </p:scrollPanel>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <p:outputPanel id="languageError">
+                        <p:outputPanel rendered="#{productBean.isLanguageApplyError()}"
+                                       class="ui-message ui-message-error ui-widget ui-corner-all manyToManyError"
+                                       role="alert" aria-atomic="true" aria-live="polite">
+                            <div>
+                                <span class="ui-message-error-icon"> </span>
+                                <span id="languageErrorMessage"
+                                      class="ui-message-error-detail message-succes-detail" >
+                                    <h:outputText value="#{I18N['application.crudproductpage.messageerrorproductlanguage']}"/>
+                                </span>
+                            </div>
+                        </p:outputPanel>
                     </p:outputPanel>
 
 
