@@ -23,7 +23,7 @@
 
             <div>
                 <h2>
-                    <h:outputText value="#{I18N['application.productlistpage.headerlistlastname']}"/>
+                    <h:outputText value="#{I18N['application.listproductpage.headerlistlastname']}"/>
                 </h2>
             </div>
 
@@ -122,7 +122,7 @@
                         <h:outputText value="#{product.productName}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.productlistpage.headerlisteditorname']}" class="columnTableListResearchWord">
+                    <p:column headerText="#{I18N['application.listproductpage.headerlisteditorname']}" class="columnTableListResearchWord">
                         <h:outputText value="#{product.idEditor.editorName}"/>
                     </p:column>
 
@@ -137,7 +137,7 @@
                         </ui:repeat>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.productlistpage.headerlistmultyplayer']}" class="columnTableListResearchWord">
+                    <p:column headerText="#{I18N['application.listproductpage.headerlistmultyplayer']}" class="columnTableListResearchWord">
                         <h:outputText value="#{product.multiPlayer.multiPlayer}"/>
                     </p:column>
 
@@ -156,7 +156,7 @@
                         </ui:repeat>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistdaterelease']}">
+                    <p:column headerText="#{I18N['application.listcatalogpage.headerlistdaterelease']}">
                         <h:outputText value="#{product.getReleaseDateFormatStr()}"/>
                     </p:column>
 
