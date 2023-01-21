@@ -9,9 +9,9 @@
 
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{I18N['application.header.createProduct']}" rendered="#{pricePlatformBean.isModeSelected('c')}"/>
-        <h:outputText value="#{I18N['application.header.detailProduct']}" rendered="#{pricePlatformBean.isModeSelected('r')}"/>
-        <h:outputText value="#{I18N['application.header.editProduct']}" rendered="#{pricePlatformBean.isModeSelected('u')}"/>
+        <h:outputText value="#{I18N['application.header.createProduct']}" rendered="#{productBean.isModeSelected('c')}"/>
+        <h:outputText value="#{I18N['application.header.detailProduct']}" rendered="#{productBean.isModeSelected('r')}"/>
+        <h:outputText value="#{I18N['application.header.editProduct']}" rendered="#{productBean.isModeSelected('u')}"/>
     </ui:define>
     <ui:define name="content">
 
@@ -290,6 +290,50 @@
                         </p:outputPanel>
                     </p:outputPanel>
 
+                    <!-- releaseDate -->
+                    <p:outputPanel class="responsiveInput #{((productBean.isLanguageApplyError())? '': 'marginTop40px')}">
+                        <span>
+                            <p:outputLabel for="inputProductDateRelease" value="#{I18N['application.detailproductpage.labelproductdaterelease']}"/>
+                            <p:datePicker id="inputProductDateRelease"
+                                          required="true"
+                                          value="#{productBean.elementCrudSelected.releaseDate}"
+                                          disabled="#{productBean.isModeSelected('r')}"
+                                          placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"
+                                          validatorMessage="#{I18N['application.inscriptionpage.messageerrordayofbirth']}">
+                                <p:ajax event="change" update="messageProductDateRelease"/>
+                            </p:datePicker>
+                        </span>
+                        <p:message id="messageProductDateRelease" for="inputProductDateRelease"/>
+                    </p:outputPanel>
+
+                    <!-- description -->
+                    <p:outputPanel class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputProductDescription" value="#{I18N['application.detailproductpage.labelproductdescription']}"/>
+                            <p:inputTextarea rows="6"
+                                             cols="33"
+                                             id="inputProductDescription"
+                                             value="#{productBean.elementCrudSelected.description}"
+                                             disabled="#{productBean.isModeSelected('r')}"
+                                             placeholder="#{I18N['application.detailproductpage.placeholderproductdescription']}"
+                                             validatorMessage="#{I18N['application.detailproductpage.messageerrorproductdescription']}">
+                                <p:ajax event="change" update="messageProductDescription"/>
+                            </p:inputTextarea>
+                        </span>
+                        <p:message id="messageProductDescription" for="inputProductDescription"/>
+                    </p:outputPanel>
+
+                    <!-- enable -->
+                    <p:outputPanel class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputProductEnable" value="#{I18N['application.detailproductpage.labelproductenable']}"/>
+                            <p:selectBooleanCheckbox class="ui-button-warning checkBoxForm"
+                                                     value="#{productBean.elementCrudSelected.enable}"
+                                                     id="inputProductEnable"/>
+                        </span>
+                        <p:message id="messageProductEnable" for="inputProductEnable"/>
+                    </p:outputPanel>
+
 
                     <!-- input submit -->
 
@@ -300,19 +344,19 @@
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success"
-                                         action="#{productBean.submitForm(historicalBean)}"/>
+                                         action="#{productBean.submitForm(historicalBean, connectionBean.verifyPermissionUser('product:insert'))}"/>
                         <p:commandButton value=""
                                          rendered="#{productBean.isModeSelected('r')}"
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success hiddenBlock"
-                                         action="#{productBean.submitForm(historicalBean)}"/>
+                                         action="#{productBean.submitForm(historicalBean, connectionBean.verifyPermissionUser('product:details'))}"/>
                         <p:commandButton value="#{I18N['application.detailproductpage.buttonupdatesubmit']}"
                                          rendered="#{productBean.isModeSelected('u')}"
                                          ajax="false"
                                          validateClient="true"
                                          class="ui-button-success"
-                                         action="#{productBean.submitForm(historicalBean)}"/>
+                                         action="#{productBean.submitForm(historicalBean, connectionBean.verifyPermissionUser('product:update'))}"/>
                     </span>
 
                 </h:form>

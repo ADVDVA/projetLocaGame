@@ -10,7 +10,7 @@ import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterAsc",
-                query = "select pp from Priceplatform pp " +
+                query = "select distinct pp from Priceplatform pp " +
                         "join fetch pp.idProduct p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
                         "join fetch cp.idCategory c " +
@@ -35,7 +35,7 @@ import java.util.Set;
                         //"end"
         ),
         @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterDesc",
-                query = "select pp from Priceplatform pp " +
+                query = "select distinct pp from Priceplatform pp " +
                         "join fetch pp.idProduct p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
                         "join fetch cp.idCategory c " +

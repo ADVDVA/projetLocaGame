@@ -3,6 +3,14 @@ package adrien.faouzi.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
+@NamedQueries(value = {
+        @NamedQuery(name = "CategoryProduct.deleteCategoryProduct",
+                query = "delete from Categoryproduct cp " +
+                        "where ( " +
+                        "  cp.idCategory.id = :idCategory and" +
+                        "  cp.idProduct.id = :idProduct" +
+                        ")")
+})
 @Entity
 @Table(name = "categoryproduct")
 public class Categoryproduct {

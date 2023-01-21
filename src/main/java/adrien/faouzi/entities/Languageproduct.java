@@ -3,6 +3,14 @@ package adrien.faouzi.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
+@NamedQueries(value = {
+        @NamedQuery(name = "LanguageProduct.deleteLanguageProduct",
+                query = "delete from Languageproduct lp " +
+                        "where ( " +
+                        "  lp.idLanguage.id = :idLanguage and" +
+                        "  lp.idProduct.id = :idProduct" +
+                        ")")
+})
 @Entity
 @Table(name = "languageproduct")
 public class Languageproduct {

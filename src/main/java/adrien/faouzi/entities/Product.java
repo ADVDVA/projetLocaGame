@@ -1,5 +1,6 @@
 package adrien.faouzi.entities;
 
+import adrien.faouzi.Interface.IEntity;
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.managedBeans.ProductStaticBean;
@@ -16,7 +17,7 @@ import java.util.*;
         @NamedQuery(name= "Product.SelectProductByIdProduct", query = "select p from Product p where (p.id = :idProduct)"),
 
         @NamedQuery(name= "Product.SelectProductByFilterAsc",
-                query = "select p from Product p " +
+                query = "select distinct p from Product p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
                         "join fetch cp.idCategory c " +
                         "join Languageproduct lp on (lp.idProduct = p) " +
@@ -26,7 +27,7 @@ import java.util.*;
                         "  ((lower(p.idEditor.editorName) like concat('%', :researchWord, '%'))) or " +
                         "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
                         "  ((lower(p.multiPlayer) like concat('%', :researchWord, '%'))) or " +
-                        "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
+                        "  ((lower(lg.languageName)) like concat('%', :researchWord, '%')) "+ //condition for filter all language.
                         ") "+
                         "order by case " +
                         "  when (:orderBy like 'productname') then p.productName " +
@@ -43,7 +44,7 @@ import java.util.*;
                 //"end"
         ),
         @NamedQuery(name= "Product.SelectProductByFilterDesc",
-                query = "select p from Product p " +
+                query = "select distinct p from Product p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
                         "join fetch cp.idCategory c " +
                         "join Languageproduct lp on (lp.idProduct = p) " +
@@ -73,7 +74,7 @@ import java.util.*;
 })
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idProduct", nullable = false)
@@ -85,7 +86,7 @@ public class Product {
     private Editor idEditor;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z0-9 -]{1,60}$")
+    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü:_()\"&%'+!?.-]{1,60}$")
     @Column(name = "productName", nullable = false, length = 60)
     private String productName;
 
@@ -103,7 +104,7 @@ public class Product {
     @Column(name = "releaseDate", nullable = false)
     private LocalDateTime releaseDate;
 
-    @Pattern(regexp = "^[a-zA-Z0-9 -]{1,255}$")
+    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü:_()\"&%'+!?.-]{0,255}$")
     @Column(name = "description")
     private String description;
 
@@ -180,11 +181,15 @@ public class Product {
         this.releaseDate = releaseDate;
     }
 
+    public MultiPlayer getMultiPlayer() { return multiPlayer; }
+
+    /*
     public String getMultiPlayer() {
         if(multiPlayer==null)
             return "---";
         return multiPlayer.getMultiPlayer();
     }
+    */
 
     public void setMultiPlayer(MultiPlayer multiPlayer) {
         this.multiPlayer = multiPlayer;

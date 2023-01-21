@@ -8,9 +8,7 @@ import adrien.faouzi.entities.Product;
 import adrien.faouzi.enumeration.MultiPlayer;
 import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.projetlocagame.connexion.EMF;
-import adrien.faouzi.services.CategoryService;
-import adrien.faouzi.services.EditorService;
-import adrien.faouzi.services.LanguageGameService;
+import adrien.faouzi.services.*;
 import adrien.faouzi.utility.CrudBean;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
@@ -58,11 +56,13 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
 
     //submit function.
-    public String submitForm(HistoricalBean historicalBean){
+    public String submitForm(HistoricalBean historicalBean, boolean permission){
         boolean submitIsSuccess = true;
 
         //do verification.
-        if(isCategoryApplyError(false)){
+        if(!permission){
+            submitIsSuccess=false;
+        }else if(isCategoryApplyError(false)){
             submitIsSuccess=false;
         }else if(isLanguageApplyError(false)){
             submitIsSuccess=false;
@@ -71,10 +71,120 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
         if(submitIsSuccess){
 
             //do create or update.
+            if(isModeSelected('c') || isModeSelected('u')){
 
-            if(isModeSelected('c')){
+                EntityManager em = EMF.getEM();
+                ProductService productService = new ProductService();
+                CategoryProductService categoryProductService = new CategoryProductService();
+                LanguageProductService languageProductService = new LanguageProductService();
+                EntityTransaction transaction = em.getTransaction();
+                Product product;
+                try{
+                    transaction.begin();
 
-            }else if(isModeSelected('u')){
+
+                    //create or update product.
+                    product = ((isModeSelected('c'))?
+                            productService.insertProduct(this.elementCrudSelected, em) : //insert.
+                            productService.updateProduct(this.elementCrudSelected, em)   //update.
+                    );
+
+
+                    //insert or delete join of product and category.
+                    product.setListCategory(null); //force reload list category from db.
+                    List<Category> listCategoryFromDB = product.getListCategory();
+                    int i, j;
+                    boolean findMatch;
+                    for(i=0; i<Math.max(listCategoryFromDB.size(), listCategoryApply.size()); i++){
+
+                        //delete find.
+                        if(listCategoryFromDB.size()>i){
+                            findMatch=false;
+                            for(j=0; j<listCategoryApply.size(); j++){
+                                if(listCategoryFromDB.get(i).getId() == listCategoryApply.get(j).getId()){
+                                    findMatch=true;
+                                    break;
+                                }
+                            }
+                            if(!findMatch){ //no match, so delete from DB.
+                                categoryProductService.deleteCategoryProduct(
+                                        listCategoryFromDB.get(i),
+                                        this.elementCrudSelected,
+                                        em);
+                            }
+                        }
+
+                        //insert find.
+                        if(listCategoryApply.size()>i){
+                            findMatch=false;
+                            for(j=0; j<listCategoryFromDB.size(); j++){
+                                if(listCategoryApply.get(i).getId() == listCategoryFromDB.get(j).getId()){
+                                    findMatch=true;
+                                    break;
+                                }
+                            }
+                            if(!findMatch){ //no match, so insert from Apply.
+                                categoryProductService.insertCategoryProduct(
+                                        listCategoryApply.get(i),
+                                        this.elementCrudSelected,
+                                        em);
+                            }
+                        }
+
+                    }
+
+
+                    //insert or delete join of product and language.
+                    product.setListLanguageGame(null); //force reload list language from db.
+                    List<Languagegame> listLanguageFromDB = product.getListLanguageGame();
+                    for(i=0; i<Math.max(listLanguageFromDB.size(), listLanguageApply.size()); i++){
+
+                        //delete find.
+                        if(listLanguageFromDB.size()>i){
+                            findMatch=false;
+                            for(j=0; j<listLanguageApply.size(); j++){
+                                if(listLanguageFromDB.get(i).getId() == listLanguageApply.get(j).getId()){
+                                    findMatch=true;
+                                    break;
+                                }
+                            }
+                            if(!findMatch){ //no match, so delete from DB.
+                                languageProductService.deleteLanguageProduct(
+                                        listLanguageFromDB.get(i),
+                                        this.elementCrudSelected,
+                                        em);
+                            }
+                        }
+
+                        //insert find.
+                        if(listLanguageApply.size()>i){
+                            findMatch=false;
+                            for(j=0; j<listLanguageFromDB.size(); j++){
+                                if(listLanguageApply.get(i).getId() == listLanguageFromDB.get(j).getId()){
+                                    findMatch=true;
+                                    break;
+                                }
+                            }
+                            if(!findMatch){ //no match, so insert from Apply.
+                                languageProductService.insertLanguageProduct(
+                                        listLanguageApply.get(i),
+                                        this.elementCrudSelected,
+                                        em);
+                            }
+                        }
+
+                    }
+
+
+                    transaction.commit();
+                }catch(Exception e){
+                    UtilityProcessing.debug("error catch (in create Product) : "+e.getMessage());
+                    submitIsSuccess=false;
+                }finally{
+                    if(transaction.isActive())
+                        transaction.rollback();
+                    em.close();
+                }
 
             }else{ //error
                 submitIsSuccess=false;
@@ -156,13 +266,10 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
         return isCategoryApplyError(true);
     }
     public boolean isCategoryApplyError(boolean applyVerifyNewRedirect){
-        return false; //no restriction for category relation.
-        /*
         return ( //it was an error when...
-                listCategoryApply.size() < 0 && //length is lower than relation MCD.
+                listCategoryApply.size() < 1 && //length is lower than relation MCD.
                 (!applyVerifyNewRedirect || !isNewRedirect) //and don't render error if it's first load. (or unable verification new redirect)
         );
-        */
     }
 
 

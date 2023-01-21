@@ -10,7 +10,7 @@
 
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        #{I18N['application.header.listproduct']}
+        #{I18N['application.header.menuproduct']}
     </ui:define>
     <ui:define name="content">
 
@@ -23,7 +23,7 @@
 
             <div>
                 <h2>
-                    <h:outputText value="#{I18N['application.header.listproduct']}"/>
+                    <h:outputText value="#{I18N['application.productlistpage.headerlistlastname']}"/>
                 </h2>
             </div>
 
@@ -138,7 +138,7 @@
                     </p:column>
 
                     <p:column headerText="#{I18N['application.productlistpage.headerlistmultyplayer']}" class="columnTableListResearchWord">
-                        <h:outputText value="#{product.multiPlayer}"/>
+                        <h:outputText value="#{product.multiPlayer.multiPlayer}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistpegi']}">
