@@ -181,6 +181,7 @@
                                              value="#{productBean.elementCrudSelected.multiPlayer}"
                                              disabled="#{productBean.isModeSelected('r')}"
                                              converter="MultyPlayerConverter"
+                                             required="true"
                                              validatorMessage="#{I18N['application.crudproductpage.messageerrorproductmultiplayer']}">
                                 <f:selectItem itemLabel="#{I18N['application.crudproductpage.placeholderproductmultiplayer']}"
                                               itemValue="#{null}"/>
@@ -202,6 +203,7 @@
                                              value="#{productBean.elementCrudSelected.pegi}"
                                              disabled="#{productBean.isModeSelected('r')}"
                                              converter="PegiConverter"
+                                             required="true"
                                              validatorMessage="#{I18N['application.crudproductpage.messageerrorproductpegi']}">
                                 <f:selectItem itemLabel="#{I18N['application.crudproductpage.placeholderproductpegi']}"
                                               itemValue="#{null}"/>

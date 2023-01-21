@@ -53,10 +53,10 @@ public class EditorConverter implements Converter {
 
     public String getAsStringStatic(Object value)
     {
-        Editor editor = (Editor) value;
-        if(editor==null){
+        if(value==null){
             return "0";
         }
+        Editor editor = (Editor) value;
         return String.valueOf(editor.getId());
     }
 
