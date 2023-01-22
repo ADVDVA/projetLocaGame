@@ -131,6 +131,7 @@
                                 </ui:repeat>
                             </p:scrollPanel>
                         </p:outputPanel>
+                        <p:outputPanel rendered="#{productBean.isModeSelected('r')}"> </p:outputPanel>
                         <p:outputPanel>
                             <h4>
                                 <h:outputText value="#{I18N['application.crudproductpage.titlecategoryapply']}"/>
@@ -142,7 +143,7 @@
                                 </p:outputPanel>
                                 <ui:repeat value="${productBean.listCategoryApply}"
                                            var="category">
-                                    <p:outputPanel class="manyToManyRow">
+                                    <p:outputPanel class="manyToManyRow #{((productBean.isModeSelected('r'))? 'lineManyToManyWithoutButton':'')}">
                                         <div>
                                             <h:outputText value="#{category.categoryName}"/>
                                         </div>
@@ -250,6 +251,7 @@
                                 </ui:repeat>
                             </p:scrollPanel>
                         </p:outputPanel>
+                        <p:outputPanel rendered="#{productBean.isModeSelected('r')}"> </p:outputPanel>
                         <p:outputPanel>
                             <h4>
                                 <h:outputText value="#{I18N['application.crudproductpage.titlelanguageapply']}"/>
@@ -261,7 +263,7 @@
                                 </p:outputPanel>
                                 <ui:repeat value="${productBean.listLanguageApply}"
                                            var="language">
-                                    <p:outputPanel class="manyToManyRow">
+                                    <p:outputPanel class="manyToManyRow #{((productBean.isModeSelected('r'))? 'lineManyToManyWithoutButton':'')}">
                                         <div>
                                             <h:outputText value="#{language.languageName}"/>
                                         </div>

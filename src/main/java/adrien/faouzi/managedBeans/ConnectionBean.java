@@ -30,7 +30,7 @@ public class ConnectionBean implements Serializable
      */
     public String connection()
     {
-        UtilityProcessing.debug("session user : " + this.user);
+        //UtilityProcessing.debug("session user : " + this.user);
         //initialize.
         EntityManager em = EMF.getEM();
         UserService userService = new UserService();

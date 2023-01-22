@@ -26,8 +26,9 @@ function clickId(id){
 }
 
 //function for click element next.
-function clickNext(target){
-    target.nextSibling.click();
+function clickNext(target, blockProcess=false){
+    if(!blockProcess)
+        target.nextSibling.click();
 }
 
 

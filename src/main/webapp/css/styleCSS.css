@@ -176,6 +176,9 @@
 .manyToManyRow > div:nth-child(2) > *:nth-child(1n+2){
     margin-left: 5px;
 }
+.lineManyToManyWithoutButton > div:first-child{
+    padding-bottom: 5px;
+}
 
 .checkBoxForm > * > *{
     color: black;
@@ -291,6 +294,10 @@ body .tableHeaderTitleCenter table tbody td{
 }
 .containerRedirectButtonTable > button:last-child{
     margin-right: 0;
+}
+
+.disabledButtonIcon{
+    color: silver;
 }
 
 .wordResearch{

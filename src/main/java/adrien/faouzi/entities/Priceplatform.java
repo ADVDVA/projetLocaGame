@@ -195,6 +195,9 @@ public class Priceplatform {
     public String getEnableFormatIco(){
         return ((this.enable && this.idProduct.getEnable())? "pi pi-check-circle colorGreen": "pi pi-times-circle colorRed");
     }
+    public boolean getEnableForDisabledButton(){
+        return !(this.enable && this.idProduct.getEnable());
+    }
     public String getEnableClassColor(){
         return ((this.enable && this.idProduct.getEnable())? "colorGreen": "colorRed");
     }
