@@ -1,5 +1,6 @@
 package adrien.faouzi.services;
 
+import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Editor;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
@@ -30,6 +31,27 @@ public class EditorService {
         return em.createNamedQuery("Editor.SelectEditorByIdEditor", Editor.class)
                 .setParameter("idEditor", idEditor)
                 .getSingleResult();
+    }
+
+    /**
+     * insert Editor in db.
+     */
+    public Editor insertEditor(Editor editor, EntityManager em)
+    {
+        em.persist(editor);
+        em.flush();
+        return editor;
+    }
+
+
+    /**
+     * update Editor in db.
+     */
+    public Editor updateEditor(Editor editor, EntityManager em)
+    {
+        em.merge(editor);
+        em.flush();
+        return editor;
     }
 
 

@@ -1,6 +1,8 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,6 +25,8 @@ public class Category {
     @Column(name = "idCategory", nullable = false)
     private int id;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü]{1,60}$")
     @Column(name = "categoryName", nullable = false, length = 60)
     private String categoryName;
 

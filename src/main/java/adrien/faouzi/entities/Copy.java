@@ -7,6 +7,9 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name= "Copy.SelectCopyByIdCopy", query = "select c from Copy c where (c.id = :idCopy)")
+})
 @Entity
 @Table(name = "copy", indexes = {
         @Index(name = "copyName", columnList = "copyName", unique = true)
@@ -25,6 +28,7 @@ public class Copy {
     @JoinColumn(name = "idPricePlatform", nullable = false)
     private Priceplatform idPricePlatform;
 
+    //!!! auto generate !!!.
     @Column(name = "copyName", nullable = false, length = 60)
     private String copyName;
 
@@ -34,6 +38,8 @@ public class Copy {
     @Enumerated
     @Column(name = "status", nullable = false)
     private StatusCopy status;
+
+    //---->>
 
     @OneToMany(mappedBy = "idCopy")
     private Set<Copyorder> copyorders = new LinkedHashSet<>();

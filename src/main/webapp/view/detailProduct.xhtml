@@ -11,9 +11,9 @@
 
 <ui:composition template="/WEB-INF/templates/simple.xhtml">
     <ui:define name="title">
-        <h:outputText value="#{I18N['application.header.createProduct']}" rendered="#{pricePlatformBean.isModeSelected('c')}"/>
-        <h:outputText value="#{I18N['application.header.detailProduct']}" rendered="#{pricePlatformBean.isModeSelected('r')}"/>
-        <h:outputText value="#{I18N['application.header.editProduct']}" rendered="#{pricePlatformBean.isModeSelected('u')}"/>
+        <h:outputText value="#{I18N['application.header.createproduct']}" rendered="#{pricePlatformBean.isModeSelected('c')}"/>
+        <h:outputText value="#{I18N['application.header.detailproduct']}" rendered="#{pricePlatformBean.isModeSelected('r')}"/>
+        <h:outputText value="#{I18N['application.header.editproduct']}" rendered="#{pricePlatformBean.isModeSelected('u')}"/>
     </ui:define>
     <ui:define name="content">
 
@@ -28,7 +28,7 @@
             <!-- error loading message -->
             <p:outputPanel rendered="#{pricePlatformBean.pricePlatformSelectedIsErrorLoad()}">
                 <h2>
-                    <h:outputText value="#{I18N['application.crudproductpage.errorloadproducttitle']}"/>
+                    <h:outputText value="#{I18N['application.crudpage.errorloadtitle']}"/>
                 </h2>
                 <p class="textCenter">
                     <h:outputText value="#{I18N['application.crudproductpage.errorloadproductmessage']}"/>
@@ -429,7 +429,7 @@
                     </f:metadata>
 
                     <span class="responsiveSubmit">
-                        <p:commandButton value="#{I18N['application.crudproductpage.buttoncreatesubmit']}"
+                        <p:commandButton value="#{I18N['application.crudpage.buttoncreatesubmit']}"
                                          rendered="#{pricePlatformBean.isModeSelected('c')}"
                                          disabled="#{pricePlatformBean.disabledSubmitCreate()}"
                                          ajax="false"
@@ -442,7 +442,7 @@
                                          validateClient="true"
                                          class="ui-button-success"
                                          action="#{pricePlatformBean.submitForm()}"/>
-                        <p:commandButton value="#{I18N['application.crudproductpage.buttonupdatesubmit']}"
+                        <p:commandButton value="#{I18N['application.crudpage.buttonupdatesubmit']}"
                                          rendered="#{pricePlatformBean.isModeSelected('u')}"
                                          ajax="false"
                                          validateClient="true"
@@ -456,7 +456,7 @@
                     <span class="responsiveSubmit">
                         <span class="flexGrowOne"> </span>
                             <p:commandButton id="cancelButtonSignUp"
-                                             value="#{I18N['application.crudproductpage.buttonbacklastpage']}"
+                                             value="#{I18N['application.crudpage.buttonbacklastpage']}"
                                              action="#{historicalBean.backLastPageHistoric()}"
                                              class="ui-button-danger"
                                              immediate="true"/>

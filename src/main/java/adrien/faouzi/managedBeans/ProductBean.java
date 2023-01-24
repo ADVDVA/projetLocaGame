@@ -178,7 +178,7 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
                     transaction.commit();
                 }catch(Exception e){
-                    UtilityProcessing.debug("error catch (in create Product) : "+e.getMessage());
+                    UtilityProcessing.debug("error catch (in create/update Product) : "+e.getMessage());
                     submitIsSuccess=false;
                 }finally{
                     if(transaction.isActive())

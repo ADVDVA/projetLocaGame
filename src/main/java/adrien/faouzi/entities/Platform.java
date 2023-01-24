@@ -1,10 +1,18 @@
 package adrien.faouzi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQueries(value = {
+        @NamedQuery(name = "Platform.SelectPlatformAll",
+                query = "select p from Platform p"),
+        @NamedQuery(name = "Platform.SelectPlatformByIdPlatform",
+                query = "select p from Platform p where (p.id = :idPlatform)")
+})
 @Entity
 @Table(name = "platform")
 public class Platform {
@@ -13,6 +21,8 @@ public class Platform {
     @Column(name = "idPlatform", nullable = false)
     private int id;
 
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü]{1,60}$")
     @Column(name = "platformName", nullable = false, length = 60)
     private String platformName;
 

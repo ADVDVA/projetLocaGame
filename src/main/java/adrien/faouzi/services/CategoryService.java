@@ -1,6 +1,7 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.Category;
+import adrien.faouzi.entities.Product;
 import adrien.faouzi.entities.Store;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
@@ -38,6 +39,28 @@ public class CategoryService {
         return em.createNamedQuery("Category.SelectCategoryByIdCategory", Category.class)
                 .setParameter("idCategory", idCategory)
                 .getSingleResult();
+    }
+
+
+    /**
+     * insert Category in db.
+     */
+    public Category insertCategory(Category category, EntityManager em)
+    {
+        em.persist(category);
+        em.flush();
+        return category;
+    }
+
+
+    /**
+     * update Category in db.
+     */
+    public Category updateCategory(Category category, EntityManager em)
+    {
+        em.merge(category);
+        em.flush();
+        return category;
     }
 
 

@@ -1,5 +1,8 @@
 package adrien.faouzi.enumeration;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum StatusCopy
 {
     DISPONIBLE ("disponible"),
@@ -25,4 +28,16 @@ public enum StatusCopy
     public String getStatusCopy() {
         return type;
     }
+
+    public static List<StatusCopy> getAllStatusCopy(){ return Arrays.asList(StatusCopy.values()); }
+
+    public static StatusCopy strToEnum(String type){
+        if(type==null)
+            return null;
+        return Arrays.stream(StatusCopy.values())
+                .filter(s -> s.getStatusCopy().equals(type))
+                .findFirst()
+                .orElse(null);
+    }
+
 }
