@@ -19,8 +19,7 @@ public enum MultiPlayer
      * one argument constructor
      */
     MultiPlayer(String type) {
-
-        this.type =type;
+        this.type=type;
     }
 
     /**
@@ -32,9 +31,9 @@ public enum MultiPlayer
 
 
 
-    public static List<MultiPlayer> getAllMultiPlayer(){
-        return Arrays.asList(MultiPlayer.values());
-    }
+    //public static List<MultiPlayer> getAllMultiPlayer(){
+    //    return Arrays.asList(MultiPlayer.values());
+    //}
 
     public static MultiPlayer strToEnum(String type){
         if(type==null)

@@ -21,8 +21,7 @@ public enum Pegi
      * one argument constructor
      */
     Pegi(String type) {
-
-        this.type =type;
+        this.type=type;
     }
 
     /**
@@ -32,9 +31,9 @@ public enum Pegi
         return type;
     }
 
-    public int getPegiInt(){
-        return Integer.parseInt(type);
-    }
+    //public int getPegiInt(){
+    //    return Integer.parseInt(type);
+    //}
 
     public static Pegi intToEnum(int typeNum){
         if(typeNum==0)
@@ -47,7 +46,7 @@ public enum Pegi
     }
 
 
-    public static List<Pegi> getAllPegi(){
-        return Arrays.asList(Pegi.values());
-    }
+    //public static List<Pegi> getAllPegi(){
+    //    return Arrays.asList(Pegi.values());
+    //}
 }

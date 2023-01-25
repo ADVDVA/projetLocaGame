@@ -413,14 +413,16 @@ public class PricePlatformBean implements Serializable {
 
     //multi player.
     public List<MultiPlayer> getAllMultiPlayer(){
-        return MultiPlayer.getAllMultiPlayer();
+        return new ArrayList<>();
+        //return MultiPlayer.getAllMultiPlayer();
     }
 
 
 
     //pegi.
     public List<Pegi> getAllPegi(){
-        return Pegi.getAllPegi();
+        return new ArrayList<>();
+        //return Pegi.getAllPegi();
     }
 
 
