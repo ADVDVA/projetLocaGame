@@ -274,20 +274,6 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
 
 
-    //multi player enum.
-    public List<MultiPlayer> getAllMultiPlayer(){
-        return MultiPlayer.getAllMultiPlayer();
-    }
-
-
-
-    //pegi enum.
-    public List<Pegi> getAllPegi(){
-        return Pegi.getAllPegi();
-    }
-
-
-
     //list language for select input.
     private List<Languagegame> allLanguage;
     public List<Languagegame> getAllLanguage(){

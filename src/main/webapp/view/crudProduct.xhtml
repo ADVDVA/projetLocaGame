@@ -186,7 +186,11 @@
                                              validatorMessage="#{I18N['application.crudproductpage.messageerrorproductmultiplayer']}">
                                 <f:selectItem itemLabel="#{I18N['application.crudproductpage.placeholderproductmultiplayer']}"
                                               itemValue="#{null}"/>
-                                <f:selectItems value="#{productBean.allMultiPlayer}"
+                                <!-- import all enum -->
+                                <p:importEnum type="adrien.faouzi.enumeration.MultiPlayer"
+                                              var="enumImportMultiPlayer"
+                                              allSuffix="getAll"/>
+                                <f:selectItems value="#{enumImportMultiPlayer.getAll}"
                                                var="multiPlayer"
                                                itemLabel="#{multiPlayer.getMultiPlayer()}"
                                                itemValue="#{multiPlayer}"/>
@@ -208,7 +212,11 @@
                                              validatorMessage="#{I18N['application.crudproductpage.messageerrorproductpegi']}">
                                 <f:selectItem itemLabel="#{I18N['application.crudproductpage.placeholderproductpegi']}"
                                               itemValue="#{null}"/>
-                                <f:selectItems value="#{productBean.allPegi}"
+                                <!-- import all enum -->
+                                <p:importEnum type="adrien.faouzi.enumeration.Pegi"
+                                              var="enumImportPegi"
+                                              allSuffix="getAll"/>
+                                <f:selectItems value="#{enumImportPegi.getAll}"
                                                var="pegi"
                                                itemLabel="#{pegi.getPegi()}"
                                                itemValue="#{pegi}"/>
