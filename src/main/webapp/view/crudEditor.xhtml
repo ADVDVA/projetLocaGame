@@ -17,7 +17,7 @@
 
         <!-- load editor selected from other page. + save historic.-->
         <f:metadata>
-            <!--<f:event type="preRenderView" listener="#{editorBean.loadEditorSelected(editorListBean)}"/>-->
+            <f:event type="preRenderView" listener="#{editorBean.loadEditorSelected(editorListBean)}"/>
             <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/crudEditor')}"/>
         </f:metadata>
 

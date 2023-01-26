@@ -1,7 +1,9 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.Category;
+import adrien.faouzi.entities.Categoryproduct;
 import adrien.faouzi.entities.Editor;
+import adrien.faouzi.entities.Product;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
@@ -52,6 +54,39 @@ public class EditorService {
         em.merge(editor);
         em.flush();
         return editor;
+    }
+
+    /**
+     * get editor from db with research filter.
+     */
+    public List<Editor> findEditorByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
+    {
+        if(asc){
+            return em.createNamedQuery("Editor.SelectEditorByFilterAsc", Editor.class)
+                    .setParameter("researchWord", researchWord.toLowerCase())
+                    .setParameter("orderBy", orderBy)
+                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                    .getResultList();
+        }else{
+            return em.createNamedQuery("Editor.SelectEditorByFilterDesc", Editor.class)
+                    .setParameter("researchWord", researchWord.toLowerCase())
+                    .setParameter("orderBy", orderBy)
+                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                    .getResultList();
+        }
+    }
+
+    public int getCountOfJoin(int idEditor, EntityManager em){
+        return em.createNamedQuery("Editor.SelectJoin", Product.class)
+                .setParameter("idEditor", idEditor)
+                .getResultList().size();
+    }
+
+    public void delete(Editor editor, EntityManager em){
+        if(!em.contains(editor))
+            editor = em.merge(editor);
+        em.remove(editor);
+        em.flush();
     }
 
 

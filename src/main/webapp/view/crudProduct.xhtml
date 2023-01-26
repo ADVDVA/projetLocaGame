@@ -308,6 +308,8 @@
                             <p:outputLabel for="inputProductDateRelease" value="#{I18N['application.crudproductpage.labelproductdaterelease']}"/>
                             <p:datePicker id="inputProductDateRelease"
                                           required="true"
+                                          showTime="false"
+                                          timeInput="false"
                                           value="#{productBean.elementCrudSelected.releaseDate}"
                                           disabled="#{productBean.isModeSelected('r')}"
                                           placeholder="#{I18N['application.inscriptionpage.dayofbirthplaceholder']}"

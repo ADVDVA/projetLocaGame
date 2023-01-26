@@ -31,6 +31,15 @@ function clickNext(target, blockProcess=false){
         target.nextSibling.click();
 }
 
+//function for click element next, but ask confirmation to user before execute.
+function clickNextConfirm(target, messageClass, blockProcess=false){
+    let getDomMessage = document.getElementsByClassName(messageClass);
+    if(getDomMessage.length !== 1)
+        return;
+    if(confirm(getDomMessage[0].innerHTML))
+        clickNext(target, blockProcess);
+}
+
 
 //function for research in table before manny character.
 function researchTable(target){
@@ -55,5 +64,19 @@ function applyClassWordResearch(wordResearch){
         allTdTxt[i].innerHTML = allTdTxt[i].innerHTML.replace( //replace all word in all td...
             regexResearch, //... find by regex...
             '<span class="wordResearch">'+wordResearch+'</span>'); //... replaced by same word with span class. (for css).
+    }
+}
+
+//alert with i18n get in dom.
+function alertI18NMessage(messageClass, reloadPage=false){
+    let getDomMessage = document.getElementsByClassName(messageClass);
+    if(getDomMessage.length !== 1)
+        return;
+    alert(getDomMessage[0].innerHTML);
+    if(reloadPage){
+        let buttonReloadResearchForm = document.getElementsByClassName('reloadResearchForm');
+        if(buttonReloadResearchForm.length !== 1)
+            return;
+        buttonReloadResearchForm[0].click();
     }
 }

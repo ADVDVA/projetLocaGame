@@ -1,9 +1,7 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.Interface.IService;
-import adrien.faouzi.entities.Priceplatform;
-import adrien.faouzi.entities.Product;
-import adrien.faouzi.entities.Store;
+import adrien.faouzi.entities.*;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
@@ -86,6 +84,55 @@ public class ProductService implements IService<Product> {
         em.merge(product);
         em.flush();
         return product;
+    }
+
+
+    public int getCountOfJoinPricePlatform(int idProduct, EntityManager em){
+        return em.createNamedQuery("Product.SelectJoinPricePlatform", Priceplatform.class)
+                .setParameter("idProduct", idProduct)
+                .getResultList().size();
+    }
+
+
+    public void delete(Product product, EntityManager em){
+        if(!em.contains(product))
+            product = em.merge(product);
+        em.remove(product);
+        em.flush();
+    }
+
+
+    /**
+     * delete join bitwin product and category (before delete product)
+     */
+    public void deleteCategoryProductJoinToAProduct(int idProduct, EntityManager em){
+        List<Categoryproduct> categoryProducts = em.createNamedQuery("Product.SelectJoinCategoryProduct", Categoryproduct.class)
+                .setParameter("idProduct", idProduct)
+                .getResultList();
+        int i;
+        for(i=0; i<categoryProducts.size(); i++){
+            if(!em.contains(categoryProducts.get(i)))
+                categoryProducts.set(i, em.merge(categoryProducts.get(i)));
+            em.remove(categoryProducts.get(i));
+        }
+        em.flush();
+    }
+
+
+    /**
+     * delete join bitwin product and language (before delete product)
+     */
+    public void deleteLanguageProductJoinToAProduct(int idProduct, EntityManager em){
+        List<Languageproduct> languageProducts = em.createNamedQuery("Product.SelectJoinLanguageProduct", Languageproduct.class)
+                .setParameter("idProduct", idProduct)
+                .getResultList();
+        int i;
+        for(i=0; i<languageProducts.size(); i++){
+            if(!em.contains(languageProducts.get(i)))
+                languageProducts.set(i, em.merge(languageProducts.get(i)));
+            em.remove(languageProducts.get(i));
+        }
+        em.flush();
     }
 
 }

@@ -9,7 +9,27 @@ import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(name= "Editor.SelectEditorAll", query = "select e from Editor e"),
-        @NamedQuery(name= "Editor.SelectEditorByIdEditor", query = "select e from Editor e where (e.id = :idEditor)")
+        @NamedQuery(name= "Editor.SelectEditorByIdEditor", query = "select e from Editor e where (e.id = :idEditor)"),
+        @NamedQuery(name= "Editor.SelectEditorByFilterAsc",
+                query = "select e from Editor e " +
+                        "where ( " +
+                        "  ((lower(e.editorName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'editorname') then e.editorName " +
+                        "  else e.id " +
+                        "end asc"),
+        @NamedQuery(name= "Editor.SelectEditorByFilterDesc",
+                query = "select e from Editor e " +
+                        "where ( " +
+                        "  ((lower(e.editorName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'editorname') then e.editorName " +
+                        "  else e.id " +
+                        "end desc"),
+        @NamedQuery(name= "Editor.SelectJoin",
+                query = "select p from Product p where (p.idEditor.id = :idEditor)")
 })
 @Entity
 @Table(name = "editor")

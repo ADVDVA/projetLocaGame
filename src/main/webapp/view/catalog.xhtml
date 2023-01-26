@@ -52,7 +52,7 @@
                                 <p:inputText value="#{pricePlatformListBean.filter}"
                                              onkeyup="researchTable(this)"
                                              placeholder="#{I18N['application.listpage.filter']}"/>
-                                <p:commandButton type="hidden" update="@form"/>
+                                <p:commandButton type="hidden" update="@form" class="reloadResearchForm"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
                                 <p:commandButton value="#{I18N['application.listpage.addelementbutton']}"
@@ -100,7 +100,7 @@
                                 <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('enable')}" update="@form"/>
                             </div>
 
-                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyPermissionUser('product:details')}">
+                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyNotPermissionUser('product:update')}">
                                 <!-- no filter for button (details). -->
                                 <i class="pi pi-circle-off visibilityHidden" />
                             </p:outputPanel>
@@ -112,12 +112,16 @@
                                 <!-- no filter for button (basket). -->
                                 <i class="pi pi-circle-off visibilityHidden" />
                             </p:outputPanel>
+                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyPermissionUser('priceplatform:delete')}">
+                                <!-- no filter for button (delete). -->
+                                <i class="pi pi-circle-off visibilityHidden" />
+                            </p:outputPanel>
 
                         </div>
 
                     </f:facet>
 
-                    <p:column headerText="#{I18N['application.cataloglistpage.headerlistproductname']}" class="columnTableListResearchWord">
+                    <p:column headerText="#{I18N['application.listpage.name']}" class="columnTableListResearchWord">
                         <h:outputText value="#{pricePlatform.idProduct.productName}"/>
                     </p:column>
 
@@ -163,12 +167,12 @@
 
                     <!-- button column _____________________________________________ -->
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistildetails']}" rendered="#{connectionBean.verifyPermissionUser('product:details')}">
+                    <p:column headerText="#{I18N['application.listpage.headerlistdetails']}" rendered="#{connectionBean.verifyNotPermissionUser('product:update')}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
                         <p:commandButton type="hidden" action="#{productListBean.redirectPageWidthId('/view/crudProduct', pricePlatform.idProduct.id, 'r')}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistiledit']}" rendered="#{connectionBean.verifyPermissionUser('product:update')}">
+                    <p:column headerText="#{I18N['application.listpage.headerlistedit']}" rendered="#{connectionBean.verifyPermissionUser('product:update')}">
                         <i class="pi pi-pencil" onclick="clickNext(this)"/>
                         <p:commandButton type="hidden" action="#{productListBean.redirectPageWidthId('/view/crudProduct', pricePlatform.idProduct.id, 'u')}"/>
                     </p:column>
@@ -178,12 +182,33 @@
                         <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
                     </p:column>
 
+                    <p:column headerText="#{I18N['application.listpage.headerlistdelete']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:delete')}">
+                        <i class="pi pi-times-circle" onclick="clickNextConfirm(this, 'confirmDelete')"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.deleteEntity(pricePlatform.id)}"/>
+                    </p:column>
+
                 </p:dataTable>
 
                 <!-- when table was full load, call wordResearch class. -->
                 <f:metadata>
                     <f:event type="preRenderView" listener="#{pricePlatformListBean.applyResearchWordClass()}"/>
                 </f:metadata>
+
+                <!-- message i18n for delete processing -->
+                <p:outputPanel class="hidden">
+                    <span class="confirmDelete">
+                        <h:outputText value="#{I18N['application.listpage.messageconfirmdelete']}"/>
+                    </span>
+                    <span class="errorDeleteBecauseJoin">
+                        <h:outputText value="#{I18N['application.listpage.errordeletebecausejoin']}"/>
+                    </span>
+                    <span class="successDelete">
+                        <h:outputText value="#{I18N['application.listpage.successdelete']}"/>
+                    </span>
+                    <span class="errorProcessDelete">
+                        <h:outputText value="#{I18N['application.listpage.errorprocessdelete']}"/>
+                    </span>
+                </p:outputPanel>
 
             </h:form>
 

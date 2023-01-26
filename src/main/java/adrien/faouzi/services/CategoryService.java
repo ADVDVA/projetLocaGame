@@ -1,9 +1,11 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.Category;
+import adrien.faouzi.entities.Categoryproduct;
 import adrien.faouzi.entities.Product;
 import adrien.faouzi.entities.Store;
 import adrien.faouzi.projetlocagame.connexion.EMF;
+import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -61,6 +63,40 @@ public class CategoryService {
         em.merge(category);
         em.flush();
         return category;
+    }
+
+
+    /**
+     * get category from db with research filter.
+     */
+    public List<Category> findCategoryByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
+    {
+        if(asc){
+            return em.createNamedQuery("Category.SelectCategoryByFilterAsc", Category.class)
+                    .setParameter("researchWord", researchWord.toLowerCase())
+                    .setParameter("orderBy", orderBy)
+                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                    .getResultList();
+        }else{
+            return em.createNamedQuery("Category.SelectCategoryByFilterDesc", Category.class)
+                    .setParameter("researchWord", researchWord.toLowerCase())
+                    .setParameter("orderBy", orderBy)
+                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                    .getResultList();
+        }
+    }
+
+    public int getCountOfJoin(int idCategory, EntityManager em){
+        return em.createNamedQuery("Category.SelectJoin", Categoryproduct.class)
+                .setParameter("idCategory", idCategory)
+                .getResultList().size();
+    }
+
+    public void delete(Category category, EntityManager em){
+        if(!em.contains(category))
+            category = em.merge(category);
+        em.remove(category);
+        em.flush();
     }
 
 

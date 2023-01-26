@@ -15,7 +15,29 @@ import java.util.Set;
         @NamedQuery(name= "Category.SelectCategoryAll",
                 query = "select c from Category c"),
         @NamedQuery(name= "Category.SelectCategoryByIdCategory",
-                query = "select c from Category c where (c.id = :idCategory)")
+                query = "select c from Category c where (c.id = :idCategory)"),
+        @NamedQuery(name= "Category.SelectCategoryByFilterAsc",
+                query = "select c from Category c " +
+                        "where ( " +
+                        "  ((lower(c.categoryName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'categoryname') then c.categoryName " +
+                        "  else c.id " +
+                        "end asc"),
+        @NamedQuery(name= "Category.SelectCategoryByFilterDesc",
+                query = "select c from Category c " +
+                        "where ( " +
+                        "  ((lower(c.categoryName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'categoryname') then c.categoryName " +
+                        "  else c.id " +
+                        "end desc"),
+        @NamedQuery(name= "Category.SelectJoin",
+                query = "select cp from Categoryproduct cp where (cp.idCategory.id = :idCategory)")
+
+
 })
 @Entity
 @Table(name = "category")

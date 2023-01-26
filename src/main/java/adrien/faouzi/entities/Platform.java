@@ -11,7 +11,27 @@ import java.util.Set;
         @NamedQuery(name = "Platform.SelectPlatformAll",
                 query = "select p from Platform p"),
         @NamedQuery(name = "Platform.SelectPlatformByIdPlatform",
-                query = "select p from Platform p where (p.id = :idPlatform)")
+                query = "select p from Platform p where (p.id = :idPlatform)"),
+        @NamedQuery(name= "Platform.SelectPlatformByFilterAsc",
+                query = "select p from Platform p " +
+                        "where ( " +
+                        "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'platformname') then p.platformName " +
+                        "  else p.id " +
+                        "end asc"),
+        @NamedQuery(name= "Platform.SelectPlatformByFilterDesc",
+                query = "select p from Platform p " +
+                        "where ( " +
+                        "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'platformname') then p.platformName " +
+                        "  else p.id " +
+                        "end desc"),
+        @NamedQuery(name= "Platform.SelectJoin",
+                query = "select pp from Priceplatform pp where (pp.idPlatform.id = :idPlatform)")
 })
 @Entity
 @Table(name = "platform")

@@ -129,12 +129,12 @@
 
                     <!-- button column -->
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistiledit']}">
+                    <p:column headerText="#{I18N['application.listpage.headerlistedit']}">
                         <i class="pi pi-pencil" onclick="clickNext(this)"/>
                         <p:commandButton type="hidden" action="#{userListBean.redirectPageWidthId('/view/welcome', user.id)}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistildetails']}">
+                    <p:column headerText="#{I18N['application.listpage.headerlistdetails']}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
                         <p:commandButton type="hidden" action="#{userListBean.redirectPageWidthId('/view/welcome', user.id)}"/>
                     </p:column>

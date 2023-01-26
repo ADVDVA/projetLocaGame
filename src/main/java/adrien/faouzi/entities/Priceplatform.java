@@ -61,7 +61,11 @@ import java.util.Set;
         ),
         @NamedQuery(name= "PricePlatform.SelectPricePlatformById",
                 query = "select pp from Priceplatform pp where (:idPricePlatform = pp.id)"
+        ),
+        @NamedQuery(name= "PricePlatform.SelectJoinCopy",
+                query = "select c from Copy c where (c.idPricePlatform.id = :idPricePlatform)"
         )
+
 
 })
 @Entity

@@ -17,7 +17,7 @@
 
         <!-- load platform selected from other page. + save historic.-->
         <f:metadata>
-            <!--<f:event type="preRenderView" listener="#{platformBean.loadPlatformSelected(platformListBean)}"/>-->
+            <f:event type="preRenderView" listener="#{platformBean.loadPlatformSelected(platformListBean)}"/>
             <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/crudPlatform')}"/>
         </f:metadata>
 
@@ -66,7 +66,7 @@
                                          value="#{platformBean.elementCrudSelected.platformName}"
                                          placeholder="#{I18N['application.crudplatformpage.placeholderplatformname']}"
                                          validatorMessage="#{I18N['application.crudplatformpage.messageerrorplatformname']}">
-                                <p:ajax event="keyup" update="messageplatformName"/>
+                                <p:ajax event="keyup" update="messagePlatformName"/>
                             </p:inputText>
                         </span>
                         <p:message id="messagePlatformName" for="inputPlatformName"/>

@@ -70,6 +70,13 @@ import java.util.*;
                 //"  else -1 " +
                 //"end"
         ),
+        @NamedQuery(name= "Product.SelectJoinCategoryProduct",
+                query = "select cp from Categoryproduct cp where (cp.idProduct.id = :idProduct)"),
+        @NamedQuery(name= "Product.SelectJoinLanguageProduct",
+                query = "select lp from Languageproduct lp where (lp.idProduct.id = :idProduct)"),
+        @NamedQuery(name= "Product.SelectJoinPricePlatform",
+                query = "select pp from Priceplatform pp where (pp.idProduct.id = :idProduct)")
+
 
 })
 @Entity

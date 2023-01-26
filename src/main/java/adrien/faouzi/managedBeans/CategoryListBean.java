@@ -1,11 +1,9 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.convectorCustom.PricePlatformConverter;
-import adrien.faouzi.convectorCustom.ProductConverter;
-import adrien.faouzi.entities.Priceplatform;
+import adrien.faouzi.convectorCustom.CategoryConverter;
+import adrien.faouzi.entities.Category;
 import adrien.faouzi.projetlocagame.connexion.EMF;
-import adrien.faouzi.services.PricePlatformService;
-import adrien.faouzi.services.ProductService;
+import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 import org.primefaces.PrimeFaces;
@@ -22,26 +20,26 @@ import java.util.List;
 @Named
 @ManagedBean
 @SessionScoped
-public class PricePlatformListBean extends TableFilter implements Serializable {
+public class CategoryListBean extends TableFilter implements Serializable {
 
-    //catalog filtered price platform.
-    private List<Priceplatform> pricePlatformFiltered;
-
-    public List<Priceplatform> getPricePlatformFiltered(){
-        return this.pricePlatformFiltered;
+    //category filtered from db.
+    private List<Category> categoryFiltered;
+    public List<Category> getCategoryFiltered(){
+        return this.categoryFiltered;
     }
-    public void setPricePlatformFiltered(List<Priceplatform> pricePlatformFiltered){
-        this.pricePlatformFiltered = pricePlatformFiltered;
+    public void setCategoryFiltered(List<Category> categoryFiltered){
+        this.categoryFiltered = categoryFiltered;
     }
 
     public void doResearch(){
+
         EntityManager em = EMF.getEM();
-        PricePlatformService pricePlatformService = new PricePlatformService();
+        CategoryService categoryService = new CategoryService();
         try{
-            pricePlatformFiltered = pricePlatformService.findPricePlatformByFilter(this.filter, this.order, this.orderAsc, em);
+            categoryFiltered = categoryService.findCategoryByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            pricePlatformFiltered = new ArrayList<>();
+            categoryFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
@@ -49,20 +47,19 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
     }
 
 
-
     public void deleteEntity(int idEntity){
         int countJoin;
 
         EntityManager em = EMF.getEM();
-        PricePlatformService pricePlatformService = new PricePlatformService();
+        CategoryService categoryService = new CategoryService();
         EntityTransaction transaction = em.getTransaction();
         try{
-            countJoin = pricePlatformService.getCountOfJoinCopy(idEntity, em);
+            countJoin = categoryService.getCountOfJoin(idEntity, em);
             if(countJoin==0){ //this entity has no join in db.
 
                 //delete entity
                 transaction.begin();
-                pricePlatformService.delete(PricePlatformConverter.getAsObjectStatic(String.valueOf(idEntity)), em); //delete product.
+                categoryService.delete(CategoryConverter.getAsObjectStatic(String.valueOf(idEntity)), em);
                 transaction.commit();
 
             }
@@ -84,4 +81,5 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
         }
 
     }
+
 }

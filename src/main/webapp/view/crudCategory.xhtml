@@ -17,7 +17,7 @@
 
         <!-- load category selected from other page. + save historic.-->
         <f:metadata>
-            <!--<f:event type="preRenderView" listener="#{categoryBean.loadCategorySelected(cateogoryListBean)}"/>-->
+            <f:event type="preRenderView" listener="#{categoryBean.loadCategorySelected(categoryListBean)}"/>
             <f:event type="preRenderView" listener="#{historicalBean.saveNewPageHistoric('/view/crudCategory')}"/>
         </f:metadata>
 

@@ -1,6 +1,7 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.Priceplatform;
+import adrien.faouzi.entities.Product;
 import adrien.faouzi.entities.Store;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
@@ -41,6 +42,21 @@ public class PricePlatformService
         return em.createNamedQuery("PricePlatform.SelectPricePlatformById", Priceplatform.class)
                 .setParameter("idPricePlatform", idPricePlatform)
                 .getSingleResult();
+    }
+
+
+    public int getCountOfJoinCopy(int idPricePlatform, EntityManager em){
+        return em.createNamedQuery("PricePlatform.SelectJoinCopy", Priceplatform.class)
+                .setParameter("idPricePlatform", idPricePlatform)
+                .getResultList().size();
+    }
+
+
+    public void delete(Priceplatform pricePlatform, EntityManager em){
+        if(!em.contains(pricePlatform))
+            pricePlatform = em.merge(pricePlatform);
+        em.remove(pricePlatform);
+        em.flush();
     }
 
 }

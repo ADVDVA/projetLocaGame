@@ -202,4 +202,8 @@ public class ConnectionBean implements Serializable
             return false;
         return this.user.verifyPermission(permissionName);
     }
+
+    public boolean verifyNotPermissionUser(String permissionName){
+        return !(verifyPermissionUser(permissionName));
+    }
 }
