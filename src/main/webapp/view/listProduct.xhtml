@@ -183,7 +183,7 @@
 
                     <p:column headerText="#{I18N['application.listpage.headerlistdelete']}" rendered="#{connectionBean.verifyPermissionUser('product:delete')}">
                         <i class="pi pi-times-circle" onclick="clickNextConfirm(this, 'confirmDelete')"/>
-                        <p:commandButton type="hidden" action="#{productListBean.deleteEntity(product.id)}"/>
+                        <p:commandButton type="hidden" action="#{productListBean.deleteEntity(product.id, connectionBean.verifyPermissionUser('product:delete'))}"/>
                     </p:column>
 
                 </p:dataTable>

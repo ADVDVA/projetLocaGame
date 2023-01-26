@@ -50,7 +50,9 @@ public class EditorListBean extends TableFilter implements Serializable {
     }
 
 
-    public void deleteEntity(int idEntity){
+    public void deleteEntity(int idEntity, boolean permission){
+        if(!permission)
+            return;
         int countJoin;
 
         EntityManager em = EMF.getEM();
