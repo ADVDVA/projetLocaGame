@@ -208,5 +208,15 @@ public class Priceplatform {
     }
 
 
+    public String getPricePlatformName(){
+        if(this.idProduct==null || this.idPlatform==null)
+            return "null";
+        return (
+                this.idProduct.getProductName()+" ("+
+                this.idPlatform.getPlatformName()+")"
+                );
+    }
+
+
 
 }

@@ -98,35 +98,7 @@
                         <p:message id="messageStore" for="inputStore"/>
                     </p:outputPanel>
 
-                    <!-- select pricePlatform -->
-                    <!--
-                    <p:outputPanel class="responsiveInput">
-                        <span>
-                            <p:outputLabel for="inputPricePlatform" value="#{I18N['application.crudcopypage.labelpriceplatform']}"/>
-                            <p:selectOneMenu id="inputPricePlatform"
-                                             value="#{copyBean.elementCrudSelected.idPricePlatform}"
-                                             disabled="#{copyBean.isModeSelected('r')}"
-                                             converter="PricePlatformConverter"
-                                             required="true"
-                                             validatorMessage="#{I18N['application.crudcopypage.messageerrorpriceplatform']}">
-                                <- reload list pricePlatform from db. -_->
-                                <f:metadata>
-                                    <f:event type="preRenderView" listener="#{copyBean.initAllPricePlatform()}"/>
-                                </f:metadata>
-                                <f:selectItem itemLabel="#{I18N['application.crudcopypage.placeholderpriceplatform']}"
-                                              itemValue="#{null}"/>
-                                <f:selectItems value="#{copyBean.allPricePlatform}"
-                                               var="pricePlatform"
-                                               itemLabel="#{pricePlatform.getIdProduct().getProductName()} (#{pricePlatform.getIdPlatform().getPlatformName()})"
-                                               itemValue="#{pricePlatform}"/>
-                                <p:ajax event="change" update="messagePricePlatform, inputCopyName"/>
-                            </p:selectOneMenu>
-                        </span>
-                        <p:message id="messagePricePlatform" for="inputPricePlatform"/>
-                    </p:outputPanel>
-                    -->
-
-                    <!-- select pricePlatform -->
+                    <!-- select pricePlatform (combo box) -->
                     <p:outputPanel class="responsiveInput">
                         <span>
                             <p:outputLabel for="inputPricePlatform" value="#{I18N['application.crudcopypage.labelpriceplatform']}"/>
@@ -136,18 +108,24 @@
                                              effect="fade"
                                              var="pp"
                                              filter="true"
-                                             filterMatchMode="startsWith">
+                                             filterMatchMode="startsWith"
+                                             required="true"
+                                             validatorMessage="#{I18N['application.crudcopypage.messageerrorpriceplatform']}">
+                                <!-- reload list pricePlatform from db. -->
+                                <f:metadata>
+                                    <f:event type="preRenderView" listener="#{copyBean.initAllPricePlatform()}"/>
+                                </f:metadata>
                                 <f:selectItem itemLabel="#{I18N['application.crudcopypage.placeholderpriceplatform']}"
                                               itemValue="#{null}"/>
                                 <f:selectItems value="#{copyBean.allPricePlatform}"
                                                var="pricePlatform"
-                                               itemLabel="#{pricePlatform.idProduct.productName} (#{pricePlatform.idPlatform.platformName})"
+                                               itemLabel="#{pricePlatform.getPricePlatformName()})"
                                                itemValue="#{pricePlatform}"/>
                                 <p:column>
                                     <f:facet name="header">
                                         <h:outputText value="#{I18N['application.listpage.name']}"/>
                                     </f:facet>
-                                    <h:outputText value="#{pp.idProduct.productName} (#{pp.idPlatform.platformName})"/>
+                                    <h:outputText value="#{pp.getPricePlatformName()})"/>
                                 </p:column>
                                 <p:ajax event="change" update="messagePricePlatform, inputCopyName"/>
                             </p:selectOneMenu>

@@ -72,7 +72,7 @@
                         <p:message id="messageProductName" for="inputProductName"/>
                     </p:outputPanel>
 
-                    <!-- editor -->
+                    <!-- editor (combo box) -->
                     <p:outputPanel class="responsiveInput">
                         <span>
                             <p:outputLabel for="inputProductEditor" value="#{I18N['application.crudproductpage.labelproducteditor']}"/>
@@ -80,6 +80,10 @@
                                              value="#{productBean.elementCrudSelected.idEditor}"
                                              disabled="#{productBean.isModeSelected('r')}"
                                              converter="EditorConverter"
+                                             effect="fade"
+                                             var="e"
+                                             filter="true"
+                                             filterMatchMode="startsWith"
                                              required="true"
                                              validatorMessage="#{I18N['application.crudproductpage.messageerrorproducteditor']}">
                                 <!-- reload list editor from db. -->
@@ -92,11 +96,18 @@
                                                var="editor"
                                                itemLabel="#{editor.editorName}"
                                                itemValue="#{editor}"/>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{I18N['application.listpage.name']}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{e.editorName}"/>
+                                </p:column>
                                 <p:ajax event="change" update="messageProductEditor"/>
                             </p:selectOneMenu>
                         </span>
                         <p:message id="messageProductEditor" for="inputProductEditor"/>
                     </p:outputPanel>
+
 
                     <!-- Category -->
                     <p:outputPanel class="responsiveManyToMany" id="manyToManyCategoryPanel">
