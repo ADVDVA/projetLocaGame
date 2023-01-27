@@ -50,15 +50,20 @@
             <p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
 
                 <p:menuitem value="#{I18N['application.header.menulisthome']}" action="/accueil.xhtml"/>
+                <!--
                 <p:menuitem value="#{I18N['application.header.menulistaccount']}" action="/view/welcome.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menulistusers']}" action="/view/userList.xhtml"/>
+                -->
+                <p:menuitem value="#{I18N['application.header.menucopy']}" action="/view/listCopy.xhtml" rendered="#{connectionBean.verifyPermissionUser('copy:listCopy')}"/>
                 <p:menuitem value="#{I18N['application.header.menulistcatalog']}" action="/view/catalog.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menuproduct']}" action="/view/listProduct.xhtml" rendered="#{connectionBean.verifyPermissionUser('product:listProduct')}"/>
                 <p:menuitem value="#{I18N['application.header.menucategory']}" action="/view/listCategory.xhtml" rendered="#{connectionBean.verifyPermissionUser('category:listCategory')}"/>
                 <p:menuitem value="#{I18N['application.header.menueditor']}" action="/view/listEditor.xhtml" rendered="#{connectionBean.verifyPermissionUser('editor:listEditor')}"/>
                 <p:menuitem value="#{I18N['application.header.menuplatform']}" action="/view/listPlatform.xhtml" rendered="#{connectionBean.verifyPermissionUser('platform:listPlatform')}"/>
+                <!--
                 <p:menuitem value="#{I18N['application.header.menulistcart']}" action="/view/welcome.xhtml"/>
                 <p:menuitem value="#{I18N['application.header.menulistorders']}" action="/view/welcome.xhtml"/>
+                -->
 
             </p:menu>
         </div>

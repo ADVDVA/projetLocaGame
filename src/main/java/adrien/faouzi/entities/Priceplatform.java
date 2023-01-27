@@ -64,7 +64,8 @@ import java.util.Set;
         ),
         @NamedQuery(name= "PricePlatform.SelectJoinCopy",
                 query = "select c from Copy c where (c.idPricePlatform.id = :idPricePlatform)"
-        )
+        ),
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformAll", query = "select p from Priceplatform p")
 
 
 })
@@ -107,7 +108,7 @@ public class Priceplatform {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Priceplatform that = (Priceplatform) o;
-        return id == that.id && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
+        return id == that.id;// && idProduct == that.idProduct && idPlatform == that.idPlatform && Float.compare(that.rentalPrice, rentalPrice) == 0 && availableStock == that.availableStock && Float.compare(that.latePrice, latePrice) == 0 && enable == that.enable && Objects.equals(picture, that.picture);
     }
 
     @Override

@@ -59,4 +59,16 @@ public class PricePlatformService
         em.flush();
     }
 
+
+    /**
+     * get all pricePlatform from db.
+     * @param em entity manager for aces to db.
+     * @return list of all pricePlatform from db.
+     */
+    public List<Priceplatform> selectPricePlatformAll(EntityManager em)
+    {
+        return em.createNamedQuery("PricePlatform.SelectPricePlatformAll", Priceplatform.class)
+                .getResultList();
+    }
+
 }

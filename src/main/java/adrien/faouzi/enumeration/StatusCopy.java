@@ -18,8 +18,7 @@ public enum StatusCopy
      * one argument constructor
      */
     StatusCopy(String type) {
-
-        this.type =type;
+        this.type=type;
     }
 
     /**
@@ -29,13 +28,11 @@ public enum StatusCopy
         return type;
     }
 
-    public static List<StatusCopy> getAllStatusCopy(){ return Arrays.asList(StatusCopy.values()); }
-
     public static StatusCopy strToEnum(String type){
         if(type==null)
             return null;
         return Arrays.stream(StatusCopy.values())
-                .filter(s -> s.getStatusCopy().equals(type))
+                .filter(s -> s.getStatusCopy().toLowerCase().equals(type))
                 .findFirst()
                 .orElse(null);
     }

@@ -5,7 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 @NamedQueries(value = {
-        @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore")
+        @NamedQuery(name= "Store.SelectStoreByIdStore", query = "select s from Store s where s.id = :idStore"),
+        @NamedQuery(name= "Store.SelectStoreAll", query = "select s from Store s")
 })
 @Entity
 @Table(name = "store")
@@ -42,7 +43,7 @@ public class Store {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Store store = (Store) o;
-        return id == store.id && idCity == store.idCity && numberStore == store.numberStore && Objects.equals(storeName, store.storeName) && Objects.equals(streetStore, store.streetStore) && Objects.equals(boxStore, store.boxStore) && Objects.equals(phone, store.phone);
+        return id == store.id ;//&& idCity == store.idCity && numberStore == store.numberStore && Objects.equals(storeName, store.storeName) && Objects.equals(streetStore, store.streetStore) && Objects.equals(boxStore, store.boxStore) && Objects.equals(phone, store.phone);
     }
 
     @Override

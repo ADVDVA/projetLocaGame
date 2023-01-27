@@ -4,6 +4,7 @@ import adrien.faouzi.entities.Store;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class StoreService
 {
@@ -16,4 +17,17 @@ public class StoreService
                 .setParameter("idStore", id)
                 .getSingleResult();
     }
+
+
+    /**
+     * get all store from db.
+     * @param em entity manager for aces to db.
+     * @return list of all store from db.
+     */
+    public List<Store> selectStoreAll(EntityManager em)
+    {
+        return em.createNamedQuery("Store.SelectStoreAll", Store.class)
+                .getResultList();
+    }
+
 }

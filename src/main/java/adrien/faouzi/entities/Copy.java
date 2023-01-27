@@ -1,14 +1,56 @@
 package adrien.faouzi.entities;
 
 import adrien.faouzi.enumeration.StatusCopy;
+import adrien.faouzi.managedBeans.CopyStaticBean;
+import adrien.faouzi.services.CopyService;
+import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @NamedQueries(value = {
-        @NamedQuery(name= "Copy.SelectCopyByIdCopy", query = "select c from Copy c where (c.id = :idCopy)")
+        @NamedQuery(name= "Copy.SelectCopyByIdCopy", query = "select c from Copy c where (c.id = :idCopy)"),
+        @NamedQuery(name= "Copy.SelectCopyByFilterAsc",
+                query = "select c from Copy c " +
+                        "where ( " +
+                        //"  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
+                        //"  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.copyName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        //"  when (:orderBy like 'storename') then c.idStore.storeName " +
+                        //"  when (:orderBy like 'productname') then c.idPricePlatform.idProduct.productName " +
+                        "  when (:orderBy like 'copyname') then c.copyName " +
+                        //"  when (:orderBy like 'buyprice') then c.buyPrice " +
+                        //"  when (:orderBy like 'status') then c.status " +
+                        "  else c.id " +
+                        "end asc"),
+        @NamedQuery(name= "Copy.SelectCopyByFilterDesc",
+                query = "select c from Copy c " +
+                        "where ( " +
+                        //"  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
+                        //"  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.copyName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        //"  when (:orderBy like 'storename') then c.idStore.storeName " +
+                        //"  when (:orderBy like 'productname') then c.idPricePlatform.idProduct.productName " +
+                        "  when (:orderBy like 'copyname') then c.copyName " +
+                        //"  when (:orderBy like 'buyprice') then c.buyPrice " +
+                        //"  when (:orderBy like 'status') then c.status " +
+                        "  else c.id " +
+                        "end desc"),
+        @NamedQuery(name= "Copy.SelectCountCopy",
+                query = "select c from Copy c " +
+                        "where ( " +
+                        "  (c.idPricePlatform.id = :idPricePlatform) and " +
+                        "  (c.id < :idCopy) " +
+                        ")")
 })
 @Entity
 @Table(name = "copy", indexes = {
@@ -20,10 +62,12 @@ public class Copy {
     @Column(name = "idCopy", nullable = false)
     private int id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idStore", nullable = false)
     private Store idStore;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idPricePlatform", nullable = false)
     private Priceplatform idPricePlatform;
@@ -32,10 +76,13 @@ public class Copy {
     @Column(name = "copyName", nullable = false, length = 60)
     private String copyName;
 
+    @NotNull
+    @Min(1)
     @Column(name = "buyPrice", nullable = false)
     private float buyPrice;
 
-    @Enumerated
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private StatusCopy status;
 
@@ -65,13 +112,19 @@ public class Copy {
         this.copyorders = copyorders;
     }
 
-    public String getStatus() {
+    public StatusCopy getStatus() {
+        return status;
+    }
+    public String getStatusStr() {
         return status.getStatusCopy();
     }
 
     public void setStatus(StatusCopy status) {
         this.status = status;
     }
+    //public void setStatus(String statusStr) {
+    //    this.status = StatusCopy.strToEnum(statusStr);
+    //}
 
     public float getBuyPrice() {
         return buyPrice;
@@ -82,11 +135,27 @@ public class Copy {
     }
 
     public String getCopyName() {
-        return copyName;
+        //return copyName;
+        return (
+                String.valueOf(((this.idStore==null)? 0: this.idStore.getId()))+"."+
+                String.valueOf(((this.idPricePlatform==null)? 0: this.idPricePlatform.getIdPlatform().getId()))+"."+
+                String.valueOf(((this.idPricePlatform==null)? 0: this.idPricePlatform.getIdProduct().getId()))+"."+
+                String.valueOf(CopyStaticBean.getCountCopy(this)+1)
+                );
     }
 
-    public void setCopyName(String copyName) {
-        this.copyName = copyName;
+    public void setCopyName() { //String copyName
+        //this.copyName = copyName;
+        this.copyName = (
+                String.valueOf(((this.idStore==null)? 0: this.idStore.getId()))+"."+
+                String.valueOf(((this.idPricePlatform==null)? 0: this.idPricePlatform.getIdPlatform().getId()))+"."+
+                String.valueOf(((this.idPricePlatform==null)? 0: this.idPricePlatform.getIdProduct().getId()))+"."+
+                String.valueOf(CopyStaticBean.getCountCopy(this)+1)
+                );
+    }
+
+    public void setCopyNameFalse(){
+        this.copyName = "0.0.0.0";
     }
 
     public Priceplatform getIdPricePlatform() {
@@ -111,5 +180,13 @@ public class Copy {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStatusClassColor(){
+        if(status.getStatusCopy().equals("disponible"))
+            return "colorGreen";
+        if(status.getStatusCopy().equals("louer"))
+            return "colorOrange";
+        return "colorRed";
     }
 }

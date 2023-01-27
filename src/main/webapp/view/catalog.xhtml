@@ -59,7 +59,7 @@
                                                  class="ui-button-warning"
                                                  icon="pi pi-plus"
                                                  action="#{productListBean.redirectPageWidthId('/view/crudProduct', 0, 'c')}"
-                                                 rendered="#{connectionBean.verifyPermissionUser('product:insert')}"
+                                                 rendered="#{connectionBean.verifyPermissionUser('priceplatform:insert')}"
                                                  iconPos="right"/>
                             </div>
                         </div>
@@ -100,11 +100,11 @@
                                 <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('enable')}" update="@form"/>
                             </div>
 
-                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyNotPermissionUser('product:update')}">
+                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyNotPermissionUser('priceplatform:update')}">
                                 <!-- no filter for button (details). -->
                                 <i class="pi pi-circle-off visibilityHidden" />
                             </p:outputPanel>
-                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyPermissionUser('product:update')}">
+                            <p:outputPanel class="flexGrowOne" rendered="#{connectionBean.verifyPermissionUser('priceplatform:update')}">
                                 <!-- no filter for button (edit). -->
                                 <i class="pi pi-circle-off visibilityHidden" />
                             </p:outputPanel>
@@ -167,12 +167,12 @@
 
                     <!-- button column _____________________________________________ -->
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistdetails']}" rendered="#{connectionBean.verifyNotPermissionUser('product:update')}">
+                    <p:column headerText="#{I18N['application.listpage.headerlistdetails']}" rendered="#{connectionBean.verifyNotPermissionUser('priceplatform:update')}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
                         <p:commandButton type="hidden" action="#{productListBean.redirectPageWidthId('/view/crudProduct', pricePlatform.idProduct.id, 'r')}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistedit']}" rendered="#{connectionBean.verifyPermissionUser('product:update')}">
+                    <p:column headerText="#{I18N['application.listpage.headerlistedit']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:update')}">
                         <i class="pi pi-pencil" onclick="clickNext(this)"/>
                         <p:commandButton type="hidden" action="#{productListBean.redirectPageWidthId('/view/crudProduct', pricePlatform.idProduct.id, 'u')}"/>
                     </p:column>

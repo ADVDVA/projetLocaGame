@@ -36,7 +36,7 @@ public class ProductStaticBean {
 
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
 
