@@ -71,19 +71,14 @@ public class CategoryService {
      */
     public List<Category> findCategoryByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
-        if(asc){
-            return em.createNamedQuery("Category.SelectCategoryByFilterAsc", Category.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }else{
-            return em.createNamedQuery("Category.SelectCategoryByFilterDesc", Category.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }
+        return em.createNamedQuery("Category.SelectCategoryByFilter"+
+                ((orderBy.equals("id"))? "OrderByNum": "OrderByStr")+
+                ((asc)? "Asc": "Desc"),
+                Category.class)
+                .setParameter("researchWord", researchWord.toLowerCase())
+                .setParameter("orderBy", orderBy)
+                //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                .getResultList();
     }
 
     public int getCountOfJoin(int idCategory, EntityManager em){

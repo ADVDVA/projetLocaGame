@@ -28,6 +28,14 @@ public class CrudBean<T> {
 
 
 
-
+    private TableFilter tableFilter;
+    public void setTableFilter(TableFilter tableFilter){
+        this.tableFilter=tableFilter;
+    }
+    public void resetFilterOfTableFilter(){
+        if(tableFilter==null)
+            return;
+        tableFilter.resetFilter();
+    }
 
 }

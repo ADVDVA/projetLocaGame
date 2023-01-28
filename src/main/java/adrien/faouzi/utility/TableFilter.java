@@ -74,4 +74,12 @@ public class TableFilter {
         PrimeFaces.current().executeScript("applyClassWordResearch(\""+this.filter+"\")");
     }
 
+
+    //reset filter (call before an insert db, for apply last insert on the top of list).
+    public void resetFilter(){
+        this.order = "id";
+        this.orderAsc = false;
+        this.filter = "";
+    }
+
 }

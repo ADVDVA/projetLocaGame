@@ -33,22 +33,17 @@ public class ProductService implements IService<Product> {
      */
     public List<Product> findProductByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
-        if(orderBy.equals("pegi") || orderBy.equals("enable"))
+        if(orderBy.equals("enable"))
             asc = !asc;
 
-        if(asc){
-            return em.createNamedQuery("Product.SelectProductByFilterAsc", Product.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }else{
-            return em.createNamedQuery("Product.SelectProductByFilterDesc", Product.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }
+        return em.createNamedQuery("Product.SelectProductByFilter"+
+                ((orderBy.equals("id"))? "OrderByNum": "OrderByStr")+
+                ((asc)? "Asc": "Desc"),
+                Product.class)
+                .setParameter("researchWord", researchWord.toLowerCase())
+                .setParameter("orderBy", orderBy)
+                //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                .getResultList();
     }
 
     /**

@@ -21,6 +21,7 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
     public void loadPlatformSelected(TableFilter tableFilter){
 
         //when update form from this same form. --->
+        setTableFilter(tableFilter);
         if(!tableFilter.getNewRedirect()){ //reload form from same page.
             return; //do not reload entity from db.
         }
@@ -40,41 +41,36 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
 
 
     public String submitForm(HistoricalBean historicalBean, boolean permission){
+        if(!permission)
+            return null;
         boolean submitIsSuccess = true;
 
-        //do verification.
-        if(!permission){
-            submitIsSuccess=false;
-        }
+        //do create or update.
+        if(isModeSelected('c') || isModeSelected('u')){
 
-        if(submitIsSuccess){
+            EntityManager em = EMF.getEM();
+            PlatformService platformService = new PlatformService();
+            EntityTransaction transaction = em.getTransaction();
+            try{
+                transaction.begin();
+                if(isModeSelected('c')) {
+                    platformService.insertPlatform(this.elementCrudSelected, em); //insert.
+                    resetFilterOfTableFilter(); //if create mode and success insert, reset filter from page list.
+                }else
+                    platformService.updatePlatform(this.elementCrudSelected, em); //update.
 
-            //do create or update.
-            if(isModeSelected('c') || isModeSelected('u')){
-
-                EntityManager em = EMF.getEM();
-                PlatformService platformService = new PlatformService();
-                EntityTransaction transaction = em.getTransaction();
-                try{
-                    transaction.begin();
-                    if(isModeSelected('c'))
-                        platformService.insertPlatform(this.elementCrudSelected, em); //insert.
-                    else
-                        platformService.updatePlatform(this.elementCrudSelected, em); //update.
-                    transaction.commit();
-                }catch(Exception e){
-                    UtilityProcessing.debug("error catch (in create/update Platform) : "+e.getMessage());
-                    submitIsSuccess=false;
-                }finally{
-                    if(transaction.isActive())
-                        transaction.rollback();
-                    em.close();
-                }
-
-            }else{ //error
+                transaction.commit();
+            }catch(Exception e){
+                UtilityProcessing.debug("error catch (in create/update Platform) : "+e.getMessage());
                 submitIsSuccess=false;
+            }finally{
+                if(transaction.isActive())
+                    transaction.rollback();
+                em.close();
             }
 
+        }else{ //error
+            submitIsSuccess=false;
         }
 
         return ((submitIsSuccess)? historicalBean.backLastPageHistoric(): null);

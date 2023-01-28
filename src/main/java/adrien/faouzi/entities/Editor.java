@@ -10,8 +10,8 @@ import java.util.Set;
 @NamedQueries(value = {
         @NamedQuery(name= "Editor.SelectEditorAll", query = "select e from Editor e"),
         @NamedQuery(name= "Editor.SelectEditorByIdEditor", query = "select e from Editor e where (e.id = :idEditor)"),
-        @NamedQuery(name= "Editor.SelectEditorByFilterAsc",
-                query = "select e from Editor e " +
+        @NamedQuery(name= "Editor.SelectEditorByFilterOrderByStrAsc",
+                query = "select distinct e from Editor e " +
                         "where ( " +
                         "  ((lower(e.editorName) like concat('%', :researchWord, '%'))) " +
                         ") " +
@@ -19,13 +19,31 @@ import java.util.Set;
                         "  when (:orderBy like 'editorname') then e.editorName " +
                         "  else e.id " +
                         "end asc"),
-        @NamedQuery(name= "Editor.SelectEditorByFilterDesc",
-                query = "select e from Editor e " +
+        @NamedQuery(name= "Editor.SelectEditorByFilterOrderByStrDesc",
+                query = "select distinct e from Editor e " +
                         "where ( " +
                         "  ((lower(e.editorName) like concat('%', :researchWord, '%'))) " +
                         ") " +
                         "order by case " +
                         "  when (:orderBy like 'editorname') then e.editorName " +
+                        "  else e.id " +
+                        "end desc"),
+        @NamedQuery(name= "Editor.SelectEditorByFilterOrderByNumAsc",
+                query = "select distinct e from Editor e " +
+                        "where ( " +
+                        "  ((lower(e.editorName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'id') then e.id " +
+                        "  else e.id " +
+                        "end asc"),
+        @NamedQuery(name= "Editor.SelectEditorByFilterOrderByNumDesc",
+                query = "select distinct e from Editor e " +
+                        "where ( " +
+                        "  ((lower(e.editorName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'id') then e.id " +
                         "  else e.id " +
                         "end desc"),
         @NamedQuery(name= "Editor.SelectJoin",

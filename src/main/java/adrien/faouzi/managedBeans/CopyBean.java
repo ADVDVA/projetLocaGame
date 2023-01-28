@@ -27,6 +27,7 @@ public class CopyBean extends CrudBean<Copy> implements Serializable {
     public void loadCopySelected(TableFilter tableFilter){
 
         //when update form from this same form. --->
+        setTableFilter(tableFilter);
         if(!tableFilter.getNewRedirect()){ //reload form from same page.
             return; //do not reload entity from db.
         }
@@ -46,47 +47,44 @@ public class CopyBean extends CrudBean<Copy> implements Serializable {
 
 
     public String submitForm(HistoricalBean historicalBean, boolean permission){
+        if(!permission)
+            return null;
         boolean submitIsSuccess = true;
 
-        //do verification.
-        if(!permission){
-            submitIsSuccess=false;
-        }
+        //do create or update.
+        if(isModeSelected('c') || isModeSelected('u')){
 
-        if(submitIsSuccess){
+            EntityManager em = EMF.getEM();
+            CopyService copyService = new CopyService();
+            EntityTransaction transaction = em.getTransaction();
+            Copy copy;
+            try{
+                transaction.begin();
 
-            //do create or update.
-            if(isModeSelected('c') || isModeSelected('u')){
+                this.elementCrudSelected.setCopyNameFalse(); //set a copy name false, for validate insert.
+                copy = ((isModeSelected('c'))?
+                        copyService.insert(this.elementCrudSelected, em): //insert.
+                        copyService.update(this.elementCrudSelected, em) //update.
+                );
+                copy.setCopyName(); //re-apply copy name based on his own id.
+                copyService.update(this.elementCrudSelected, em); //update copy name.
 
-                EntityManager em = EMF.getEM();
-                CopyService copyService = new CopyService();
-                EntityTransaction transaction = em.getTransaction();
-                Copy copy;
-                try{
-                    transaction.begin();
-
-                    this.elementCrudSelected.setCopyNameFalse(); //set a copy name false, for validate insert.
-                    copy = ((isModeSelected('c'))?
-                            copyService.insert(this.elementCrudSelected, em): //insert.
-                            copyService.update(this.elementCrudSelected, em) //update.
-                    );
-                    copy.setCopyName(); //re-apply copy name based on his own id.
-                    copyService.update(this.elementCrudSelected, em); //update copy name.
-
-                    transaction.commit();
-                }catch(Exception e){
-                    UtilityProcessing.debug("error catch (in create/update Copy) : "+e.getMessage());
-                    submitIsSuccess=false;
-                }finally{
-                    if(transaction.isActive())
-                        transaction.rollback();
-                    em.close();
+                if(isModeSelected('c')){
+                    resetFilterOfTableFilter(); //if create mode and success insert, reset filter from page list.
                 }
 
-            }else{ //error
+                transaction.commit();
+            }catch(Exception e){
+                UtilityProcessing.debug("error catch (in create/update Copy) : "+e.getMessage());
                 submitIsSuccess=false;
+            }finally{
+                if(transaction.isActive())
+                    transaction.rollback();
+                em.close();
             }
 
+        }else{ //error
+            submitIsSuccess=false;
         }
 
         return ((submitIsSuccess)? historicalBean.backLastPageHistoric(): null);

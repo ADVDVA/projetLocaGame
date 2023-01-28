@@ -86,4 +86,17 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
         }
 
     }
+
+
+    //function for add basket in theory, not full script, just alert js with name product selected.
+    public void AddBasket(int idPricePlatform, boolean permission){
+        if(!permission)
+            return;
+
+        //add basket not scripted.
+        //insert join order-price-platform (idPricePlatform).
+        Priceplatform pricePlatformToAddBasket = PricePlatformConverter.getAsObjectStatic(String.valueOf(idPricePlatform));
+
+        PrimeFaces.current().executeScript("alertI18NAddBasket(\"successAddBasket\", \""+pricePlatformToAddBasket.getPricePlatformName()+"\")");
+    }
 }

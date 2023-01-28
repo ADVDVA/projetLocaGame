@@ -16,8 +16,8 @@ import java.util.Set;
                 query = "select c from Category c"),
         @NamedQuery(name= "Category.SelectCategoryByIdCategory",
                 query = "select c from Category c where (c.id = :idCategory)"),
-        @NamedQuery(name= "Category.SelectCategoryByFilterAsc",
-                query = "select c from Category c " +
+        @NamedQuery(name= "Category.SelectCategoryByFilterOrderByStrAsc",
+                query = "select distinct c from Category c " +
                         "where ( " +
                         "  ((lower(c.categoryName) like concat('%', :researchWord, '%'))) " +
                         ") " +
@@ -25,13 +25,31 @@ import java.util.Set;
                         "  when (:orderBy like 'categoryname') then c.categoryName " +
                         "  else c.id " +
                         "end asc"),
-        @NamedQuery(name= "Category.SelectCategoryByFilterDesc",
-                query = "select c from Category c " +
+        @NamedQuery(name= "Category.SelectCategoryByFilterOrderByStrDesc",
+                query = "select distinct c from Category c " +
                         "where ( " +
                         "  ((lower(c.categoryName) like concat('%', :researchWord, '%'))) " +
                         ") " +
                         "order by case " +
                         "  when (:orderBy like 'categoryname') then c.categoryName " +
+                        "  else c.id " +
+                        "end desc"),
+        @NamedQuery(name= "Category.SelectCategoryByFilterOrderByNumAsc",
+                query = "select distinct c from Category c " +
+                        "where ( " +
+                        "  ((lower(c.categoryName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'id') then c.id " +
+                        "  else c.id " +
+                        "end asc"),
+        @NamedQuery(name= "Category.SelectCategoryByFilterOrderByNumDesc",
+                query = "select distinct c from Category c " +
+                        "where ( " +
+                        "  ((lower(c.categoryName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'id') then c.id " +
                         "  else c.id " +
                         "end desc"),
         @NamedQuery(name= "Category.SelectJoin",

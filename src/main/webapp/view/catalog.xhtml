@@ -58,7 +58,7 @@
                                 <p:commandButton value="#{I18N['application.listpage.addelementbutton']}"
                                                  class="ui-button-warning"
                                                  icon="pi pi-plus"
-                                                 action="#{productListBean.redirectPageWidthId('/view/crudProduct', 0, 'c')}"
+                                                 action="#{pricePlatformListBean.redirectPageWidthId('/view/crudPricePlatform', 0, 'c')}"
                                                  rendered="#{connectionBean.verifyPermissionUser('priceplatform:insert')}"
                                                  iconPos="right"/>
                             </div>
@@ -92,8 +92,8 @@
                                 <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('pegi')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
-                                <i class="#{pricePlatformListBean.getOrderIcon('rentaleprice')}" onclick="clickNext(this)"/>
-                                <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('rentaleprice')}" update="@form"/>
+                                <i class="#{pricePlatformListBean.getOrderIcon('rentalprice')}" onclick="clickNext(this)"/>
+                                <p:commandButton type="hidden" action="#{pricePlatformListBean.editOrderTable('rentalprice')}" update="@form"/>
                             </div>
                             <div class="flexGrowOne">
                                 <i class="#{pricePlatformListBean.getOrderIcon('enable')}" onclick="clickNext(this)"/>
@@ -122,7 +122,7 @@
                     </f:facet>
 
                     <p:column headerText="#{I18N['application.listpage.name']}" class="columnTableListResearchWord">
-                        <h:outputText value="#{pricePlatform.idProduct.productName}"/>
+                        <h:outputText value="#{pricePlatform.pricePlatformName}"/>
                     </p:column>
 
                     <!-- get category concat. (from product, from jointure, from category) -->
@@ -169,17 +169,19 @@
 
                     <p:column headerText="#{I18N['application.listpage.headerlistdetails']}" rendered="#{connectionBean.verifyNotPermissionUser('priceplatform:update')}">
                         <i class="pi pi-info-circle" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{productListBean.redirectPageWidthId('/view/crudProduct', pricePlatform.idProduct.id, 'r')}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/crudPricePlatform', pricePlatform.id, 'r')}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.listpage.headerlistedit']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:update')}">
                         <i class="pi pi-pencil" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{productListBean.redirectPageWidthId('/view/crudProduct', pricePlatform.idProduct.id, 'u')}"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/crudPricePlatform', pricePlatform.id, 'u')}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:addbasket')}">
-                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="clickNext(this, #{pricePlatform.getEnableForDisabledButton()})"/>
-                        <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/welcome', pricePlatform.id)}"/>
+                    <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:addbasket')}"> <!--
+                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="#{((pricePlatform.getEnableForDisabledButton())? 'clickNext(this, true)':'clickNext(this, false)')}"/> <- clickNext(this, #{pricePlatform.getEnableForDisabledButton()}) -
+                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="clickNext(this, #{pricePlatform.getEnableForDisabledButton()})"/> -->
+                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="clickNext(this)"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.AddBasket(pricePlatform.id, connectionBean.verifyPermissionUser('priceplatform:addbasket'))}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.listpage.headerlistdelete']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:delete')}">
@@ -194,7 +196,7 @@
                     <f:event type="preRenderView" listener="#{pricePlatformListBean.applyResearchWordClass()}"/>
                 </f:metadata>
 
-                <!-- message i18n for delete processing -->
+                <!-- message i18n for delete and add basket processing -->
                 <p:outputPanel class="hidden">
                     <span class="confirmDelete">
                         <h:outputText value="#{I18N['application.listpage.messageconfirmdelete']}"/>
@@ -207,6 +209,10 @@
                     </span>
                     <span class="errorProcessDelete">
                         <h:outputText value="#{I18N['application.listpage.errorprocessdelete']}"/>
+                    </span>
+
+                    <span class="successAddBasket">
+                        <h:outputText value="#{I18N['application.listpage.successAddBasket']}"/>
                     </span>
                 </p:outputPanel>
 

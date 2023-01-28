@@ -61,19 +61,14 @@ public class EditorService {
      */
     public List<Editor> findEditorByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
-        if(asc){
-            return em.createNamedQuery("Editor.SelectEditorByFilterAsc", Editor.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }else{
-            return em.createNamedQuery("Editor.SelectEditorByFilterDesc", Editor.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }
+        return em.createNamedQuery("Editor.SelectEditorByFilter"+
+                ((orderBy.equals("id"))? "OrderByNum": "OrderByStr")+
+                ((asc)? "Asc": "Desc"),
+                Editor.class)
+                .setParameter("researchWord", researchWord.toLowerCase())
+                .setParameter("orderBy", orderBy)
+                //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                .getResultList();
     }
 
     public int getCountOfJoin(int idEditor, EntityManager em){

@@ -5,8 +5,6 @@ import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Editor;
 import adrien.faouzi.entities.Languagegame;
 import adrien.faouzi.entities.Product;
-import adrien.faouzi.enumeration.MultiPlayer;
-import adrien.faouzi.enumeration.Pegi;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.*;
 import adrien.faouzi.utility.CrudBean;
@@ -30,6 +28,7 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
     public void loadProductSelected(TableFilter tableFilter){
 
         //when update form from this same form. --->
+        setTableFilter(tableFilter);
         isNewRedirect = tableFilter.getNewRedirect();
         if(!isNewRedirect){ //reload form from same page.
             return; //do not reload entity from db.
@@ -57,18 +56,16 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
     //submit function.
     public String submitForm(HistoricalBean historicalBean, boolean permission){
+        if(!permission)
+            return null;
         boolean submitIsSuccess = true;
 
         //do verification.
-        if(!permission){
-            submitIsSuccess=false;
-        }else if(isCategoryApplyError(false)){
+        if(isCategoryApplyError(false)){
             submitIsSuccess=false;
         }else if(isLanguageApplyError(false)){
             submitIsSuccess=false;
-        }
-
-        if(submitIsSuccess){
+        }else{
 
             //do create or update.
             if(isModeSelected('c') || isModeSelected('u')){
@@ -175,6 +172,9 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
                     }
 
+                    if(isModeSelected('c')){ //if create mode and success insert, reset filter from page list.
+                        resetFilterOfTableFilter();
+                    }
 
                     transaction.commit();
                 }catch(Exception e){

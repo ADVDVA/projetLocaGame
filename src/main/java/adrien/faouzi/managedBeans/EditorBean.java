@@ -21,6 +21,7 @@ public class EditorBean extends CrudBean<Editor> implements Serializable {
     public void loadEditorSelected(TableFilter tableFilter){
 
         //when update form from this same form. --->
+        setTableFilter(tableFilter);
         if(!tableFilter.getNewRedirect()){ //reload form from same page.
             return; //do not reload entity from db.
         }
@@ -40,41 +41,35 @@ public class EditorBean extends CrudBean<Editor> implements Serializable {
 
 
     public String submitForm(HistoricalBean historicalBean, boolean permission){
+        if(!permission)
+            return null;
         boolean submitIsSuccess = true;
 
-        //do verification.
-        if(!permission){
-            submitIsSuccess=false;
-        }
+        //do create or update.
+        if(isModeSelected('c') || isModeSelected('u')){
 
-        if(submitIsSuccess){
-
-            //do create or update.
-            if(isModeSelected('c') || isModeSelected('u')){
-
-                EntityManager em = EMF.getEM();
-                EditorService editorService = new EditorService();
-                EntityTransaction transaction = em.getTransaction();
-                try{
-                    transaction.begin();
-                    if(isModeSelected('c'))
-                        editorService.insertEditor(this.elementCrudSelected, em); //insert.
-                    else
-                        editorService.updateEditor(this.elementCrudSelected, em); //update.
-                    transaction.commit();
-                }catch(Exception e){
-                    UtilityProcessing.debug("error catch (in create/update Editor) : "+e.getMessage());
-                    submitIsSuccess=false;
-                }finally{
-                    if(transaction.isActive())
-                        transaction.rollback();
-                    em.close();
-                }
-
-            }else{ //error
+            EntityManager em = EMF.getEM();
+            EditorService editorService = new EditorService();
+            EntityTransaction transaction = em.getTransaction();
+            try{
+                transaction.begin();
+                if(isModeSelected('c')) {
+                    editorService.insertEditor(this.elementCrudSelected, em); //insert.
+                    resetFilterOfTableFilter(); //if create mode and success insert, reset filter from page list.
+                }else
+                    editorService.updateEditor(this.elementCrudSelected, em); //update.
+                transaction.commit();
+            }catch(Exception e){
+                UtilityProcessing.debug("error catch (in create/update Editor) : "+e.getMessage());
                 submitIsSuccess=false;
+            }finally{
+                if(transaction.isActive())
+                    transaction.rollback();
+                em.close();
             }
 
+        }else{ //error
+            submitIsSuccess=false;
         }
 
         return ((submitIsSuccess)? historicalBean.backLastPageHistoric(): null);

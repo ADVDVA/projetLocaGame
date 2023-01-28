@@ -16,7 +16,7 @@ import java.util.*;
         @NamedQuery(name= "Product.SelectProductAll", query = "select p from Product p"),
         @NamedQuery(name= "Product.SelectProductByIdProduct", query = "select p from Product p where (p.id = :idProduct)"),
 
-        @NamedQuery(name= "Product.SelectProductByFilterAsc",
+        @NamedQuery(name= "Product.SelectProductByFilterOrderByStrAsc",
                 query = "select distinct p from Product p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
                         "join fetch cp.idCategory c " +
@@ -43,7 +43,7 @@ import java.util.*;
                 //"  else -1 " +
                 //"end"
         ),
-        @NamedQuery(name= "Product.SelectProductByFilterDesc",
+        @NamedQuery(name= "Product.SelectProductByFilterOrderByStrDesc",
                 query = "select distinct p from Product p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
                         "join fetch cp.idCategory c " +
@@ -63,6 +63,52 @@ import java.util.*;
                         "  when (:orderBy like 'pegi') then p.pegi "+
                         "  when (:orderBy like 'daterelease') then p.releaseDate "+
                         "  when (:orderBy like 'enable') then p.enable "+
+                        "  else p.id " +
+                        "end desc" //+
+                //"* case " +
+                //"  when (:ascOrDesc like 'asc') then 1 " +
+                //"  else -1 " +
+                //"end"
+        ),
+        @NamedQuery(name= "Product.SelectProductByFilterOrderByNumAsc",
+                query = "select distinct p from Product p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
+                        "where ( " +
+                        "  ((lower(p.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(p.idEditor.editorName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  ((lower(p.multiPlayer) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(lg.languageName)) like concat('%', :researchWord, '%')) "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'id') then p.id "+
+                        //"  when (:orderBy like 'daterelease') then p.releaseDate "+
+                        "  else p.id " +
+                        "end asc" //+
+                //"* case " +
+                //"  when (:ascOrDesc like 'asc') then 1 " +
+                //"  else -1 " +
+                //"end"
+        ),
+        @NamedQuery(name= "Product.SelectProductByFilterOrderByNumDesc",
+                query = "select distinct p from Product p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
+                        "where ( " +
+                        "  ((lower(p.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(p.idEditor.editorName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  ((lower(p.multiPlayer) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(lg.languageName)) like concat('%', :researchWord, '%')) "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'id') then p.id "+
+                        //"  when (:orderBy like 'daterelease') then p.releaseDate "+
                         "  else p.id " +
                         "end desc" //+
                 //"* case " +
@@ -132,7 +178,7 @@ public class Product implements IEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id && idEditor == product.idEditor && enable == product.enable && Objects.equals(productName, product.productName) && Objects.equals(pegi, product.pegi) && Objects.equals(multiPlayer, product.multiPlayer) && Objects.equals(releaseDate, product.releaseDate) && Objects.equals(description, product.description);
+        return id == product.id; // && idEditor == product.idEditor && enable == product.enable && Objects.equals(productName, product.productName) && Objects.equals(pegi, product.pegi) && Objects.equals(multiPlayer, product.multiPlayer) && Objects.equals(releaseDate, product.releaseDate) && Objects.equals(description, product.description);
     }
 
     @Override

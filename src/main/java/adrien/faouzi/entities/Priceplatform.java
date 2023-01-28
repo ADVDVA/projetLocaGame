@@ -3,13 +3,14 @@ package adrien.faouzi.entities;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 
 @NamedQueries(value = {
-        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterAsc",
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterOrderByStrAsc",
                 query = "select distinct pp from Priceplatform pp " +
                         "join fetch pp.idProduct p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
@@ -17,16 +18,16 @@ import java.util.Set;
                         "join Languageproduct lp on (lp.idProduct = p) " +
                         "join fetch lp.idLanguage lg " +
                         "where ( " +
-                        "  ((lower(pp.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
-                        "  ((lower(c.categoryName)) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) or " +
+                        "  (lower(c.categoryName) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
                         "  (lower(pp.idPlatform.platformName) like concat('%', :researchWord, '%')) or "+ //condition for filter all platform.
-                        "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
+                        "  (lower(lg.languageName) like concat('%', :researchWord, '%')) "+ //condition for filter all language.
                         ") "+
                         "order by case " +
-                        "  when (:orderBy like 'productname') then pp.idProduct.productName " +
-                        "  when (:orderBy like 'pegi') then pp.idProduct.pegi "+
-                        "  when (:orderBy like 'rentaleprice') then pp.rentalPrice "+
-                        "  when (:orderBy like 'enable') then pp.enable "+
+                        "  when (:orderBy like 'productname') then concat(pp.idProduct.productName, ' (', pp.idPlatform.platformName, ')') " +
+                        "  when (:orderBy like 'pegi') then pp.idProduct.pegi " +
+                        //"  when (:orderBy like 'rentalprice') then pp.rentalPrice " +
+                        "  when (:orderBy like 'enable') then pp.enable " +
                         "  else pp.id " +
                         "end asc" //+
                         //"* case " +
@@ -34,7 +35,7 @@ import java.util.Set;
                         //"  else -1 " +
                         //"end"
         ),
-        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterDesc",
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterOrderByStrDesc",
                 query = "select distinct pp from Priceplatform pp " +
                         "join fetch pp.idProduct p " +
                         "join Categoryproduct cp on (cp.idProduct = p) " +
@@ -48,16 +49,52 @@ import java.util.Set;
                         "  (lower(lg.languageName)) like concat('%', :researchWord, '%') "+ //condition for filter all language.
                         ") "+
                         "order by case " +
-                        "  when (:orderBy like 'productname') then pp.idProduct.productName " +
-                        "  when (:orderBy like 'pegi') then pp.idProduct.pegi "+
-                        "  when (:orderBy like 'rentaleprice') then pp.rentalPrice "+
-                        "  when (:orderBy like 'enable') then pp.enable "+
+                        "  when (:orderBy like 'productname') then concat(pp.idProduct.productName, ' (', pp.idPlatform.platformName, ')') " +
+                        "  when (:orderBy like 'pegi') then pp.idProduct.pegi " +
+                        //"  when (:orderBy like 'rentalprice') then pp.rentalPrice " +
+                        "  when (:orderBy like 'enable') then pp.enable " +
                         "  else pp.id " +
                         "end desc" //+
                         //"* case " +
                         //"  when (:ascOrDesc like 'asc') then 1 " +
                         //"  else -1 " +
                         //"end"
+        ),
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterOrderByNumAsc",
+                query = "select distinct pp from Priceplatform pp " +
+                        "join fetch pp.idProduct p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
+                        "where ( " +
+                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) or " +
+                        "  (lower(c.categoryName) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  (lower(pp.idPlatform.platformName) like concat('%', :researchWord, '%')) or "+ //condition for filter all platform.
+                        "  (lower(lg.languageName) like concat('%', :researchWord, '%')) "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'rentalprice') then pp.rentalPrice " +
+                        "  else pp.id " +
+                        "end asc" //need distinct request for order by string AND number
+        ),
+        @NamedQuery(name= "PricePlatform.SelectPricePlatformByFilterOrderByNumDesc",
+                query = "select distinct pp from Priceplatform pp " +
+                        "join fetch pp.idProduct p " +
+                        "join Categoryproduct cp on (cp.idProduct = p) " +
+                        "join fetch cp.idCategory c " +
+                        "join Languageproduct lp on (lp.idProduct = p) " +
+                        "join fetch lp.idLanguage lg " +
+                        "where ( " +
+                        "  (lower(pp.idProduct.productName) like concat('%', :researchWord, '%')) or " +
+                        "  (lower(c.categoryName) like concat('%', :researchWord, '%')) or "+ //condition for filter all category.
+                        "  (lower(pp.idPlatform.platformName) like concat('%', :researchWord, '%')) or "+ //condition for filter all platform.
+                        "  (lower(lg.languageName) like concat('%', :researchWord, '%')) "+ //condition for filter all language.
+                        ") "+
+                        "order by case " +
+                        "  when (:orderBy like 'rentalprice') then pp.rentalPrice " +
+                        "  else pp.id " +
+                        "end desc" //need distinct request for order by string AND number
         ),
         @NamedQuery(name= "PricePlatform.SelectPricePlatformById",
                 query = "select pp from Priceplatform pp where (:idPricePlatform = pp.id)"
@@ -77,20 +114,24 @@ public class Priceplatform {
     @Column(name = "idPricePlatform", nullable = false)
     private int id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idProduct", nullable = false)
     private Product idProduct;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idPlatform", nullable = false)
     private Platform idPlatform;
 
+    @NotNull
     @Column(name = "rentalPrice", nullable = false)
     private float rentalPrice;
 
     @Column(name = "availableStock", nullable = false)
     private int availableStock;
 
+    @NotNull
     @Column(name = "latePrice", nullable = false)
     private float latePrice;
 

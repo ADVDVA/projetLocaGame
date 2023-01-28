@@ -6,11 +6,11 @@ import java.util.List;
 
 public enum Pegi
 {
-    TROIS ("3"),
-    SEPT ("7"),
-    DOUZE ("12"),
-    SEIZE ("16"),
-    DIXHUIT ("18");
+    A_TROIS ("3"),
+    B_SEPT ("7"),
+    C_DOUZE ("12"),
+    D_SEIZE ("16"),
+    E_DIXHUIT ("18");
 
     /**
      * field

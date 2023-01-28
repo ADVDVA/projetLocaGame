@@ -21,6 +21,7 @@ public class CategoryBean extends CrudBean<Category> implements Serializable {
     public void loadCategorySelected(TableFilter tableFilter){
 
         //when update form from this same form. --->
+        setTableFilter(tableFilter);
         if(!tableFilter.getNewRedirect()){ //reload form from same page.
             return; //do not reload entity from db.
         }
@@ -40,41 +41,35 @@ public class CategoryBean extends CrudBean<Category> implements Serializable {
 
 
     public String submitForm(HistoricalBean historicalBean, boolean permission){
+        if(!permission)
+            return null;
         boolean submitIsSuccess = true;
 
-        //do verification.
-        if(!permission){
-            submitIsSuccess=false;
-        }
+        //do create or update.
+        if(isModeSelected('c') || isModeSelected('u')){
 
-        if(submitIsSuccess){
-
-            //do create or update.
-            if(isModeSelected('c') || isModeSelected('u')){
-
-                EntityManager em = EMF.getEM();
-                CategoryService categoryService = new CategoryService();
-                EntityTransaction transaction = em.getTransaction();
-                try{
-                    transaction.begin();
-                    if(isModeSelected('c'))
-                        categoryService.insertCategory(this.elementCrudSelected, em); //insert.
-                    else
-                        categoryService.updateCategory(this.elementCrudSelected, em); //update.
-                    transaction.commit();
-                }catch(Exception e){
-                    UtilityProcessing.debug("error catch (in create/update Category) : "+e.getMessage());
-                    submitIsSuccess=false;
-                }finally{
-                    if(transaction.isActive())
-                        transaction.rollback();
-                    em.close();
-                }
-
-            }else{ //error
+            EntityManager em = EMF.getEM();
+            CategoryService categoryService = new CategoryService();
+            EntityTransaction transaction = em.getTransaction();
+            try{
+                transaction.begin();
+                if(isModeSelected('c')) {
+                    categoryService.insertCategory(this.elementCrudSelected, em); //insert.
+                    resetFilterOfTableFilter(); //if create mode and success insert, reset filter from page list.
+                }else
+                    categoryService.updateCategory(this.elementCrudSelected, em); //update.
+                transaction.commit();
+            }catch(Exception e){
+                UtilityProcessing.debug("error catch (in create/update Category) : "+e.getMessage());
                 submitIsSuccess=false;
+            }finally{
+                if(transaction.isActive())
+                    transaction.rollback();
+                em.close();
             }
 
+        }else{ //error
+            submitIsSuccess=false;
         }
 
         return ((submitIsSuccess)? historicalBean.backLastPageHistoric(): null);

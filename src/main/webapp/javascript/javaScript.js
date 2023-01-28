@@ -80,3 +80,16 @@ function alertI18NMessage(messageClass, reloadPage=false){
         buttonReloadResearchForm[0].click();
     }
 }
+
+//alert add basket i18n in dom.
+function alertI18NAddBasket(messageClass, namePricePlatformToAddBasket){
+    let getDomMessage = document.getElementsByClassName(messageClass);
+    if(getDomMessage.length !== 1)
+        return;
+    setTimeout(function(){
+        alert(
+            getDomMessage[0].innerHTML+'\n'+
+            'version : '+namePricePlatformToAddBasket
+        );
+    }, 60);
+}

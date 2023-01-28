@@ -49,19 +49,14 @@ public class CopyService {
      */
     public List<Copy> findCopyByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
-        if(asc){
-            return em.createNamedQuery("Copy.SelectCopyByFilterAsc", Copy.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }else{
-            return em.createNamedQuery("Copy.SelectCopyByFilterDesc", Copy.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }
+        return em.createNamedQuery("Copy.SelectCopyByFilter"+
+                ((orderBy.equals("id") || orderBy.equals("buyprice"))? "OrderByNum": "OrderByStr")+
+                ((asc)? "Asc": "Desc"),
+                Copy.class)
+                .setParameter("researchWord", researchWord.toLowerCase())
+                .setParameter("orderBy", orderBy)
+                //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                .getResultList();
     }
 
 

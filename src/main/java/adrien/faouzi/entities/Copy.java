@@ -15,34 +15,56 @@ import java.util.Set;
 
 @NamedQueries(value = {
         @NamedQuery(name= "Copy.SelectCopyByIdCopy", query = "select c from Copy c where (c.id = :idCopy)"),
-        @NamedQuery(name= "Copy.SelectCopyByFilterAsc",
-                query = "select c from Copy c " +
+        @NamedQuery(name= "Copy.SelectCopyByFilterOrderByStrAsc",
+                query = "select distinct c from Copy c " +
                         "where ( " +
-                        //"  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
-                        //"  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
                         "  ((lower(c.copyName) like concat('%', :researchWord, '%'))) " +
                         ") " +
                         "order by case " +
-                        //"  when (:orderBy like 'storename') then c.idStore.storeName " +
-                        //"  when (:orderBy like 'productname') then c.idPricePlatform.idProduct.productName " +
+                        "  when (:orderBy like 'storename') then c.idStore.storeName " +
+                        "  when (:orderBy like 'productname') then c.idPricePlatform.idProduct.productName " +
                         "  when (:orderBy like 'copyname') then c.copyName " +
                         //"  when (:orderBy like 'buyprice') then c.buyPrice " +
-                        //"  when (:orderBy like 'status') then c.status " +
+                        "  when (:orderBy like 'status') then c.status " +
                         "  else c.id " +
                         "end asc"),
-        @NamedQuery(name= "Copy.SelectCopyByFilterDesc",
-                query = "select c from Copy c " +
+        @NamedQuery(name= "Copy.SelectCopyByFilterOrderByStrDesc",
+                query = "select distinct c from Copy c " +
                         "where ( " +
-                        //"  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
-                        //"  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
                         "  ((lower(c.copyName) like concat('%', :researchWord, '%'))) " +
                         ") " +
                         "order by case " +
-                        //"  when (:orderBy like 'storename') then c.idStore.storeName " +
-                        //"  when (:orderBy like 'productname') then c.idPricePlatform.idProduct.productName " +
+                        "  when (:orderBy like 'storename') then c.idStore.storeName " +
+                        "  when (:orderBy like 'productname') then c.idPricePlatform.idProduct.productName " +
                         "  when (:orderBy like 'copyname') then c.copyName " +
                         //"  when (:orderBy like 'buyprice') then c.buyPrice " +
-                        //"  when (:orderBy like 'status') then c.status " +
+                        "  when (:orderBy like 'status') then c.status " +
+                        "  else c.id " +
+                        "end desc"),
+        @NamedQuery(name= "Copy.SelectCopyByFilterOrderByNumAsc",
+                query = "select distinct c from Copy c " +
+                        "where ( " +
+                        "  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.copyName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'buyprice') then c.buyPrice " +
+                        "  else c.id " +
+                        "end asc"),
+        @NamedQuery(name= "Copy.SelectCopyByFilterOrderByNumDesc",
+                query = "select distinct c from Copy c " +
+                        "where ( " +
+                        "  ((lower(c.idStore.storeName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.idPricePlatform.idProduct.productName) like concat('%', :researchWord, '%'))) or " +
+                        "  ((lower(c.copyName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'buyprice') then c.buyPrice " +
                         "  else c.id " +
                         "end desc"),
         @NamedQuery(name= "Copy.SelectCountCopy",

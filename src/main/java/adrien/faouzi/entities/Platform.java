@@ -13,7 +13,7 @@ import java.util.Set;
         @NamedQuery(name = "Platform.SelectPlatformByIdPlatform",
                 query = "select p from Platform p where (p.id = :idPlatform)"),
         @NamedQuery(name= "Platform.SelectPlatformByFilterAsc",
-                query = "select p from Platform p " +
+                query = "select distinct p from Platform p " +
                         "where ( " +
                         "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
                         ") " +
@@ -22,7 +22,7 @@ import java.util.Set;
                         "  else p.id " +
                         "end asc"),
         @NamedQuery(name= "Platform.SelectPlatformByFilterDesc",
-                query = "select p from Platform p " +
+                query = "select distinct p from Platform p " +
                         "where ( " +
                         "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
                         ") " +
@@ -54,7 +54,7 @@ public class Platform {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Platform platform = (Platform) o;
-        return id == platform.id && Objects.equals(platformName, platform.platformName);
+        return id == platform.id;// && Objects.equals(platformName, platform.platformName);
     }
 
     @Override
