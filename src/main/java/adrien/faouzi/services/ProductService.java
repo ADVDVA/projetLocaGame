@@ -2,15 +2,16 @@ package adrien.faouzi.services;
 
 import adrien.faouzi.Interface.IService;
 import adrien.faouzi.entities.*;
-import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class ProductService implements IService<Product> {
+public class ProductService {
 
     /**
-     * get all product from db.
+     * get all entity from db.
+     * @param em entity manager.
+     * @return list entity.
      */
     public List<Product> selectProductAll(EntityManager em)
     {
@@ -18,8 +19,13 @@ public class ProductService implements IService<Product> {
                 .getResultList();
     }
 
+
+
     /**
-     * get one product from db, selected by id.
+     * get single entity by id entity.
+     * @param idProduct id entity.
+     * @param em entity manager.
+     * @return entity match.
      */
     public Product selectProductByIdProduct(int idProduct, EntityManager em)
     {
@@ -28,8 +34,15 @@ public class ProductService implements IService<Product> {
                 .getSingleResult();
     }
 
+
+
     /**
-     * PricePlatform make research catalog.
+     * research entity matching with a filter.
+     * @param researchWord word using for research.
+     * @param orderBy word using for order.
+     * @param asc is order ascending.
+     * @param em entity manager.
+     * @return list entity matching.
      */
     public List<Product> findProductByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
@@ -46,23 +59,13 @@ public class ProductService implements IService<Product> {
                 .getResultList();
     }
 
-    /**
-     * get Product from db select by id.
-     */
-    public Product selectEntityByIdEntity(int idEntity, EntityManager em)
-    {
-        return selectProductByIdProduct(idEntity, em);
-    }
+
 
     /**
-     * get Product from db select by id.
-     */
-    public static ProductService instantiate(){
-        return new ProductService();
-    }
-
-    /**
-     * insert Product in db.
+     * insert an entity in db.
+     * @param product entity to insert.
+     * @param em entity manager.
+     * @return entity inserted.
      */
     public Product insertProduct(Product product, EntityManager em)
     {
@@ -71,8 +74,13 @@ public class ProductService implements IService<Product> {
         return product;
     }
 
+
+
     /**
-     * update Product in db.
+     * update an entity in db.
+     * @param product entity to update.
+     * @param em entity manager.
+     * @return entity updated.
      */
     public Product updateProduct(Product product, EntityManager em)
     {
@@ -82,6 +90,13 @@ public class ProductService implements IService<Product> {
     }
 
 
+
+    /**
+     * count join of an entity before delete.
+     * @param idProduct id of entity ask.
+     * @param em entity manager.
+     * @return count of join.
+     */
     public int getCountOfJoinPricePlatform(int idProduct, EntityManager em){
         return em.createNamedQuery("Product.SelectJoinPricePlatform", Priceplatform.class)
                 .setParameter("idProduct", idProduct)
@@ -89,6 +104,12 @@ public class ProductService implements IService<Product> {
     }
 
 
+
+    /**
+     * delete entity from db.
+     * @param product entity ask delete.
+     * @param em entity manager.
+     */
     public void delete(Product product, EntityManager em){
         if(!em.contains(product))
             product = em.merge(product);
@@ -97,8 +118,11 @@ public class ProductService implements IService<Product> {
     }
 
 
+
     /**
-     * delete join bitwin product and category (before delete product)
+     * delete join of categoryProduct from db, before delete a product.
+     * @param idProduct entity gonna be delete.
+     * @param em entity manager.
      */
     public void deleteCategoryProductJoinToAProduct(int idProduct, EntityManager em){
         List<Categoryproduct> categoryProducts = em.createNamedQuery("Product.SelectJoinCategoryProduct", Categoryproduct.class)
@@ -114,8 +138,11 @@ public class ProductService implements IService<Product> {
     }
 
 
+
     /**
-     * delete join bitwin product and language (before delete product)
+     * delete join of languageProduct from db, before delete a product.
+     * @param idProduct entity gonna be delete.
+     * @param em entity manager.
      */
     public void deleteLanguageProductJoinToAProduct(int idProduct, EntityManager em){
         List<Languageproduct> languageProducts = em.createNamedQuery("Product.SelectJoinLanguageProduct", Languageproduct.class)

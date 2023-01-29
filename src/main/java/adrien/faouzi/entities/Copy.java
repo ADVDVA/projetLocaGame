@@ -72,7 +72,14 @@ import java.util.Set;
                         "where ( " +
                         "  (c.idPricePlatform.id = :idPricePlatform) and " +
                         "  (c.id < :idCopy) " +
+                        ")"),
+        @NamedQuery(name= "Copy.SelectCountCopyAvailableForAPricePlatform",
+                query = "select c from Copy c " +
+                        "where ( " +
+                        "  (c.idPricePlatform.id = :idPricePlatform) and " +
+                        "  (c.status = :statusDisponible) " +
                         ")")
+
 })
 @Entity
 @Table(name = "copy", indexes = {
@@ -150,6 +157,9 @@ public class Copy {
 
     public float getBuyPrice() {
         return buyPrice;
+    }
+    public String getBuyPriceFormatStr() {
+        return UtilityProcessing.floatToStrTwoDigit(this.buyPrice);
     }
 
     public void setBuyPrice(float buyPrice) {

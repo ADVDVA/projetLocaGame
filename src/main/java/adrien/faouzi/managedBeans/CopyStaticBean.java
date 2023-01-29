@@ -1,22 +1,23 @@
 package adrien.faouzi.managedBeans;
 
 import adrien.faouzi.entities.Copy;
-import adrien.faouzi.entities.Product;
 import adrien.faouzi.projetlocagame.connexion.EMF;
-import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.services.CopyService;
 import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import java.util.ArrayList;
 
 @Named
 @ApplicationScoped
 public class CopyStaticBean {
 
+    /**
+     * count join to entity before delete, for know if it can be deleted.
+     * @param copy entity to delete.
+     * @return count of join.
+     */
     public static int getCountCopy(Copy copy){
         int output;
 

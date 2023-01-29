@@ -242,7 +242,10 @@ public class Priceplatform {
         return ((this.enable && this.idProduct.getEnable())? "pi pi-check-circle colorGreen": "pi pi-times-circle colorRed");
     }
     public boolean getEnableForDisabledButton(){
-        return !(this.enable && this.idProduct.getEnable());
+        return (this.enable && this.idProduct.getEnable() && this.availableStock>0);
+    }
+    public boolean getEnableForDisabledButtonPermission(boolean permission){
+        return this.getEnableForDisabledButton() && permission;
     }
     public String getEnableClassColor(){
         return ((this.enable && this.idProduct.getEnable())? "colorGreen": "colorRed");

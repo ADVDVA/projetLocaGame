@@ -9,7 +9,11 @@ import javax.persistence.EntityManager;
 public class CategoryProductService {
 
     /**
-     * insert join CategoryProductService in db.
+     * insert in db an entity CategoryProduct (join).
+     * @param category entity category for join.
+     * @param product entity product for join.
+     * @param em entity manager.
+     * @return entity join inserted.
      */
     public Categoryproduct insertCategoryProduct(Category category, Product product, EntityManager em)
     {
@@ -24,8 +28,13 @@ public class CategoryProductService {
         return categoryProduct;
     }
 
+
+
     /**
-     * delete join CategoryProductService in db.
+     * delete in db an entity CategoryProduct (join).
+     * @param category entity category for join.
+     * @param product entity product for join.
+     * @param em entity manager.
      */
     public void deleteCategoryProduct(Category category, Product product, EntityManager em)
     {
@@ -34,6 +43,5 @@ public class CategoryProductService {
                 .setParameter("idProduct", product.getId())
                 .executeUpdate();
     }
-
 
 }

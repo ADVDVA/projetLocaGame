@@ -127,7 +127,7 @@ import java.util.*;
 })
 @Entity
 @Table(name = "product")
-public class Product implements IEntity {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idProduct", nullable = false)
@@ -282,7 +282,7 @@ public class Product implements IEntity {
 
     //get pegi format.
     public String getEnableFormatStr(){
-        return ((enable)? "indisponible": "disponible");
+        return ((this.enable)? "disponible": "indisponible");
     }
 
 

@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
 
 <!-- ______ ______ -->
 
@@ -128,8 +130,20 @@
                         <p:message id="messagePlatform" for="inputPlatform"/>
                     </p:outputPanel>
 
-                    <!-- input int rentalPrice -->
+                    <!-- available stock (disabled) -->
                     <p:outputPanel class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputAvailableStock" value="#{I18N['application.crudpriceplatformpage.labelavailablestock']}"/>
+                            <p:inputNumber
+                                    id="inputAvailableStock"
+                                    disabled="true"
+                                    value="#{pricePlatformBean.elementCrudSelected.availableStock}">
+                            </p:inputNumber>
+                        </span>
+                    </p:outputPanel>
+
+                    <!-- input int rentalPrice -->
+                    <p:outputPanel class="responsiveInput marginTop40px">
                         <span>
                             <p:outputLabel for="inputRentalPrice" value="#{I18N['application.crudpriceplatformpage.labelrentalprice']}"/>
                             <p:inputNumber
@@ -170,10 +184,38 @@
                             <p:outputLabel for="inputPricePlatformEnable" value="#{I18N['application.crudpriceplatformpage.labelpriceplatformenable']}"/>
                             <p:selectBooleanCheckbox
                                     class="ui-button-warning checkBoxForm"
+                                    disabled="#{pricePlatformBean.isModeSelected('r')}"
                                     value="#{pricePlatformBean.elementCrudSelected.enable}"
                                     id="inputPricePlatformEnable"/>
                         </span>
                         <p:message id="messagePricePlatformEnable" for="inputPricePlatformEnable"/>
+                    </p:outputPanel>
+
+                    <!-- input image file -->
+                    <p:outputPanel class="responsiveInput">
+                        <span>
+                            <p:outputLabel for="inputImageFile" value="#{I18N['application.crudpriceplatformpage.labelinputimagefile']}"/>
+                            <span class="marginBottom40px">
+                                <p:fileUpload value="#{pricePlatformBean.imageFile}"
+                                              mode="advanced"
+                                              fileUploadListener="#{pricePlatformBean.fileUploadListener}"
+                                              auto="true"
+                                              update=":formCrudPricePlatform:imageFilePrint"
+                                              allowTypes="/(\.|\/)(jpe?g|png)$/"
+                                              sizeLimit="102400"
+                                              invalidSizeMessage="#{I18N['application.crudpriceplatformpage.errorsizeimagefile']}"
+                                              invalidFileMessage="#{I18N['application.crudpriceplatformpage.errortypeimagefile']}"
+                                              id="inputImageFile"
+                                              class="inputImageFileSimpleTree"
+                                              rendered="#{pricePlatformBean.isNotModeSelected('r')}"/>
+                                <!--<p:commandButton type="hidden" update=":formCrudPricePlatform:imageFilePrint"/>-->
+                                <h:graphicImage rendered="#{pricePlatformBean.imageFileIsNull()}"
+                                                url="#{pricePlatformBean.getUrlImage()}"
+                                                id="imageFilePrint"
+                                                class="imageFilePrint"
+                                                alt="image"/>
+                            </span>
+                        </span>
                     </p:outputPanel>
 
 
@@ -189,10 +231,11 @@
                                          action="#{pricePlatformBean.submitForm(historicalBean, connectionBean.verifyPermissionUser('priceplatform:insert'))}"/>
                         <p:commandButton value="#{I18N['application.crudpage.buttonaddbasket']}"
                                          rendered="#{pricePlatformBean.isModeSelected('r')}"
+                                         disabled="#{!(pricePlatformBean.elementCrudSelected.getEnableForDisabledButtonPermission(connectionBean.verifyPermissionUser('priceplatform:addbasket')))}"
                                          ajax="false"
                                          validateClient="true"
-                                         class="ui-button-success #{((connectionBean.verifyPermissionUser('priceplatform:addbasket'))? '': 'hiddenBlock')}"
-                                         action="#{pricePlatformListBean.AddBasket(pricePlatformBean.elementCrudSelected.id, connectionBean.verifyPermissionUser('priceplatform:addbasket'))}"/>
+                                         class="ui-button-success"
+                                         action="#{pricePlatformListBean.AddBasket(pricePlatformBean.elementCrudSelected.id, pricePlatformBean.elementCrudSelected.getEnableForDisabledButtonPermission(connectionBean.verifyPermissionUser('priceplatform:addbasket')))}"/>
                         <p:commandButton value="#{I18N['application.crudpage.buttonupdatesubmit']}"
                                          rendered="#{pricePlatformBean.isModeSelected('u')}"
                                          ajax="false"
@@ -217,7 +260,7 @@
                 <!-- message i18n for add basket processing -->
                 <p:outputPanel class="hidden">
                     <span class="successAddBasket">
-                        <h:outputText value="#{I18N['application.listpage.successAddBasket']}"/>
+                        <h:outputText value="#{I18N['application.listpage.successaddbasket']}"/>
                     </span>
                 </p:outputPanel>
 

@@ -79,6 +79,9 @@
 .marginTop40px{
     margin-top: 40px;
 }
+.marginBottom40px{
+    margin-bottom: 40px;
+}
 
 /*______ formulary css ______*/
 
@@ -168,12 +171,17 @@
     display: flex;
 }
 .manyToManyRow > div:first-child{
-    flex-grow: 9;
+    /*flex-grow: 9;*/
+    width: 80%;
+    display: inline-block;
+
     padding-top: 10px;
     padding-left: 5px;
 }
 .manyToManyRow > div:nth-child(2){
-    flex-grow: 1;
+    /*flex-grow: 1;*/
+    width: 15%;
+    display: inline-block;
 }
 .manyToManyRow > div:nth-child(2) > *:nth-child(1n+2){
     margin-left: 5px;
@@ -384,4 +392,98 @@ button[type="hidden"] > *{
 .manyToManyError{
     width: 100%;
     margin: 5px 0 5px 0 !important;
+}
+
+
+/*___ input file ___*/
+.inputImageFile{
+    height: 39px;
+}
+.inputImageFile::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.inputImageFile::before {
+    content: 'Image';
+    text-align: center;
+    display: block;
+    padding: .5rem 1rem;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+}
+.inputImageFile:hover::before {
+    background-color: #e5b02b;
+}
+.inputImageFile:active::before {
+    background-color: #c2921c;
+}
+
+.imageFilePrint{
+    display: block;
+    /*width: 50%;*/
+    width: 100%;
+    height: 200px;
+    /*margin-left: 50%;*/
+    border-radius: 3px;
+    margin-top: 5px;
+}
+
+.inputImageFileSimple .ui-button-text{
+    background-color: orange;
+    color: black;
+}
+.inputImageFileSimple>span:first-child{
+    width: 100%;
+    background-color: orange;
+    border: orange;
+}
+.inputImageFileSimple>*:first-child>*:first-child{
+    display: none;
+}
+.inputImageFileSimple .ui-fileupload-filename{
+    display: none;
+}
+
+
+.inputImageFileSimpleTree>*:nth-child(2){
+    display: none;
+}
+.inputImageFileSimpleTree>*:first-child{
+    background: none !important;
+    border: none !important;
+    color: black !important;
+    padding: 0 0 !important;
+}
+.inputImageFileSimpleTree>*:first-child>*:first-child{
+    width: 100%;
+    color: black;
+    background-color: orange;
+    border: none;
+}
+.inputImageFileSimpleTree>*:first-child>*:first-child>*:first-child{
+    /*display: none !important;*/
+}
+.inputImageFileSimpleTree .ui-fileupload-upload{
+    width: 50%;
+}
+.inputImageFileSimpleTree .ui-fileupload-cancel{
+    width: 49%;
+    margin-left: 3px;
+}
+.inputImageFileSimpleTree .ui-fileupload-cancel,
+.inputImageFileSimpleTree .ui-fileupload-upload{
+    /*display: none !important;*/
+    margin-right: 0 !important;
+    background-color: orange;
+    border: none;
+    color: black;
+    margin-top: 2px;
+}
+.inputImageFileSimpleTree .ui-fileupload-cancel:active,
+.inputImageFileSimpleTree .ui-fileupload-upload:active,
+.inputImageFileSimpleTree .ui-fileupload-cancel:hover,
+.inputImageFileSimpleTree .ui-fileupload-upload:hover{
+    background-color: orange !important;
+    color: black !important;
 }

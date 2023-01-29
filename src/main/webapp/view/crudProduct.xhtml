@@ -134,7 +134,7 @@
                                             <p:commandButton class="ui-button-warning"
                                                              icon="pi pi-plus"
                                                              action="#{productBean.applyCategory(category.id)}"
-                                                             update=":formCrudProduct:manyToManyCategoryPanel :formCrudProduct:categoryError"
+                                                             update=":formCrudProduct:manyToManyCategoryPanel :formCrudProduct:categoryError :formCrudProduct:inputAfterManyCategory"
                                                              immediate="true"
                                                              disabled="#{productBean.isCategoryInCategoryApply(category.id)}"/>
                                         </div>
@@ -162,7 +162,7 @@
                                             <p:commandButton class="ui-button-warning"
                                                              icon="pi pi-minus"
                                                              action="#{productBean.deleteCategoryApply(category.id)}"
-                                                             update=":formCrudProduct:manyToManyCategoryPanel :formCrudProduct:categoryError"
+                                                             update=":formCrudProduct:manyToManyCategoryPanel :formCrudProduct:categoryError :formCrudProduct:inputAfterManyCategory"
                                                              immediate="true"
                                                              rendered="#{productBean.isNotModeSelected('r')}"/>
                                         </div>
@@ -186,7 +186,7 @@
                     </p:outputPanel>
 
                     <!-- Multyplayer -->
-                    <p:outputPanel class="responsiveInput #{((productBean.isCategoryApplyError())? '': 'marginTop40px')}">
+                    <p:outputPanel class="responsiveInput #{((productBean.isCategoryApplyError())? '': 'marginTop40px')}" id="inputAfterManyCategory">
                         <span>
                             <p:outputLabel for="inputProductMultyPlayer" value="#{I18N['application.crudproductpage.labelproductmultiplayer']}"/>
                             <p:selectOneMenu id="inputProductMultyPlayer"
@@ -262,7 +262,7 @@
                                             <p:commandButton class="ui-button-warning"
                                                              icon="pi pi-plus"
                                                              action="#{productBean.applyLanguage(language.id)}"
-                                                             update=":formCrudProduct:manyToManyLanguagePanel :formCrudProduct:languageError"
+                                                             update=":formCrudProduct:manyToManyLanguagePanel :formCrudProduct:languageError :formCrudProduct:inputAfterManyLanguage"
                                                              immediate="true"
                                                              disabled="#{productBean.isLanguageInLanguageApply(language.id)}"/>
                                         </div>
@@ -290,7 +290,7 @@
                                             <p:commandButton class="ui-button-warning"
                                                              icon="pi pi-minus"
                                                              action="#{productBean.deleteLanguageApply(language.id)}"
-                                                             update=":formCrudProduct:manyToManyLanguagePanel :formCrudProduct:languageError"
+                                                             update=":formCrudProduct:manyToManyLanguagePanel :formCrudProduct:languageError :formCrudProduct:inputAfterManyLanguage"
                                                              immediate="true"
                                                              rendered="#{productBean.isNotModeSelected('r')}"/>
                                         </div>
@@ -314,7 +314,7 @@
                     </p:outputPanel>
 
                     <!-- releaseDate -->
-                    <p:outputPanel class="responsiveInput #{((productBean.isLanguageApplyError())? '': 'marginTop40px')}">
+                    <p:outputPanel class="responsiveInput #{((productBean.isLanguageApplyError())? '': 'marginTop40px')}" id="inputAfterManyLanguage">
                         <span>
                             <p:outputLabel for="inputProductDateRelease" value="#{I18N['application.crudproductpage.labelproductdaterelease']}"/>
                             <p:datePicker id="inputProductDateRelease"
@@ -353,6 +353,7 @@
                         <span>
                             <p:outputLabel for="inputProductEnable" value="#{I18N['application.crudproductpage.labelproductenable']}"/>
                             <p:selectBooleanCheckbox class="ui-button-warning checkBoxForm"
+                                                     disabled="#{productBean.isModeSelected('r')}"
                                                      value="#{productBean.elementCrudSelected.enable}"
                                                      id="inputProductEnable"/>
                         </span>

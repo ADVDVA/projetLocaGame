@@ -23,9 +23,13 @@ import java.util.List;
 @SessionScoped
 public class ProductBean extends CrudBean<Product> implements Serializable {
 
-    //load product selected in previous page.
-    private boolean isNewRedirect;
-    public void loadProductSelected(TableFilter tableFilter){
+    private boolean isNewRedirect; //using for many to many exception.
+
+    /**
+     * load entity (in parent CrudBean) for crud form.
+     * @param tableFilter object parent of listBean contain redirection page information and id of entity selected.
+     */
+    public void loadProductSelected(TableFilter<Product> tableFilter){
 
         //when update form from this same form. --->
         setTableFilter(tableFilter);
@@ -54,7 +58,12 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
 
 
-    //submit function.
+    /**
+     * submit form entity (create or update mode).
+     * @param historicalBean historic management class.
+     * @param permission the permission for submit form (create or update).
+     * @return last page historic or null.
+     */
     public String submitForm(HistoricalBean historicalBean, boolean permission){
         if(!permission)
             return null;
@@ -266,10 +275,11 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
         return isCategoryApplyError(true);
     }
     public boolean isCategoryApplyError(boolean applyVerifyNewRedirect){
-        return ( //it was an error when...
-                listCategoryApply.size() < 1 && //length is lower than relation MCD.
-                (!applyVerifyNewRedirect || !isNewRedirect) //and don't render error if it's first load. (or unable verification new redirect)
-        );
+        return false;
+        //return ( //it was an error when...
+        //        listCategoryApply.size() < 0 && //length is lower than relation MCD.
+        //        (!applyVerifyNewRedirect || !isNewRedirect) //and don't render error if it's first load. (or unable verification new redirect)
+        //);
     }
 
 

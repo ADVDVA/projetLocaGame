@@ -11,6 +11,8 @@ import adrien.faouzi.services.ProductService;
 import adrien.faouzi.utility.CrudBean;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.UploadedFile;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -24,7 +26,11 @@ import java.util.List;
 @SessionScoped
 public class PricePlatformBean extends CrudBean<Priceplatform> implements Serializable {
 
-    public void loadPricePlatformSelected(TableFilter tableFilter){
+    /**
+     * load entity (in parent CrudBean) for crud form.
+     * @param tableFilter object parent of listBean contain redirection page information and id of entity selected.
+     */
+    public void loadPricePlatformSelected(TableFilter<Priceplatform> tableFilter){
 
         //when update form from this same form. --->
         setTableFilter(tableFilter);
@@ -46,6 +52,12 @@ public class PricePlatformBean extends CrudBean<Priceplatform> implements Serial
 
 
 
+    /**
+     * submit form entity (create or update mode).
+     * @param historicalBean historic management class.
+     * @param permission the permission for submit form (create or update).
+     * @return last page historic or null.
+     */
     public String submitForm(HistoricalBean historicalBean, boolean permission){
         if(!permission)
             return null;
@@ -117,6 +129,28 @@ public class PricePlatformBean extends CrudBean<Priceplatform> implements Serial
         }finally{
             em.close();
         }
+    }
+
+
+
+    //for image file.
+    private UploadedFile imageFile;
+    public UploadedFile getImageFile(){ return this.imageFile; }
+    public void setImageFile(UploadedFile imageFile){ this.imageFile = imageFile; }
+    public boolean imageFileIsNull(){
+        return (imageFile==null && (this.elementCrudSelected.getPicture()==null || this.elementCrudSelected.getPicture().equals("")));
+    }
+    public void fileUploadListener(FileUploadEvent event){
+        UtilityProcessing.debug("------------");
+        UtilityProcessing.debug("download img");
+        UtilityProcessing.debug(String.valueOf(imageFile));
+        UtilityProcessing.debug(String.valueOf(event));
+        this.imageFile = event.getFile();
+        UtilityProcessing.debug(imageFile.getFileName());
+        UtilityProcessing.debug("------------");
+    }
+    public String getUrlImage(){
+        return "images/ImageCarousel0"+(int)(Math.random()*4)+".jpg";
     }
 
 }

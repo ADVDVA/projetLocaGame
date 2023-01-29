@@ -1,7 +1,5 @@
 package adrien.faouzi.services;
 
-import adrien.faouzi.entities.Category;
-import adrien.faouzi.entities.Editor;
 import adrien.faouzi.entities.Platform;
 import adrien.faouzi.entities.Product;
 
@@ -11,7 +9,9 @@ import java.util.List;
 public class PlatformService {
 
     /**
-     * get all platform from db.
+     * get all entity from db.
+     * @param em entity manager.
+     * @return list entity.
      */
     public List<Platform> selectPlatformAll(EntityManager em)
     {
@@ -19,8 +19,13 @@ public class PlatformService {
                 .getResultList();
     }
 
+
+
     /**
-     * get platform selected by id.
+     * get single entity by id entity.
+     * @param idPlatform id entity.
+     * @param em entity manager.
+     * @return entity match.
      */
     public Platform selectPlatformByIdPlatform(int idPlatform, EntityManager em)
     {
@@ -29,8 +34,13 @@ public class PlatformService {
                 .getSingleResult();
     }
 
+
+
     /**
-     * insert platform in db.
+     * insert an entity in db.
+     * @param platform entity to insert.
+     * @param em entity manager.
+     * @return entity inserted.
      */
     public Platform insertPlatform(Platform platform, EntityManager em)
     {
@@ -39,8 +49,13 @@ public class PlatformService {
         return platform;
     }
 
+
+
     /**
-     * update platform in db.
+     * update an entity in db.
+     * @param platform entity to update.
+     * @param em entity manager.
+     * @return entity updated.
      */
     public Platform updatePlatform(Platform platform, EntityManager em)
     {
@@ -52,31 +67,46 @@ public class PlatformService {
 
 
     /**
-     * get platform from db with research filter.
+     * research entity matching with a filter.
+     * @param researchWord word using for research.
+     * @param orderBy word using for order.
+     * @param asc is order ascending.
+     * @param em entity manager.
+     * @return list entity matching.
      */
     public List<Platform> findPlatformByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
-        if(asc){
-            return em.createNamedQuery("Platform.SelectPlatformByFilterAsc", Platform.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }else{
-            return em.createNamedQuery("Platform.SelectPlatformByFilterDesc", Platform.class)
-                    .setParameter("researchWord", researchWord.toLowerCase())
-                    .setParameter("orderBy", orderBy)
-                    //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
-                    .getResultList();
-        }
+        return em.createNamedQuery("Platform.SelectPlatformByFilter"+
+                ((orderBy.equals("id"))? "OrderByNum": "OrderByStr")+
+                ((asc)? "Asc": "Desc"),
+                Platform.class)
+                .setParameter("researchWord", researchWord.toLowerCase())
+                .setParameter("orderBy", orderBy)
+                //.setParameter("ascOrDesc", ((asc)? "asc": "desc"))
+                .getResultList();
     }
 
+
+
+    /**
+     * count join of an entity before delete.
+     * @param idPlatform id of entity ask.
+     * @param em entity manager.
+     * @return count of join.
+     */
     public int getCountOfJoin(int idPlatform, EntityManager em){
         return em.createNamedQuery("Platform.SelectJoin", Product.class)
                 .setParameter("idPlatform", idPlatform)
                 .getResultList().size();
     }
 
+
+
+    /**
+     * delete entity from db.
+     * @param platform entity ask delete.
+     * @param em entity manager.
+     */
     public void delete(Platform platform, EntityManager em){
         if(!em.contains(platform))
             platform = em.merge(platform);

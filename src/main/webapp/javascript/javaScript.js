@@ -58,9 +58,11 @@ function researchTable(target){
 function applyClassWordResearch(wordResearch){
     if(wordResearch.length < 3)
         return;
-    let allTdTxt = document.getElementsByClassName('columnTableListResearchWord'); //get all elements with this class.
+    let allTdTxt = document.getElementsByClassName('columnTableListResearchWord'); //get all column with this class.;
     let regexResearch = new RegExp(wordResearch, 'gi'); //set regex word.
     for(let i=0; i<allTdTxt.length; i++){ //loop on all td find.
+        if(allTdTxt[i].tagName === 'TH')
+            continue;
         allTdTxt[i].innerHTML = allTdTxt[i].innerHTML.replace( //replace all word in all td...
             regexResearch, //... find by regex...
             '<span class="wordResearch">'+wordResearch+'</span>'); //... replaced by same word with span class. (for css).
@@ -92,4 +94,9 @@ function alertI18NAddBasket(messageClass, namePricePlatformToAddBasket){
             'version : '+namePricePlatformToAddBasket
         );
     }, 60);
+}
+
+function clickNextIfNotDisabled(target){
+    if(target.classList.has('disabledButtonIcon'))
+        target.nextSibling.click();
 }

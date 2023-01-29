@@ -7,7 +7,11 @@ import javax.persistence.EntityManager;
 public class LanguageProductService {
 
     /**
-     * insert join LanguageProductService in db.
+     * insert in db an entity LanguageProduct (join).
+     * @param language entity language for join.
+     * @param product entity product for join.
+     * @param em entity manager.
+     * @return entity join inserted.
      */
     public Languageproduct insertLanguageProduct(Languagegame language, Product product, EntityManager em)
     {
@@ -22,8 +26,13 @@ public class LanguageProductService {
         return languageProduct;
     }
 
+
+
     /**
-     * delete join LanguageProductService in db.
+     * delete in db an entity LanguageProduct (join).
+     * @param language entity language for join.
+     * @param product entity product for join.
+     * @param em entity manager.
      */
     public void deleteLanguageProduct(Languagegame language, Product product, EntityManager em)
     {

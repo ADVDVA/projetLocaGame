@@ -2,10 +2,6 @@ package adrien.faouzi.services;
 
 import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Categoryproduct;
-import adrien.faouzi.entities.Product;
-import adrien.faouzi.entities.Store;
-import adrien.faouzi.projetlocagame.connexion.EMF;
-import adrien.faouzi.utility.UtilityProcessing;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -13,7 +9,10 @@ import java.util.List;
 public class CategoryService {
 
     /**
-     * get all category assign to an id product.
+     * get list of entity by fk product.
+     * @param idProduct fk product.
+     * @param em entity manager.
+     * @return list entity match.
      */
     public List<Category> findCategoryByIdProduct(int idProduct, EntityManager em)
     {
@@ -23,8 +22,11 @@ public class CategoryService {
     }
 
 
+
     /**
-     * get all category from db.
+     * get all entity from db.
+     * @param em entity manager.
+     * @return list entity.
      */
     public List<Category> selectCategoryAll(EntityManager em)
     {
@@ -33,8 +35,12 @@ public class CategoryService {
     }
 
 
+
     /**
-     * get category selected by id.
+     * get single entity by id entity.
+     * @param idCategory id entity.
+     * @param em entity manager.
+     * @return entity match.
      */
     public Category selectCategoryByIdCategory(int idCategory, EntityManager em)
     {
@@ -44,8 +50,12 @@ public class CategoryService {
     }
 
 
+
     /**
-     * insert Category in db.
+     * insert an entity in db.
+     * @param category entity to insert.
+     * @param em entity manager.
+     * @return entity inserted.
      */
     public Category insertCategory(Category category, EntityManager em)
     {
@@ -55,8 +65,12 @@ public class CategoryService {
     }
 
 
+
     /**
-     * update Category in db.
+     * update an entity in db.
+     * @param category entity to update.
+     * @param em entity manager.
+     * @return entity updated.
      */
     public Category updateCategory(Category category, EntityManager em)
     {
@@ -66,8 +80,14 @@ public class CategoryService {
     }
 
 
+
     /**
-     * get category from db with research filter.
+     * research entity matching with a filter.
+     * @param researchWord word using for research.
+     * @param orderBy word using for order.
+     * @param asc is order ascending.
+     * @param em entity manager.
+     * @return list entity matching.
      */
     public List<Category> findCategoryByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
@@ -81,18 +101,32 @@ public class CategoryService {
                 .getResultList();
     }
 
+
+
+    /**
+     * count join of an entity before delete.
+     * @param idCategory id of entity ask.
+     * @param em entity manager.
+     * @return count of join.
+     */
     public int getCountOfJoin(int idCategory, EntityManager em){
         return em.createNamedQuery("Category.SelectJoin", Categoryproduct.class)
                 .setParameter("idCategory", idCategory)
                 .getResultList().size();
     }
 
+
+
+    /**
+     * delete entity from db.
+     * @param category entity ask delete.
+     * @param em entity manager.
+     */
     public void delete(Category category, EntityManager em){
         if(!em.contains(category))
             category = em.merge(category);
         em.remove(category);
         em.flush();
     }
-
 
 }

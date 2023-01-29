@@ -20,26 +20,20 @@ import java.util.List;
 @Named
 @ManagedBean
 @SessionScoped
-public class EditorListBean extends TableFilter implements Serializable {
+public class EditorListBean extends TableFilter<Editor> implements Serializable {
 
-    //editor filtered from db.
-    private List<Editor> editorFiltered;
-    public List<Editor> getEditorFiltered(){
-        return this.editorFiltered;
-    }
-    public void setEditorFiltered(List<Editor> editorFiltered){
-        this.editorFiltered = editorFiltered;
-    }
-
+    /**
+     * make a research in db for list entity with filter.
+     */
     public void doResearch(){
 
         EntityManager em = EMF.getEM();
         EditorService editorService = new EditorService();
         try{
-            editorFiltered = editorService.findEditorByFilter(this.filter, this.order, this.orderAsc, em);
+            entityFiltered = editorService.findEditorByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            editorFiltered = new ArrayList<>();
+            entityFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
@@ -47,6 +41,12 @@ public class EditorListBean extends TableFilter implements Serializable {
     }
 
 
+
+    /**
+     * delete an entity from page list (delete db).
+     * @param idEntity id of entity to delete.
+     * @param permission permission to delete entity.
+     */
     public void deleteEntity(int idEntity, boolean permission){
         if(!permission)
             return;

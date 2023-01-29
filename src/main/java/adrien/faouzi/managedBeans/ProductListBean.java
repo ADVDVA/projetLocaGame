@@ -22,27 +22,20 @@ import java.util.List;
 @Named
 @ManagedBean
 @SessionScoped
-public class ProductListBean extends TableFilter implements Serializable {
+public class ProductListBean extends TableFilter<Product> implements Serializable {
 
-    //product filtered.
-    private List<Product> productFiltered;
-
-    public List<Product> getProductFiltered(){
-        return this.productFiltered;
-    }
-    public void setProductFiltered(List<Product> productFiltered){
-        this.productFiltered = productFiltered;
-    }
-
+    /**
+     * make a research in db for list entity with filter.
+     */
     public void doResearch(){
 
         EntityManager em = EMF.getEM();
         ProductService productService = new ProductService();
         try{
-            productFiltered = productService.findProductByFilter(this.filter, this.order, this.orderAsc, em);
+            entityFiltered = productService.findProductByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            productFiltered = new ArrayList<>();
+            entityFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
@@ -50,6 +43,12 @@ public class ProductListBean extends TableFilter implements Serializable {
     }
 
 
+
+    /**
+     * delete an entity from page list (delete db).
+     * @param idEntity id of entity to delete.
+     * @param permission permission to delete entity.
+     */
     public void deleteEntity(int idEntity, boolean permission){
         if(!permission)
             return;

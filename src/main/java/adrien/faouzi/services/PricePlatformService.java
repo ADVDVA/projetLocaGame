@@ -1,7 +1,6 @@
 package adrien.faouzi.services;
 
 import adrien.faouzi.entities.*;
-import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -10,7 +9,12 @@ public class PricePlatformService
 {
 
     /**
-     * PricePlatform make research catalog.
+     * research entity matching with a filter.
+     * @param researchWord word using for research.
+     * @param orderBy word using for order.
+     * @param asc is order ascending.
+     * @param em entity manager.
+     * @return list entity matching.
      */
     public List<Priceplatform> findPricePlatformByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
@@ -28,8 +32,12 @@ public class PricePlatformService
     }
 
 
+
     /**
-     * PricePlatform make research catalog.
+     * get single entity by id entity.
+     * @param idPricePlatform id entity.
+     * @param em entity manager.
+     * @return entity match.
      */
     public Priceplatform findPricePlatformById(int idPricePlatform, EntityManager em){
         return em.createNamedQuery("PricePlatform.SelectPricePlatformById", Priceplatform.class)
@@ -38,6 +46,13 @@ public class PricePlatformService
     }
 
 
+
+    /**
+     * count join of an entity before delete.
+     * @param idPricePlatform id of entity ask.
+     * @param em entity manager.
+     * @return count of join.
+     */
     public int getCountOfJoinCopy(int idPricePlatform, EntityManager em){
         return em.createNamedQuery("PricePlatform.SelectJoinCopy", Copy.class)
                 .setParameter("idPricePlatform", idPricePlatform)
@@ -45,12 +60,19 @@ public class PricePlatformService
     }
 
 
+
+    /**
+     * delete entity from db.
+     * @param pricePlatform entity ask delete.
+     * @param em entity manager.
+     */
     public void delete(Priceplatform pricePlatform, EntityManager em){
         if(!em.contains(pricePlatform))
             pricePlatform = em.merge(pricePlatform);
         em.remove(pricePlatform);
         em.flush();
     }
+
 
 
     /**
@@ -65,8 +87,12 @@ public class PricePlatformService
     }
 
 
+
     /**
-     * insert PricePlatform in db.
+     * insert an entity in db.
+     * @param pricePlatform entity to insert.
+     * @param em entity manager.
+     * @return entity inserted.
      */
     public Priceplatform insert(Priceplatform pricePlatform, EntityManager em)
     {
@@ -76,8 +102,12 @@ public class PricePlatformService
     }
 
 
+
     /**
-     * update PricePlatform in db.
+     * update an entity in db.
+     * @param pricePlatform entity to update.
+     * @param em entity manager.
+     * @return entity updated.
      */
     public Priceplatform update(Priceplatform pricePlatform, EntityManager em)
     {

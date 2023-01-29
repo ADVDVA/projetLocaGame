@@ -20,26 +20,20 @@ import java.util.List;
 @Named
 @ManagedBean
 @SessionScoped
-public class PlatformListBean extends TableFilter implements Serializable {
+public class PlatformListBean extends TableFilter<Platform> implements Serializable {
 
-    //platform filtered from db.
-    private List<Platform> platformFiltered;
-    public List<Platform> getPlatformFiltered(){
-        return this.platformFiltered;
-    }
-    public void setPlatformFiltered(List<Platform> platformFiltered){
-        this.platformFiltered = platformFiltered;
-    }
-
+    /**
+     * make a research in db for list entity with filter.
+     */
     public void doResearch(){
 
         EntityManager em = EMF.getEM();
         PlatformService platformService = new PlatformService();
         try{
-            platformFiltered = platformService.findPlatformByFilter(this.filter, this.order, this.orderAsc, em);
+            entityFiltered = platformService.findPlatformByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            platformFiltered = new ArrayList<>();
+            entityFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
@@ -47,6 +41,12 @@ public class PlatformListBean extends TableFilter implements Serializable {
     }
 
 
+
+    /**
+     * delete an entity from page list (delete db).
+     * @param idEntity id of entity to delete.
+     * @param permission permission to delete entity.
+     */
     public void deleteEntity(int idEntity, boolean permission){
         if(!permission)
             return;

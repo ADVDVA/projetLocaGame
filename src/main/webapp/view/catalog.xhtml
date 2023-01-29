@@ -36,7 +36,7 @@
 
                 <p:dataTable
                         var="pricePlatform"
-                        value="#{pricePlatformListBean.pricePlatformFiltered}"
+                        value="#{pricePlatformListBean.entityFiltered}"
                         class="tableHeaderNoPadding tableHeaderTitleCenter"
                         paginator="true"
                         paginatorPosition="bottom"
@@ -161,7 +161,7 @@
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistenable']}">
-                        <h:outputText value="#{pricePlatform.enableFormatStr}" class="#{pricePlatform.enableClassColor}"/>
+                        <h:outputText value="#{((pricePlatform.getEnableForDisabledButton())? 'disponible': 'indisponible')}" class="#{((pricePlatform.getEnableForDisabledButton())? 'colorGreen': 'colorRed')}"/>
                         <!--<i class="#{pricePlatform.enableFormatIco}"/>-->
                     </p:column>
 
@@ -177,11 +177,9 @@
                         <p:commandButton type="hidden" action="#{pricePlatformListBean.redirectPageWidthId('/view/crudPricePlatform', pricePlatform.id, 'u')}"/>
                     </p:column>
 
-                    <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:addbasket')}"> <!--
-                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="#{((pricePlatform.getEnableForDisabledButton())? 'clickNext(this, true)':'clickNext(this, false)')}"/> <- clickNext(this, #{pricePlatform.getEnableForDisabledButton()}) -
-                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="clickNext(this, #{pricePlatform.getEnableForDisabledButton()})"/> -->
-                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? 'disabledButtonIcon': '')}" onclick="clickNext(this)"/>
-                        <p:commandButton type="hidden" action="#{pricePlatformListBean.AddBasket(pricePlatform.id, connectionBean.verifyPermissionUser('priceplatform:addbasket'))}"/>
+                    <p:column headerText="#{I18N['application.listpage.headerlistilbasket']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:addbasket')}">
+                        <i class="pi pi-cart-plus #{((pricePlatform.getEnableForDisabledButton())? '': 'disabledButtonIcon')}" onclick="clickNextIfNotDisabled(this)"/>
+                        <p:commandButton type="hidden" action="#{pricePlatformListBean.AddBasket(pricePlatform.id, (pricePlatform.getEnableForDisabledButtonPermission(connectionBean.verifyPermissionUser('priceplatform:addbasket'))))}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.listpage.headerlistdelete']}" rendered="#{connectionBean.verifyPermissionUser('priceplatform:delete')}">
@@ -212,7 +210,7 @@
                     </span>
 
                     <span class="successAddBasket">
-                        <h:outputText value="#{I18N['application.listpage.successAddBasket']}"/>
+                        <h:outputText value="#{I18N['application.listpage.successaddbasket']}"/>
                     </span>
                 </p:outputPanel>
 

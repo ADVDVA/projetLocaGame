@@ -15,31 +15,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 @Named
 @ManagedBean
 @SessionScoped
-public class CategoryListBean extends TableFilter implements Serializable {
+public class CategoryListBean extends TableFilter<Category> implements Serializable {
 
-    //category filtered from db.
-    private List<Category> categoryFiltered;
-    public List<Category> getCategoryFiltered(){
-        return this.categoryFiltered;
-    }
-    public void setCategoryFiltered(List<Category> categoryFiltered){
-        this.categoryFiltered = categoryFiltered;
-    }
-
+    /**
+     * make a research in db for list entity with filter.
+     */
     public void doResearch(){
 
         EntityManager em = EMF.getEM();
         CategoryService categoryService = new CategoryService();
         try{
-            categoryFiltered = categoryService.findCategoryByFilter(this.filter, this.order, this.orderAsc, em);
+            entityFiltered = categoryService.findCategoryByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            categoryFiltered = new ArrayList<>();
+            entityFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
@@ -47,6 +40,12 @@ public class CategoryListBean extends TableFilter implements Serializable {
     }
 
 
+
+    /**
+     * delete an entity from page list (delete db).
+     * @param idEntity id of entity to delete.
+     * @param permission permission to delete entity.
+     */
     public void deleteEntity(int idEntity, boolean permission){
         if(!permission)
             return;

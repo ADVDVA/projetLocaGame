@@ -18,7 +18,11 @@ import java.io.Serializable;
 @SessionScoped
 public class CategoryBean extends CrudBean<Category> implements Serializable {
 
-    public void loadCategorySelected(TableFilter tableFilter){
+    /**
+     * load entity (in parent CrudBean) for crud form.
+     * @param tableFilter object parent of listBean contain redirection page information and id of entity selected.
+     */
+    public void loadCategorySelected(TableFilter<Category> tableFilter){
 
         //when update form from this same form. --->
         setTableFilter(tableFilter);
@@ -40,6 +44,12 @@ public class CategoryBean extends CrudBean<Category> implements Serializable {
 
 
 
+    /**
+     * submit form entity (create or update mode).
+     * @param historicalBean historic management class.
+     * @param permission the permission for submit form (create or update).
+     * @return last page historic or null.
+     */
     public String submitForm(HistoricalBean historicalBean, boolean permission){
         if(!permission)
             return null;

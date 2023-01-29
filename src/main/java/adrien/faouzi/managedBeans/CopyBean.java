@@ -24,7 +24,11 @@ import java.util.List;
 @SessionScoped
 public class CopyBean extends CrudBean<Copy> implements Serializable {
 
-    public void loadCopySelected(TableFilter tableFilter){
+    /**
+     * load entity (in parent CrudBean) for crud form.
+     * @param tableFilter object parent of listBean contain redirection page information and id of entity selected.
+     */
+    public void loadCopySelected(TableFilter<Copy> tableFilter){
 
         //when update form from this same form. --->
         setTableFilter(tableFilter);
@@ -46,6 +50,12 @@ public class CopyBean extends CrudBean<Copy> implements Serializable {
 
 
 
+    /**
+     * submit form entity (create or update mode).
+     * @param historicalBean historic management class.
+     * @param permission the permission for submit form (create or update).
+     * @return last page historic or null.
+     */
     public String submitForm(HistoricalBean historicalBean, boolean permission){
         if(!permission)
             return null;
@@ -67,7 +77,8 @@ public class CopyBean extends CrudBean<Copy> implements Serializable {
                         copyService.update(this.elementCrudSelected, em) //update.
                 );
                 copy.setCopyName(); //re-apply copy name based on his own id.
-                copyService.update(this.elementCrudSelected, em); //update copy name.
+                copy = copyService.update(this.elementCrudSelected, em); //update copy name.
+                copyService.reCalculatePricePlatformAvailableStock(copy.getIdPricePlatform(), em); //re calculate available stock.
 
                 if(isModeSelected('c')){
                     resetFilterOfTableFilter(); //if create mode and success insert, reset filter from page list.

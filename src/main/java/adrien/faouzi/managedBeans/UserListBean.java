@@ -6,7 +6,6 @@ import adrien.faouzi.services.UserService;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @Named
 @SessionScoped
-public class UserListBean extends TableFilter implements Serializable {
+public class UserListBean extends TableFilter<User> implements Serializable {
 
     //all users filtered by user.
     private List<User> userFiltered;

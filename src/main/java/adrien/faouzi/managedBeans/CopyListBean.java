@@ -4,6 +4,7 @@ import adrien.faouzi.convectorCustom.CopyConverter;
 import adrien.faouzi.convectorCustom.EditorConverter;
 import adrien.faouzi.entities.Copy;
 import adrien.faouzi.entities.Editor;
+import adrien.faouzi.entities.Priceplatform;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.CopyService;
 import adrien.faouzi.services.EditorService;
@@ -23,32 +24,33 @@ import java.util.List;
 @Named
 @ManagedBean
 @SessionScoped
-public class CopyListBean extends TableFilter implements Serializable {
+public class CopyListBean extends TableFilter<Copy> implements Serializable {
 
-    //copy filtered from db.
-    private List<Copy> copyFiltered;
-    public List<Copy> getCopyFiltered(){
-        return this.copyFiltered;
-    }
-    public void setCopyFiltered(List<Copy> copyFiltered){
-        this.copyFiltered = copyFiltered;
-    }
-
+    /**
+     * make a research in db for list entity with filter.
+     */
     public void doResearch(){
 
         EntityManager em = EMF.getEM();
         CopyService copyService = new CopyService();
         try{
-            copyFiltered = copyService.findCopyByFilter(this.filter, this.order, this.orderAsc, em);
+            entityFiltered = copyService.findCopyByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            copyFiltered = new ArrayList<>();
+            entityFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
 
     }
 
+
+
+    /**
+     * delete an entity from page list (delete db).
+     * @param idEntity id of entity to delete.
+     * @param permission permission to delete entity.
+     */
     public void deleteEntity(int idEntity, boolean permission){
         if(!permission)
             return;
@@ -63,7 +65,10 @@ public class CopyListBean extends TableFilter implements Serializable {
 
                 //delete entity
                 transaction.begin();
-                copyService.delete(CopyConverter.getAsObjectStatic(String.valueOf(idEntity)), em);
+                Copy copy = CopyConverter.getAsObjectStatic(String.valueOf(idEntity));
+                Priceplatform pricePlatform = copy.getIdPricePlatform(); //save price platform before delete for re calculate available stock.
+                copyService.delete(copy, em);
+                copyService.reCalculatePricePlatformAvailableStock(pricePlatform, em); //re calculate available stock.
                 transaction.commit();
 
             }

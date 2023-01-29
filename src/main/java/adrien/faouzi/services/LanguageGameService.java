@@ -1,8 +1,6 @@
 package adrien.faouzi.services;
 
-import adrien.faouzi.entities.Category;
 import adrien.faouzi.entities.Languagegame;
-import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -10,7 +8,10 @@ import java.util.List;
 public class LanguageGameService{
 
     /**
-     * get all language game assign to an id product.
+     * get list of entity by fk product.
+     * @param idProduct fk product.
+     * @param em entity manager.
+     * @return list entity match.
      */
     public List<Languagegame> findLanguageGameByIdProduct(int idProduct, EntityManager em)
     {
@@ -20,8 +21,11 @@ public class LanguageGameService{
     }
 
 
+
     /**
-     * get all language game from db.
+     * get all entity from db.
+     * @param em entity manager.
+     * @return list entity.
      */
     public List<Languagegame> selectLanguageGameAll(EntityManager em)
     {
@@ -30,8 +34,12 @@ public class LanguageGameService{
     }
 
 
+
     /**
-     * get a language game from db selected by id language game.
+     * get a single entity from db.
+     * @param idLanguage id of entity ask.
+     * @param em entity manager.
+     * @return entity match.
      */
     public Languagegame selectLanguageByIdLanguage(int idLanguage, EntityManager em)
     {
@@ -39,6 +47,5 @@ public class LanguageGameService{
                 .setParameter("idLanguage", idLanguage)
                 .getSingleResult();
     }
-
 
 }

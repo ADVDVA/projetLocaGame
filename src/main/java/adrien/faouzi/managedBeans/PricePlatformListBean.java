@@ -22,26 +22,19 @@ import java.util.List;
 @Named
 @ManagedBean
 @SessionScoped
-public class PricePlatformListBean extends TableFilter implements Serializable {
+public class PricePlatformListBean extends TableFilter<Priceplatform> implements Serializable {
 
-    //catalog filtered price platform.
-    private List<Priceplatform> pricePlatformFiltered;
-
-    public List<Priceplatform> getPricePlatformFiltered(){
-        return this.pricePlatformFiltered;
-    }
-    public void setPricePlatformFiltered(List<Priceplatform> pricePlatformFiltered){
-        this.pricePlatformFiltered = pricePlatformFiltered;
-    }
-
+    /**
+     * make a research in db for list entity with filter.
+     */
     public void doResearch(){
         EntityManager em = EMF.getEM();
         PricePlatformService pricePlatformService = new PricePlatformService();
         try{
-            pricePlatformFiltered = pricePlatformService.findPricePlatformByFilter(this.filter, this.order, this.orderAsc, em);
+            entityFiltered = pricePlatformService.findPricePlatformByFilter(this.filter, this.order, this.orderAsc, em);
         }catch(Exception e){
             UtilityProcessing.debug(e.getMessage());
-            pricePlatformFiltered = new ArrayList<>();
+            entityFiltered = new ArrayList<>();
         }finally{
             em.close();
         }
@@ -50,6 +43,11 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
 
 
 
+    /**
+     * delete an entity from page list (delete db).
+     * @param idEntity id of entity to delete.
+     * @param permission permission to delete entity.
+     */
     public void deleteEntity(int idEntity, boolean permission){
         if(!permission)
             return;
@@ -88,7 +86,12 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
     }
 
 
-    //function for add basket in theory, not full script, just alert js with name product selected.
+
+    /**
+     * function for add basket in theory, not full script, just alert js with name product selected.
+     * @param idPricePlatform id of entity to add basket.
+     * @param permission permission to delete entity.
+     */
     public void AddBasket(int idPricePlatform, boolean permission){
         if(!permission)
             return;
@@ -99,4 +102,5 @@ public class PricePlatformListBean extends TableFilter implements Serializable {
 
         PrimeFaces.current().executeScript("alertI18NAddBasket(\"successAddBasket\", \""+pricePlatformToAddBasket.getPricePlatformName()+"\")");
     }
+
 }

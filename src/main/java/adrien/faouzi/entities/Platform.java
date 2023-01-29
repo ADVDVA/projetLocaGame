@@ -12,7 +12,7 @@ import java.util.Set;
                 query = "select p from Platform p"),
         @NamedQuery(name = "Platform.SelectPlatformByIdPlatform",
                 query = "select p from Platform p where (p.id = :idPlatform)"),
-        @NamedQuery(name= "Platform.SelectPlatformByFilterAsc",
+        @NamedQuery(name= "Platform.SelectPlatformByFilterOrderByStrAsc",
                 query = "select distinct p from Platform p " +
                         "where ( " +
                         "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
@@ -21,13 +21,31 @@ import java.util.Set;
                         "  when (:orderBy like 'platformname') then p.platformName " +
                         "  else p.id " +
                         "end asc"),
-        @NamedQuery(name= "Platform.SelectPlatformByFilterDesc",
+        @NamedQuery(name= "Platform.SelectPlatformByFilterOrderByStrDesc",
                 query = "select distinct p from Platform p " +
                         "where ( " +
                         "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
                         ") " +
                         "order by case " +
                         "  when (:orderBy like 'platformname') then p.platformName " +
+                        "  else p.id " +
+                        "end desc"),
+        @NamedQuery(name= "Platform.SelectPlatformByFilterOrderByNumAsc",
+                query = "select distinct p from Platform p " +
+                        "where ( " +
+                        "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'id') then p.id " +
+                        "  else p.id " +
+                        "end asc"),
+        @NamedQuery(name= "Platform.SelectPlatformByFilterOrderByNumDesc",
+                query = "select distinct p from Platform p " +
+                        "where ( " +
+                        "  ((lower(p.platformName) like concat('%', :researchWord, '%'))) " +
+                        ") " +
+                        "order by case " +
+                        "  when (:orderBy like 'id') then p.id " +
                         "  else p.id " +
                         "end desc"),
         @NamedQuery(name= "Platform.SelectJoin",

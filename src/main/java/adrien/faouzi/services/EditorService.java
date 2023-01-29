@@ -1,10 +1,7 @@
 package adrien.faouzi.services;
 
-import adrien.faouzi.entities.Category;
-import adrien.faouzi.entities.Categoryproduct;
 import adrien.faouzi.entities.Editor;
 import adrien.faouzi.entities.Product;
-import adrien.faouzi.projetlocagame.connexion.EMF;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -22,6 +19,8 @@ public class EditorService {
                 .getResultList();
     }
 
+
+
     /**
      * select one editor from db, selected by id.
      * @param idEditor id of editor research in db.
@@ -35,8 +34,13 @@ public class EditorService {
                 .getSingleResult();
     }
 
+
+
     /**
-     * insert Editor in db.
+     * insert an entity in db.
+     * @param editor entity to insert.
+     * @param em entity manager.
+     * @return entity inserted.
      */
     public Editor insertEditor(Editor editor, EntityManager em)
     {
@@ -46,8 +50,12 @@ public class EditorService {
     }
 
 
+
     /**
-     * update Editor in db.
+     * update an entity in db.
+     * @param editor entity to update.
+     * @param em entity manager.
+     * @return entity updated.
      */
     public Editor updateEditor(Editor editor, EntityManager em)
     {
@@ -56,8 +64,15 @@ public class EditorService {
         return editor;
     }
 
+
+
     /**
-     * get editor from db with research filter.
+     * research entity matching with a filter.
+     * @param researchWord word using for research.
+     * @param orderBy word using for order.
+     * @param asc is order ascending.
+     * @param em entity manager.
+     * @return list entity matching.
      */
     public List<Editor> findEditorByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
@@ -71,18 +86,32 @@ public class EditorService {
                 .getResultList();
     }
 
+
+
+    /**
+     * count join of an entity before delete.
+     * @param idEditor id of entity ask.
+     * @param em entity manager.
+     * @return count of join.
+     */
     public int getCountOfJoin(int idEditor, EntityManager em){
         return em.createNamedQuery("Editor.SelectJoin", Product.class)
                 .setParameter("idEditor", idEditor)
                 .getResultList().size();
     }
 
+
+
+    /**
+     * delete entity from db.
+     * @param editor entity ask delete.
+     * @param em entity manager.
+     */
     public void delete(Editor editor, EntityManager em){
         if(!em.contains(editor))
             editor = em.merge(editor);
         em.remove(editor);
         em.flush();
     }
-
 
 }

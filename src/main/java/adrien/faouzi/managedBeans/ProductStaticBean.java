@@ -1,12 +1,10 @@
 package adrien.faouzi.managedBeans;
 
-import adrien.faouzi.entities.Platform;
 import adrien.faouzi.entities.Product;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.CategoryService;
 import adrien.faouzi.services.LanguageGameService;
 import adrien.faouzi.utility.UtilityProcessing;
-import sun.plugin.services.PlatformService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -18,6 +16,10 @@ import java.util.ArrayList;
 @ApplicationScoped
 public class ProductStaticBean {
 
+    /**
+     * get all category join to a product and apply in entity product.
+     * @param product entity to apply list category.
+     */
     public static void initListCategory(Product product){
 
         EntityManager em = EMF.getEM();
@@ -43,6 +45,11 @@ public class ProductStaticBean {
     }
 
 
+
+    /**
+     * get all language join to a product and apply in entity product.
+     * @param product entity to apply list language.
+     */
     public static void initListLanguageGame(Product product){
 
         EntityManager em = EMF.getEM();
@@ -61,7 +68,7 @@ public class ProductStaticBean {
 
         }finally{
             if(transaction.isActive())
-            transaction.rollback();
+                transaction.rollback();
             em.close();
         }
 

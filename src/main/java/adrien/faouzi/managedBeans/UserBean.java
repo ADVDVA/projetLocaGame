@@ -24,7 +24,7 @@ import java.util.List;
 
 @Named
 @SessionScoped
-public class UserBean extends TableFilter implements Serializable
+public class UserBean extends TableFilter<User> implements Serializable
 {
     /**
      * Fields

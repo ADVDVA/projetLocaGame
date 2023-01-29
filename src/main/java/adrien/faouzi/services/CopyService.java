@@ -1,8 +1,9 @@
 package adrien.faouzi.services;
 
+import adrien.faouzi.convectorCustom.PricePlatformConverter;
 import adrien.faouzi.entities.Copy;
-import adrien.faouzi.entities.Editor;
-import adrien.faouzi.entities.Product;
+import adrien.faouzi.entities.Priceplatform;
+import adrien.faouzi.enumeration.StatusCopy;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -22,30 +23,15 @@ public class CopyService {
                 .getSingleResult();
     }
 
-    /**
-     * insert Copy in db.
-     */
-    public Copy insertCopy(Copy copy, EntityManager em)
-    {
-        em.persist(copy);
-        em.flush();
-        return copy;
-    }
 
 
     /**
-     * update Copy in db.
-     */
-    public Copy updateCopy(Copy copy, EntityManager em)
-    {
-        em.merge(copy);
-        em.flush();
-        return copy;
-    }
-
-
-    /**
-     * get copy from db with research filter.
+     * research entity matching with a filter.
+     * @param researchWord word using for research.
+     * @param orderBy word using for order.
+     * @param asc is order ascending.
+     * @param em entity manager.
+     * @return list entity matching.
      */
     public List<Copy> findCopyByFilter(String researchWord, String orderBy, boolean asc, EntityManager em)
     {
@@ -60,14 +46,24 @@ public class CopyService {
     }
 
 
+
     /**
-     * count every join to a copy, for know if this copy can be deleted.
+     * count join of an entity before delete.
+     * @param idCopy id of entity ask.
+     * @param em entity manager.
+     * @return count of join.
      */
     public int getCountOfJoin(int idCopy, EntityManager em){
         return 0;
     }
 
 
+
+    /**
+     * delete entity from db.
+     * @param copy entity ask delete.
+     * @param em entity manager.
+     */
     public void delete(Copy copy, EntityManager em){
         if(!em.contains(copy))
             copy = em.merge(copy);
@@ -76,6 +72,13 @@ public class CopyService {
     }
 
 
+
+    /**
+     * count copy link to the same pricePlatform (using for copy name).
+     * @param copy entity.
+     * @param em entity manager.
+     * @return count of copy of the same pricePlatform.
+     */
     public int getCountCopy(Copy copy, EntityManager em){
         if(copy.getId()==0 || copy.getIdPricePlatform()==null)
             return 0;
@@ -86,8 +89,12 @@ public class CopyService {
     }
 
 
+
     /**
-     * insert Copy in db.
+     * insert an entity in db.
+     * @param copy entity to insert.
+     * @param em entity manager.
+     * @return entity inserted.
      */
     public Copy insert(Copy copy, EntityManager em)
     {
@@ -99,13 +106,34 @@ public class CopyService {
 
 
     /**
-     * update Copy in db.
+     * update an entity in db.
+     * @param copy entity to update.
+     * @param em entity manager.
+     * @return entity updated.
      */
     public Copy update(Copy copy, EntityManager em)
     {
         em.merge(copy);
         em.flush();
         return copy;
+    }
+
+
+
+    /**
+     * re calculate available stock in pricePlatform (before delete copy or after create/update copy).
+     * @param pricePlatform pricePlatform who need to be re calculate available stock.
+     * @param em entity manager.
+     */
+    public void reCalculatePricePlatformAvailableStock(Priceplatform pricePlatform, EntityManager em){
+        pricePlatform.setAvailableStock(
+                em.createNamedQuery("Copy.SelectCountCopyAvailableForAPricePlatform", Copy.class)
+                        .setParameter("idPricePlatform", pricePlatform.getId())
+                        .setParameter("statusDisponible", StatusCopy.DISPONIBLE)
+                        .getResultList().size()
+        );
+        em.merge(pricePlatform);
+        em.flush();
     }
 
 }

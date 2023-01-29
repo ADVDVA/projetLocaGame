@@ -18,7 +18,11 @@ import java.io.Serializable;
 @SessionScoped
 public class PlatformBean extends CrudBean<Platform> implements Serializable {
 
-    public void loadPlatformSelected(TableFilter tableFilter){
+    /**
+     * load entity (in parent CrudBean) for crud form.
+     * @param tableFilter object parent of listBean contain redirection page information and id of entity selected.
+     */
+    public void loadPlatformSelected(TableFilter<Platform> tableFilter){
 
         //when update form from this same form. --->
         setTableFilter(tableFilter);
@@ -40,6 +44,12 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
 
 
 
+    /**
+     * submit form entity (create or update mode).
+     * @param historicalBean historic management class.
+     * @param permission the permission for submit form (create or update).
+     * @return last page historic or null.
+     */
     public String submitForm(HistoricalBean historicalBean, boolean permission){
         if(!permission)
             return null;

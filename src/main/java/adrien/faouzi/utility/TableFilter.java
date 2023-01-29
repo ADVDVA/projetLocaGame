@@ -1,8 +1,22 @@
 package adrien.faouzi.utility;
 
+import adrien.faouzi.entities.Category;
 import org.primefaces.PrimeFaces;
 
-public class TableFilter {
+import java.util.List;
+
+public class TableFilter<TEntity> {
+
+    //entity filtered from db.
+    protected List<TEntity> entityFiltered;
+    public List<TEntity> getEntityFiltered(){
+        return this.entityFiltered;
+    }
+    public void setEntityFiltered(List<TEntity> entityFiltered){
+        this.entityFiltered = entityFiltered;
+    }
+
+
 
     protected String order = "id";
 
