@@ -18,7 +18,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.io.Serializable;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,14 +141,26 @@ public class PricePlatformBean extends CrudBean<Priceplatform> implements Serial
     public boolean imageFileIsNull(){
         return (imageFile==null && (this.elementCrudSelected.getPicture()==null || this.elementCrudSelected.getPicture().equals("")));
     }
-    public void fileUploadListener(FileUploadEvent event){
-        UtilityProcessing.debug("------------");
-        UtilityProcessing.debug("download img");
-        UtilityProcessing.debug(String.valueOf(imageFile));
-        UtilityProcessing.debug(String.valueOf(event));
-        this.imageFile = event.getFile();
-        UtilityProcessing.debug(imageFile.getFileName());
-        UtilityProcessing.debug("------------");
+    public void fileUploadListener(FileUploadEvent event) throws IOException {
+        try{
+            this.imageFile = event.getFile();
+            String fullNameFile = imageFile.getFileName();
+            String prefix = fullNameFile.substring(0, fullNameFile.indexOf("."));
+            String suffix = fullNameFile.substring(fullNameFile.indexOf("."));
+            InputStream inputStream = this.imageFile.getInputStream();
+            //File tempFile = File.createTempFile("images/download/"+prefix, suffix);
+            File tempFile = File.createTempFile("C:\\Users\\faouz\\IdeaProjects\\projetLocaGame\\src\\main\\webapp\\images\\download"+prefix, suffix);
+            tempFile.deleteOnExit();
+            try (OutputStream outputStream = Files.newOutputStream(tempFile.toPath())) {
+                outputStream.write(this.imageFile.getInputStream().read());
+            } catch (IOException ioException) {
+                UtilityProcessing.debug("Error from write in file");
+                //ioException.printStackTrace();
+            }
+        }catch(Exception e){
+            UtilityProcessing.debug("Error from download image");
+            UtilityProcessing.debug(e.getMessage());
+        }
     }
     public String getUrlImage(){
         return "images/ImageCarousel0"+(int)(Math.random()*4)+".jpg";

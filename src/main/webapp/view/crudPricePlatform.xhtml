@@ -192,14 +192,13 @@
                     </p:outputPanel>
 
                     <!-- input image file -->
-                    <!--
                     <p:outputPanel class="responsiveInput">
                         <span>
                             <p:outputLabel for="inputImageFile" value="#{I18N['application.crudpriceplatformpage.labelinputimagefile']}"/>
                             <span class="marginBottom40px">
                                 <p:fileUpload value="#{pricePlatformBean.imageFile}"
                                               mode="advanced"
-                                              fileUploadListener="pricePlatformBean.fileUploadListener"
+                                              listener="#{pricePlatformBean.fileUploadListener}"
                                               auto="true"
                                               update=":formCrudPricePlatform:imageFilePrint"
                                               allowTypes="/(\.|\/)(jpe?g|png)$/"
@@ -217,7 +216,6 @@
                             </span>
                         </span>
                     </p:outputPanel>
-                    -->
 
 
                     <!-- input submit -->
