@@ -9,6 +9,7 @@ import adrien.faouzi.services.PlatformService;
 import adrien.faouzi.services.PricePlatformService;
 import adrien.faouzi.services.ProductService;
 import adrien.faouzi.utility.CrudBean;
+import adrien.faouzi.utility.FileManaging;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 import org.primefaces.event.FileUploadEvent;
@@ -20,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,9 @@ public class PricePlatformBean extends CrudBean<Priceplatform> implements Serial
         if(!tableFilter.getNewRedirect()){ //reload form from same page.
             return; //do not reload entity from db.
         }
+
+        //reset image input.
+        this.imageFile=null;
 
         //when first load form in create. --->
         this.modeSelected = tableFilter.getModeRedirection();
@@ -143,27 +148,27 @@ public class PricePlatformBean extends CrudBean<Priceplatform> implements Serial
     }
     public void fileUploadListener(FileUploadEvent event) throws IOException {
         try{
-            this.imageFile = event.getFile();
-            String fullNameFile = imageFile.getFileName();
-            String prefix = fullNameFile.substring(0, fullNameFile.indexOf("."));
-            String suffix = fullNameFile.substring(fullNameFile.indexOf("."));
-            InputStream inputStream = this.imageFile.getInputStream();
-            //File tempFile = File.createTempFile("images/download/"+prefix, suffix);
-            File tempFile = File.createTempFile("C:\\Users\\faouz\\IdeaProjects\\projetLocaGame\\src\\main\\webapp\\images\\download"+prefix, suffix);
-            tempFile.deleteOnExit();
-            try (OutputStream outputStream = Files.newOutputStream(tempFile.toPath())) {
-                outputStream.write(this.imageFile.getInputStream().read());
-            } catch (IOException ioException) {
-                UtilityProcessing.debug("Error from write in file");
-                //ioException.printStackTrace();
+            this.imageFile = event.getFile(); //get file from event.
+
+            /* //save file and set picture in entity.
+            if(FileManaging.saveNewFile(this.imageFile)){ //save new file.
+                this.elementCrudSelected.setPicture(this.imageFile.getFileName()); //save in entity the name of image.
             }
-        }catch(Exception e){
-            UtilityProcessing.debug("Error from download image");
-            UtilityProcessing.debug(e.getMessage());
+            */
+
+        }catch(Exception error){
+            UtilityProcessing.debug("Error from download image (PricePlatformBean.java)");
+            UtilityProcessing.debug(error.getMessage());
         }
     }
-    public String getUrlImage(){
-        return "images/ImageCarousel0"+(int)(Math.random()*4)+".jpg";
+    public String getUrlImage() throws FileNotFoundException {
+        if(imageFile != null) //user send an image.
+            //return FileManaging.getUrlFileAbsolute(this.imageFile.getFileName());
+            return FileManaging.getDefaultUrlFile(); //default image because no permission allowed in browser.
+        else if(this.elementCrudSelected.getPicture()==null || this.elementCrudSelected.getPicture().equals(""))
+            return FileManaging.getDefaultUrlFile(); //if no image assign for entity, apply default img.
+        else
+            return FileManaging.urlFromDB(this.elementCrudSelected.getPicture()); //if entity has image assign, use it.
     }
 
 }

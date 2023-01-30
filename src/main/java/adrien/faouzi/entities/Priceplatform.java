@@ -1,8 +1,10 @@
 package adrien.faouzi.entities;
 
 import adrien.faouzi.utility.UtilityProcessing;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -125,6 +127,7 @@ public class Priceplatform {
     private Platform idPlatform;
 
     @NotNull
+    @Min(1)
     @Column(name = "rentalPrice", nullable = false)
     private float rentalPrice;
 
@@ -132,6 +135,7 @@ public class Priceplatform {
     private int availableStock;
 
     @NotNull
+    @Min(1)
     @Column(name = "latePrice", nullable = false)
     private float latePrice;
 

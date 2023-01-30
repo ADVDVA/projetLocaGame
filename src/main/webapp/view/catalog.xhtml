@@ -153,11 +153,11 @@
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistpegi']}">
-                        <h:outputText value="pegi #{pricePlatform.idProduct.pegiFormatStr}"/>
+                        <h:outputText value="pegi #{pricePlatform.idProduct.getPegiFormatStr()}"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistprice']}">
-                        <h:outputText value="#{pricePlatform.rentalPriceFormatStr}€/s"/>
+                        <h:outputText value="#{pricePlatform.getRentalPriceFormatStr()}€/s"/>
                     </p:column>
 
                     <p:column headerText="#{I18N['application.cataloglistpage.headerlistenable']}">

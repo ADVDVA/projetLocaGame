@@ -93,6 +93,8 @@ public class UtilityProcessing {
 
     public static String floatToStrTwoDigit(float number){
         String outStr = String.valueOf(Math.floor(number*100));
+        if(outStr.equals("0") || outStr.equals("0.0"))
+            return "0.00";
         return outStr.substring(0, outStr.length()-4)+"."+outStr.substring(outStr.length()-4, outStr.length()-2);
     }
 
