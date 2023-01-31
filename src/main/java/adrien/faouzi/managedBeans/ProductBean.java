@@ -7,7 +7,7 @@ import adrien.faouzi.entities.Languagegame;
 import adrien.faouzi.entities.Product;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.*;
-import adrien.faouzi.utility.CrudBean;
+import adrien.faouzi.utility.CrudManaging;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Named
 @SessionScoped
-public class ProductBean extends CrudBean<Product> implements Serializable {
+public class ProductBean extends CrudManaging<Product> implements Serializable {
 
     private boolean isNewRedirect; //using for many to many exception.
 
@@ -37,6 +37,8 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
         if(!isNewRedirect){ //reload form from same page.
             return; //do not reload entity from db.
         }
+
+        setErrorSubmitDB(false);
 
         //when first load form in create. --->
         this.modeSelected = tableFilter.getModeRedirection();
@@ -68,6 +70,7 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
         if(!permission)
             return null;
         boolean submitIsSuccess = true;
+        setErrorSubmitDB(false);
 
         //do verification.
         if(isCategoryApplyError(false)){
@@ -189,6 +192,7 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
                 }catch(Exception e){
                     UtilityProcessing.debug("error catch (in create/update Product) : "+e.getMessage());
                     submitIsSuccess=false;
+                    setErrorSubmitDB(true);
                 }finally{
                     if(transaction.isActive())
                         transaction.rollback();
@@ -197,6 +201,7 @@ public class ProductBean extends CrudBean<Product> implements Serializable {
 
             }else{ //error
                 submitIsSuccess=false;
+                setErrorSubmitDB(true);
             }
 
         }

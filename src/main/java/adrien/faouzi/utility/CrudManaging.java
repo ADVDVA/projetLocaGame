@@ -1,8 +1,6 @@
 package adrien.faouzi.utility;
 
-import adrien.faouzi.entities.Product;
-
-public class CrudBean<T> {
+public class CrudManaging<T> {
 
     //char for type of page generate (c,r,u,d).
     protected char modeSelected = 'r';
@@ -37,5 +35,11 @@ public class CrudBean<T> {
             return;
         tableFilter.resetFilter();
     }
+
+
+
+    private boolean errorSubmitDB;
+    public boolean getErrorSubmitDB(){ return this.errorSubmitDB; }
+    public void setErrorSubmitDB(boolean errorSubmitDB){ this.errorSubmitDB = errorSubmitDB; }
 
 }

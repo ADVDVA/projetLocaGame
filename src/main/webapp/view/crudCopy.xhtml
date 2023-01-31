@@ -182,6 +182,18 @@
                     <!-- input submit -->
 
 
+                    <!-- message error submit -->
+                    <p:outputPanel class="responsiveInput ui-message ui-message-error ui-widget ui-corner-all manyToManyError"
+                                   rendered="#{copyBean.getErrorSubmitDB()}"
+                                   role="alert" aria-atomic="true" aria-live="polite">
+                        <div>
+                            <span class="ui-message-error-icon"> </span>
+                            <span class="ui-message-error-detail message-succes-detail" >
+                                    <h:outputText value="#{I18N['application.crudpage.messageerrorsubmit']}"/>
+                                </span>
+                        </div>
+                    </p:outputPanel>
+
                     <span class="responsiveSubmit">
                         <p:commandButton value="#{I18N['application.crudpage.buttoncreatesubmit']}"
                                          rendered="#{copyBean.isModeSelected('c')}"

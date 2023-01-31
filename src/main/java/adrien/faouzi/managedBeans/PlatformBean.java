@@ -4,7 +4,7 @@ import adrien.faouzi.convectorCustom.PlatformConverter;
 import adrien.faouzi.entities.Platform;
 import adrien.faouzi.projetlocagame.connexion.EMF;
 import adrien.faouzi.services.PlatformService;
-import adrien.faouzi.utility.CrudBean;
+import adrien.faouzi.utility.CrudManaging;
 import adrien.faouzi.utility.TableFilter;
 import adrien.faouzi.utility.UtilityProcessing;
 
@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 @Named
 @SessionScoped
-public class PlatformBean extends CrudBean<Platform> implements Serializable {
+public class PlatformBean extends CrudManaging<Platform> implements Serializable {
 
     /**
      * load entity (in parent CrudBean) for crud form.
@@ -29,6 +29,8 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
         if(!tableFilter.getNewRedirect()){ //reload form from same page.
             return; //do not reload entity from db.
         }
+
+        setErrorSubmitDB(false);
 
         //when first load form in create. --->
         this.modeSelected = tableFilter.getModeRedirection();
@@ -54,6 +56,7 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
         if(!permission)
             return null;
         boolean submitIsSuccess = true;
+        setErrorSubmitDB(false);
 
         //do create or update.
         if(isModeSelected('c') || isModeSelected('u')){
@@ -73,6 +76,7 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
             }catch(Exception e){
                 UtilityProcessing.debug("error catch (in create/update Platform) : "+e.getMessage());
                 submitIsSuccess=false;
+                setErrorSubmitDB(true);
             }finally{
                 if(transaction.isActive())
                     transaction.rollback();
@@ -81,6 +85,7 @@ public class PlatformBean extends CrudBean<Platform> implements Serializable {
 
         }else{ //error
             submitIsSuccess=false;
+            setErrorSubmitDB(true);
         }
 
         return ((submitIsSuccess)? historicalBean.backLastPageHistoric(): null);
