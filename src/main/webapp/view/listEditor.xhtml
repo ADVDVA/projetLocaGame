@@ -51,8 +51,13 @@
                             <div class="flexGrowOne">
                                 <p:inputText value="#{editorListBean.filter}"
                                              onkeyup="researchTable(this)"
+                                             id="editorInputResearch"
+                                             validatorMessage="#{I18N['application.listpage.messageerrorresearch']}"
                                              placeholder="#{I18N['application.listpage.filter']}"/>
                                 <p:commandButton class="reloadResearchForm" type="hidden" update="@form"/>
+                            </div>
+                            <div class="flexGrowOne">
+                                <p:message id="editorMessageResearch" for="editorInputResearch"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
                                 <p:commandButton value="#{I18N['application.listpage.addelementbutton']}"

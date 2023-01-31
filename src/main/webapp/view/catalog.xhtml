@@ -51,8 +51,13 @@
                             <div class="flexGrowOne">
                                 <p:inputText value="#{pricePlatformListBean.filter}"
                                              onkeyup="researchTable(this)"
+                                             id="catalogInputResearch"
+                                             validatorMessage="#{I18N['application.listpage.messageerrorresearch']}"
                                              placeholder="#{I18N['application.listpage.filter']}"/>
                                 <p:commandButton type="hidden" update="@form" class="reloadResearchForm"/>
+                            </div>
+                            <div class="flexGrowOne">
+                                <p:message id="catalogMessageResearch" for="catalogInputResearch"/>
                             </div>
                             <div class="flexGrowOne containerRedirectButtonTable">
                                 <p:commandButton value="#{I18N['application.listpage.addelementbutton']}"

@@ -3,6 +3,7 @@ package adrien.faouzi.utility;
 import adrien.faouzi.entities.Category;
 import org.primefaces.PrimeFaces;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 public class TableFilter<TEntity> {
@@ -41,6 +42,8 @@ public class TableFilter<TEntity> {
 
 
 
+
+    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü]{0,60}$")
     protected String filter = "";
 
     public void setFilter(String filter) {
