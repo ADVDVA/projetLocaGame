@@ -152,11 +152,10 @@ public class PricePlatformBean extends CrudManaging<Priceplatform> implements Se
         try{
             this.imageFile = event.getFile(); //get file from event.
 
-            /* //save file and set picture in entity.
+            //save file and set picture in entity.
             if(FileManaging.saveNewFile(this.imageFile)){ //save new file.
                 this.elementCrudSelected.setPicture(this.imageFile.getFileName()); //save in entity the name of image.
             }
-            */
 
         }catch(Exception error){
             UtilityProcessing.debug("Error from download image (PricePlatformBean.java)");
@@ -165,12 +164,11 @@ public class PricePlatformBean extends CrudManaging<Priceplatform> implements Se
     }
     public String getUrlImage() throws FileNotFoundException {
         if(imageFile != null) //user send an image.
-            //return FileManaging.getUrlFileAbsolute(this.imageFile.getFileName());
-            return FileManaging.getDefaultUrlFile(); //default image because no permission allowed in browser.
+            return FileManaging.getUrlForApply(this.imageFile); //apply image from file upload.
         else if(this.elementCrudSelected.getPicture()==null || this.elementCrudSelected.getPicture().equals(""))
-            return FileManaging.getDefaultUrlFile(); //if no image assign for entity, apply default img.
+            return FileManaging.getDefaultUrlForApply(); //if no image assign for entity, apply default img.
         else
-            return FileManaging.urlFromDB(this.elementCrudSelected.getPicture()); //if entity has image assign, use it.
+            return FileManaging.getUrlForApply(this.elementCrudSelected.getPicture()); //if entity has image assign, use it.
     }
 
 }
