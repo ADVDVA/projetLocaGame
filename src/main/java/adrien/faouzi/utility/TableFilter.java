@@ -43,7 +43,7 @@ public class TableFilter<TEntity> {
 
 
 
-    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü]{0,60}$")
+    @Pattern(regexp = "^[a-zA-Z0-9 çéâêîôûàèìòùëïü.]{0,60}$")
     protected String filter = "";
 
     public void setFilter(String filter) {

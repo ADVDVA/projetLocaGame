@@ -97,6 +97,7 @@ function alertI18NAddBasket(messageClass, namePricePlatformToAddBasket){
 }
 
 function clickNextIfNotDisabled(target){
-    if(target.classList.has('disabledButtonIcon'))
+    console.log(target);
+    if(!target.classList.contains('disabledButtonIcon'))
         target.nextSibling.click();
 }
